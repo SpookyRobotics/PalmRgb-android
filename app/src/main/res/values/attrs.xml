@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="RgbDiode">
+    <attr name="prgb_initialColor" format="color" />
+  </declare-styleable>
+
+  <declare-styleable name="RgbColorState">
+    <attr name="prgb_colorPosition" format="integer" />
+  </declare-styleable>
+</resources>
