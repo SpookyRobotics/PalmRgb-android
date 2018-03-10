@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">PalmRGB</string>
+  <string name="create_frame">Create Frame</string>
 </resources>

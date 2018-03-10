@@ -8,4 +8,23 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+  <style name="DiodeStateList1">
+    <item name="prgb_initialColor">@android:color/black</item>
+    <item name="prgb_secondColor">#ff00ff</item>
+    <item name="prgb_thirdColor">#ffff00</item>
+  </style>
+
+  <style name="DiodeStateList2">
+    <item name="prgb_initialColor">#ff9283</item>
+    <item name="prgb_secondColor">#ff0070ff</item>
+    <item name="prgb_thirdColor">#08ff70</item>
+  </style>
+
+  <style name="Toolbar">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">?attr/actionBarSize</item>
+    <item name="android:background">?attr/colorPrimary</item>
+    <item name="android:elevation">4dp</item>
+    <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+  </style>
 </resources>

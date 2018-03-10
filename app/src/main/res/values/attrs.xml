@@ -2,9 +2,10 @@
 <resources>
   <declare-styleable name="RgbDiode">
     <attr name="prgb_initialColor" format="color" />
+    <attr name="prgb_secondColor" format="color" />
+    <attr name="prgb_thirdColor" format="color" />
+    <attr name="prgb_colorList" format="reference" />
+
   </declare-styleable>
 
-  <declare-styleable name="RgbColorState">
-    <attr name="prgb_colorPosition" format="integer" />
-  </declare-styleable>
 </resources>

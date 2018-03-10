@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+  <nyc.brokenhungry.SubActivityToolbar
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/toolbar"
+      style="@style/Toolbar"/>
+</merge>
