@@ -1,10 +1,10 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.createFrame
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultFragment
 import javax.inject.Inject
 
 
@@ -17,13 +17,12 @@ class CreateFrameFragment : DefaultFragment() {
     @Inject
     lateinit var view: CreateFrameView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    @Inject
+    lateinit var presenter: CreateFramePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.initView(container!!)
+        presenter.init(fragmentManager!!, view)
         return view.rootXml
     }
 }

@@ -5,7 +5,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import dagger.Module
 import dagger.Provides
-import nyc.jsjrobotics.palmrgb.AppDatabase
+import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.Application
 import javax.inject.Singleton
 

@@ -1,17 +1,19 @@
 package nyc.jsjrobotics.palmrgb
 
 import android.app.Activity
+import android.app.DialogFragment
 import android.arch.persistence.room.Room
 import android.support.v4.app.Fragment
 import dagger.android.*
 import dagger.android.support.HasSupportFragmentInjector
+import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.injection.ApplicationComponent
 import nyc.jsjrobotics.palmrgb.injection.ApplicationModule
 import nyc.jsjrobotics.palmrgb.injection.DaggerApplicationComponent
 import javax.inject.Inject
 
 
-class Application : android.app.Application(), HasActivityInjector, HasSupportFragmentInjector {
+class Application : android.app.Application(), HasActivityInjector, HasSupportFragmentInjector, HasFragmentInjector {
     var injector: ApplicationComponent? = null
         private set
 
@@ -19,9 +21,13 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
-    lateinit var appDatabase : AppDatabase ; private set
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<android.app.Fragment>
+
+
+    lateinit var appDatabase : AppDatabase; private set
 
 
     override fun onCreate() {
@@ -40,9 +46,12 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
+        return supportFragmentInjector
     }
 
+    override fun fragmentInjector(): AndroidInjector<android.app.Fragment> {
+        return fragmentInjector
+    }
 
     companion object {
         private lateinit var instance: Application
@@ -57,6 +66,10 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
 
         fun inject(fragment: Fragment) {
             instance().supportFragmentInjector().inject(fragment)
+        }
+
+        fun inject(dialogFragment: DialogFragment){
+            instance().fragmentInjector().inject(dialogFragment)
         }
     }
 }

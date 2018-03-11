@@ -1,8 +1,10 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.androidInterfaces
 
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import nyc.jsjrobotics.palmrgb.BuildConfig
+import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 
 enum class FragmentId(
         val tag: String,

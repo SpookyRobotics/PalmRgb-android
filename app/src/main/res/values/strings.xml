@@ -1,4 +1,7 @@
 <resources>
   <string name="app_name">PalmRGB</string>
   <string name="create_frame">Create Frame</string>
+  <string name="select_a_frame_name">Please enter a name for this visual frame</string>
+  <string name="cancel">Cancel</string>
+  <string name="frame_name">Frame Name</string>
 </resources>

@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.database
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase

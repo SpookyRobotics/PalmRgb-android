@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.androidInterfaces
 
 import android.content.Context
 import android.os.Bundle
@@ -7,12 +7,15 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
 import io.reactivex.disposables.CompositeDisposable
+import nyc.jsjrobotics.palmrgb.Application
+import nyc.jsjrobotics.palmrgb.R
+import nyc.jsjrobotics.palmrgb.customViews.SubActivityToolbar
 
 /**
  * Default Activity subscribes to abtest changes for recreate and
  * manages connection state for BrokenHungryBackground
  */
-abstract class DefaultActivity : FragmentActivity() , IDefaultActivity{
+abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
 

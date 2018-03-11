@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.customViews
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
+import nyc.jsjrobotics.palmrgb.R
 
 class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context, attrs, style) {
     private lateinit var rgbPaint: Paint
@@ -39,9 +40,9 @@ class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context
 
         colorStateList.addAll(listOfNotNull(initialColor, secondColor, thirdColor))
 
-        colorStateList.firstOrNull()?.let {
-            rgbPaint.color = it
-            currentColorIndex += 1
+        if (colorStateList.isNotEmpty()) {
+            rgbPaint.color = colorStateList[0]
+            currentColorIndex = 0
         }
 
     }
@@ -58,13 +59,13 @@ class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context
     }
 
     fun displayNextColor() {
+        currentColorIndex += 1
+        if (currentColorIndex >= colorStateList.size) {
+            currentColorIndex = 0
+        }
         colorStateList.filterIndexed { index, color -> index == currentColorIndex }
                 .firstOrNull()
                 ?.let { rgbPaint.color = it }
-        currentColorIndex += 1
-        if (colorStateList.size <= currentColorIndex) {
-            currentColorIndex = 0
-        }
         invalidate()
     }
 
@@ -94,5 +95,9 @@ class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context
         canvas.drawCircle(midX, midH, radius, rgbPaint )
         canvas.drawCircle(midX, midH, radius, blackOutlinePaint )
         canvas.drawRect(rectangle, blackOutlinePaint)
+    }
+
+    fun currentColor(): Int {
+        return colorStateList[currentColorIndex]
     }
 }

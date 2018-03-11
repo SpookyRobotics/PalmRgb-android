@@ -1,7 +1,8 @@
 package nyc.jsjrobotics.palmrgb
 
-import android.app.Activity
 import android.os.Bundle
+import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultActivity
+import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentId
 
 
 class MainActivity : DefaultActivity() {

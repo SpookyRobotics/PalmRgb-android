@@ -1,10 +1,11 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.customViews
 
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import nyc.jsjrobotics.palmrgb.R
 
 
 class SubActivityToolbar(context : Context, attrs: AttributeSet?, defStyleAttr: Int) : Toolbar(context, attrs, defStyleAttr) {
