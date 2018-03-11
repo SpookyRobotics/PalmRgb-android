@@ -21,8 +21,13 @@ class CreateFrameFragment : DefaultFragment() {
     lateinit var presenter: CreateFramePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view.initView(container!!)
+        view.initView(container!!, savedInstanceState)
         presenter.init(fragmentManager!!, view)
         return view.rootXml
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        view.onSaveInstanceState(outState)
     }
 }

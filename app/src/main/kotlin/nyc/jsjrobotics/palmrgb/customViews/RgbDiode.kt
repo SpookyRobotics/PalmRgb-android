@@ -6,16 +6,25 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import nyc.jsjrobotics.palmrgb.R
 
+/**
+ * TODO: state should be restored in onSaveInstanceState and onRestoreInstanceState
+ * Currently state is restored by the parent view calling setCurrentColorIndex
+ */
 class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(context, attrs, style) {
     private lateinit var rgbPaint: Paint
     private lateinit var blackOutlinePaint: Paint
     private lateinit var rectangle: Rect
     var colorStateList: MutableList<Int> = mutableListOf()
-    private var currentColorIndex = 0;
+    var currentColorIndex = 0 ; set(value) {
+        field = value
+        rgbPaint.color = currentColor()
+    }
 
     private var midX: Float = 0f
     private var midH: Float = 0f
@@ -56,6 +65,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
 
     init {
         setOnClickListener { displayNextColor() }
+        isSaveEnabled = true
     }
 
     fun displayNextColor() {

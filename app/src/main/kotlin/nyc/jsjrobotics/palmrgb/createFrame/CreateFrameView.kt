@@ -1,5 +1,6 @@
 package nyc.jsjrobotics.palmrgb.createFrame
 
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -9,19 +10,21 @@ import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.RgbDiode
 import nyc.jsjrobotics.palmrgb.inflate
+import java.util.ArrayList
 import javax.inject.Inject
 
 class CreateFrameView @Inject constructor(){
     lateinit var rootXml: View
+    private var savedState: ArrayList<Int>? = null
     lateinit var gridView: GridView
     var gridAdapter : RgbDiodeAdapter = RgbDiodeAdapter()
     lateinit var createFrameButton : Button
     private val createFrameClicked : PublishSubject<Boolean> = PublishSubject.create()
     val onCreateFrameClicked : Observable<Boolean> = createFrameClicked
 
-    fun initView(container: ViewGroup) {
+    fun initView(container: ViewGroup, savedInstanceState: Bundle?) {
         if (true) {
-            initView2(container)
+            initView2(container, savedInstanceState)
             return
         }
         rootXml = container.inflate(R.layout.fragment_create_frame)
@@ -29,10 +32,11 @@ class CreateFrameView @Inject constructor(){
         createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }
     }
 
-    private fun initView2(container: ViewGroup) {
+    private fun initView2(container: ViewGroup, savedInstanceState:  Bundle?) {
         rootXml = container.inflate(R.layout.fragment_create_frame2)
         gridView = rootXml.findViewById(R.id.rgbMatrix)
         gridView.adapter = gridAdapter
+        savedInstanceState?.let { onRestoreInstanceState(it) }
         createFrameButton = rootXml.findViewById(R.id.create_frame)
         createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }    }
 
@@ -75,6 +79,35 @@ class CreateFrameView @Inject constructor(){
     }
 
     fun currentFrame(): List<Int> {
-        return IntRange(0, 63).map { getDiode(it).currentColor() }
+        return diodeRange().map { getDiode(it).currentColor() }
+    }
+
+    private fun diodeRange(): IntRange = IntRange(0, 64)
+
+    /***
+     * When saving state, all diodes may not currently be on screen.
+     * Hence we can not only save state of displayed diodes, but also state of ones not attached to viewgroup
+     * We use the savedState ArrayList to supply values for didoes that are off screen, and if no value is found
+     * set it to 0
+     */
+    fun onSaveInstanceState(outState: Bundle) {
+        val colorIndexes = diodeRange().map {
+            val diode = gridView.getChildAt(it) as RgbDiode?
+            if (diode != null) {
+                return@map diode.currentColorIndex
+            } else {
+                savedState?.let { savedState -> return@map savedState[it] }
+                return@map 0
+            }
+        }
+        val saveState = arrayListOf<Int>()
+        saveState.addAll(colorIndexes)
+        outState.putIntegerArrayList("colors", saveState)
+    }
+
+
+    fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        savedState = savedInstanceState.getIntegerArrayList("colors")
+        gridAdapter.setRestoredState(savedState)
     }
 }

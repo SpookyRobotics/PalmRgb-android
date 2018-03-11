@@ -1,6 +1,7 @@
 package nyc.jsjrobotics.palmrgb.createFrame
 
 import android.content.Context
+import android.os.Bundle
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,10 @@ import android.widget.BaseAdapter
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.RgbDiode
 import nyc.jsjrobotics.palmrgb.inflate
+import java.util.ArrayList
 
 class RgbDiodeAdapter() : BaseAdapter() {
-    val idMap: SparseArray<Int> = SparseArray()
+    val idMap: SparseArray<Int> = SparseArray(64)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view : RgbDiode
@@ -21,6 +23,12 @@ class RgbDiodeAdapter() : BaseAdapter() {
         }
 
         view.id = getItemId(position).toInt()
+        restoredState?.let { restoredState ->
+            val lastColor = restoredState[position]
+            view.currentColorIndex = lastColor
+            view.invalidate()
+
+        }
         return view
 
     }
@@ -35,5 +43,12 @@ class RgbDiodeAdapter() : BaseAdapter() {
     }
 
     override fun getCount(): Int = 64
+
+
+    private var restoredState: ArrayList<Int>? = null
+
+    fun setRestoredState(saveState: ArrayList<Int>?) {
+        restoredState = saveState
+    }
 
 }
