@@ -10,7 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import nyc.jsjrobotics.palmrgb.R
 
-class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context, attrs, style) {
+class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(context, attrs, style) {
     private lateinit var rgbPaint: Paint
     private lateinit var blackOutlinePaint: Paint
     private lateinit var rectangle: Rect
@@ -21,6 +21,7 @@ class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context
     private var midH: Float = 0f
     private var radius: Float = 0f
 
+    constructor(context: Context) : this(context, null, 0)
 
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0) {
         blackOutlinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -44,7 +45,6 @@ class RgbDiode(context: Context, attrs: AttributeSet, style: Int) : View(context
             rgbPaint.color = colorStateList[0]
             currentColorIndex = 0
         }
-
     }
 
     private fun getOptionalColor(typedArray: TypedArray, attributeId: Int): Int? {
