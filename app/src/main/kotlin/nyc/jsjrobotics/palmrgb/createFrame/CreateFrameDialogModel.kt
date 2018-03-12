@@ -1,5 +1,8 @@
 package nyc.jsjrobotics.palmrgb.createFrame
 
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
+
 class CreateFrameDialogModel {
     companion object {
         private val instance: CreateFrameDialogModel = CreateFrameDialogModel()
@@ -7,8 +10,11 @@ class CreateFrameDialogModel {
             return instance
         }
     }
-    var currentFrame : List<Int> = emptyList()
-    fun saveCurrentFrame(title: String) {
-        print(title)
+
+    private val saveCurrentFrame : PublishSubject<String> = PublishSubject.create()
+    val onSaveFrameRequested : Observable<String> = saveCurrentFrame
+
+    fun requestSaveCurrentFrame(title: String) {
+        saveCurrentFrame.onNext(title)
     }
 }

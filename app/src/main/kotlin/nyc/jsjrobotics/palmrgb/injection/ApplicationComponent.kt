@@ -12,6 +12,7 @@ import javax.inject.Singleton
         ActivityModule::class,
         FragmentModule::class,
         PresenterModule::class,
+        ServiceModule::class,
         ModelModule::class
 ))
 

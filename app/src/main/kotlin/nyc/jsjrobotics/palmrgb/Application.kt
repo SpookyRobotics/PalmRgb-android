@@ -2,6 +2,7 @@ package nyc.jsjrobotics.palmrgb
 
 import android.app.Activity
 import android.app.DialogFragment
+import android.app.Service
 import android.arch.persistence.room.Room
 import android.support.v4.app.Fragment
 import dagger.android.*
@@ -13,7 +14,7 @@ import nyc.jsjrobotics.palmrgb.injection.DaggerApplicationComponent
 import javax.inject.Inject
 
 
-class Application : android.app.Application(), HasActivityInjector, HasSupportFragmentInjector, HasFragmentInjector {
+class Application : android.app.Application(), HasActivityInjector, HasSupportFragmentInjector, HasServiceInjector {
     var injector: ApplicationComponent? = null
         private set
 
@@ -24,8 +25,7 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
     lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<android.app.Fragment>
-
+    lateinit var serviceInjector: DispatchingAndroidInjector<Service>
 
     lateinit var appDatabase : AppDatabase; private set
 
@@ -49,8 +49,8 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
         return supportFragmentInjector
     }
 
-    override fun fragmentInjector(): AndroidInjector<android.app.Fragment> {
-        return fragmentInjector
+    override fun serviceInjector(): AndroidInjector<Service> {
+        return serviceInjector
     }
 
     companion object {
@@ -68,8 +68,8 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
             instance().supportFragmentInjector().inject(fragment)
         }
 
-        fun inject(dialogFragment: DialogFragment){
-            instance().fragmentInjector().inject(dialogFragment)
+        fun inject(service: Service) {
+            instance().serviceInjector().inject(service)
         }
     }
 }

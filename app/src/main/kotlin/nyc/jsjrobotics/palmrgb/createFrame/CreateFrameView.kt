@@ -51,10 +51,7 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
         return row.getChildAt(index) as RgbDiode
     }
 
-    fun currentFrame(): List<Int> {
-        return createFrameModel.diodeRange()
-                .map { getDiode(it).currentColor() }
-    }
+    fun currentFrame(): List<Int> = createFrameModel.displayedColors
 
     /***
      * When saving state, all diodes may not currently be on screen.

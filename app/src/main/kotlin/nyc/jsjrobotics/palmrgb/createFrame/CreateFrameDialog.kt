@@ -17,7 +17,7 @@ class CreateFrameDialog : DialogFragment() {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage(R.string.select_a_frame_name)
                 .setPositiveButton(R.string.create_frame, { dialog, id ->
-                    model.saveCurrentFrame(getTitle())
+                    model.requestSaveCurrentFrame(getTitle())
                     dialog.dismiss()
                 })
                 .setNegativeButton(R.string.cancel, { dialog, id ->

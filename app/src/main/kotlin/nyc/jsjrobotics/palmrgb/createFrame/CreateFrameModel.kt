@@ -1,6 +1,8 @@
 package nyc.jsjrobotics.palmrgb.createFrame
 
+import android.content.Intent
 import nyc.jsjrobotics.palmrgb.Application
+import nyc.jsjrobotics.palmrgb.PalmRgbBackground
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,5 +20,14 @@ class CreateFrameModel @Inject constructor(val application: Application){
     fun diodeRange() : IntRange = IntRange(0, 63)
     fun saveDiodeState(index: Int, color: Int) {
         displayedColors[index] =  color
+    }
+
+    fun writeCurrentFrameToDatabase(frameTitle: String) {
+        val data = ArrayList<Int>()
+        data.addAll(displayedColors)
+        val intent = Intent(application, PalmRgbBackground::class.java)
+        intent.putIntegerArrayListExtra(PalmRgbBackground.EXTRA_RGB_MATRIX, data)
+        intent.putExtra(PalmRgbBackground.EXTRA_TITLE, frameTitle)
+        application.startService(intent)
     }
 }

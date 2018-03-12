@@ -20,6 +20,11 @@ class CreateFrameFragment : DefaultFragment() {
     @Inject
     lateinit var presenter: CreateFramePresenter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(presenter)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.initView(container!!, savedInstanceState)
         presenter.init(fragmentManager!!, view)

@@ -14,7 +14,10 @@ import android.arch.persistence.room.TypeConverters
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
-        val FILENAME: String = "PalmRgbAppDatabase.db"
+        const val FILENAME: String = "PalmRgbAppDatabase.db"
+        const val RGB_FRAMES_TABLE_NAME = "rgbFrames"
     }
+
+    abstract fun rgbFramesDao(): RgbFramesDao
 
 }
