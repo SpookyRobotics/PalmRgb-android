@@ -2,10 +2,7 @@
 <app:nyc.jsjrobotics.palmrgb.customViews.RgbDiode
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/diode1"
     android:layout_width="@dimen/fixed_diode_size"
     android:layout_height="@dimen/fixed_diode_size"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/diode2"
     style="@style/DiodeStateList1"
     />

@@ -28,6 +28,6 @@ class CreateFrameFragment : DefaultFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        view.onSaveInstanceState(outState)
+        view.writeStateToModel()
     }
 }

@@ -2,5 +2,6 @@
 <resources>
   <dimen name="fixed_diode_size">50dp</dimen>
   <dimen name="medium_margin">16dp</dimen>
+  <dimen name="small_margin">8dp</dimen>
   <dimen name="xsmall_margin">4dp</dimen>
 </resources>

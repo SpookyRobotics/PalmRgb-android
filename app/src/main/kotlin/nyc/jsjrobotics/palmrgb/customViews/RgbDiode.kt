@@ -13,16 +13,24 @@ import android.view.View
 import nyc.jsjrobotics.palmrgb.R
 
 /**
- * TODO: state should be restored in onSaveInstanceState and onRestoreInstanceState
+ * TODO: state should be restored in writeStateToModel and onRestoreInstanceState
  * Currently state is restored by the parent view calling setCurrentColorIndex
  */
 class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(context, attrs, style) {
     private lateinit var rgbPaint: Paint
     private lateinit var blackOutlinePaint: Paint
     private lateinit var rectangle: Rect
+    var indexInMatrix: Int = -1
+
     var colorStateList: MutableList<Int> = mutableListOf()
-    var currentColorIndex = 0 ; set(value) {
-        field = value
+
+    // Overriden setter to guarantee value stays between 0 and colorStateList.size
+    var currentColorIndex = 0 ; private set(value) {
+        if (value >= colorStateList.size) {
+            field = 0
+        } else {
+            field = value
+        }
         rgbPaint.color = currentColor()
     }
 
@@ -65,18 +73,27 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
 
     init {
         setOnClickListener { displayNextColor() }
-        isSaveEnabled = true
     }
 
     fun displayNextColor() {
         currentColorIndex += 1
-        if (currentColorIndex >= colorStateList.size) {
-            currentColorIndex = 0
-        }
         colorStateList.filterIndexed { index, color -> index == currentColorIndex }
                 .firstOrNull()
                 ?.let { rgbPaint.color = it }
         invalidate()
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putParcelable("parent", super.onSaveInstanceState())
+        bundle.putInt("colorIndex", currentColorIndex)
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        val bundle = state as Bundle
+        super.onRestoreInstanceState(bundle.getParcelable("parent"))
+        currentColorIndex = bundle.getInt("colorIndex")
     }
 
     public override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
@@ -110,4 +127,17 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     fun currentColor(): Int {
         return colorStateList[currentColorIndex]
     }
+
+    fun setCurrentColor(nextColor: Int) {
+        val colorIndex = colorStateList.indexOf(nextColor)
+        if (colorIndex != -1) {
+            currentColorIndex = colorIndex
+        } else {
+            // Bypass saving of color state and just display the color
+            rgbPaint.color = nextColor
+        }
+
+
+    }
+
 }
