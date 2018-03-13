@@ -25,8 +25,6 @@ class ViewFramesFragment : FragmentWithPresenter() {
         setPresenter(presenter)
     }
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.initView(container!!, savedInstanceState)
         presenter.init(view, onHiddenChanged)

@@ -6,4 +6,7 @@
   <string name="frame_name">Frame Name</string>
   <string name="view_frames">View Frames</string>
   <string name="reset_frame">Reset</string>
+  <string name="upload_frame">Upload Frame</string>
+  <string name="no_saved_frames">No Saved Frames</string>
+  <string name="delete_frame">Delete Frame</string>
 </resources>

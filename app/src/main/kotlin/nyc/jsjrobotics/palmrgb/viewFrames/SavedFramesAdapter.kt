@@ -10,8 +10,8 @@ import javax.inject.Inject
 class SavedFramesAdapter @Inject constructor(): RecyclerView.Adapter<SavedFrameViewHolder>(){
 
     private var data: List<MutableRgbFrame> = emptyList()
-    private val frameSelected : PublishSubject<String> = PublishSubject.create()
-    val onFrameSelected : Observable<String> = frameSelected
+    private val frameSelected : PublishSubject<Long> = PublishSubject.create()
+    val onFrameSelected : Observable<Long> = frameSelected
 
     fun setData(rgbFrames : List<MutableRgbFrame>) {
         data = rgbFrames
@@ -29,9 +29,9 @@ class SavedFramesAdapter @Inject constructor(): RecyclerView.Adapter<SavedFrameV
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: SavedFrameViewHolder, position: Int) {
-        val frameName = data[position].frameName
+        val frameId = data[position].frameId
         holder.bind(data[position], {
-            frameSelected.onNext(frameName)
+            frameId?.let { frameSelected.onNext(it) }
         })
     }
 

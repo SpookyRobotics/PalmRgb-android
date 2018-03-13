@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/small_margin">
 
+  <TextView
+      android:id="@+id/frame_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/saved_rgb_matrix"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      />
+
+  <GridView
+      android:id="@+id/saved_rgb_matrix"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:columnWidth="@dimen/fixed_diode_size"
+      android:numColumns="8"
+      android:verticalSpacing="@dimen/xsmall_margin"
+      android:stretchMode="spacingWidthUniform"
+      android:layout_margin="@dimen/small_margin"
+      app:layout_constraintTop_toBottomOf="@id/frame_title"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/display" />
+
+  <Button
+      android:id="@+id/display"
+      android:text="@string/upload_frame"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/saved_rgb_matrix"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/delete"
+      app:layout_constraintBottom_toBottomOf="parent"
+      />
+
+  <Button
+      android:id="@+id/delete"
+      android:text="@string/delete_frame"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toEndOf="@id/display"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/display"
+      />
 </android.support.constraint.ConstraintLayout>

@@ -16,6 +16,9 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         const val FILENAME: String = "PalmRgbAppDatabase.db"
         const val RGB_FRAMES_TABLE_NAME = "rgbFrames"
+        const val FRAME_NAME_COLUMN = "frame_name"
+        const val COLOR_LIST_COLUMN = "color_list"
+        const val FRAME_ID_COLUMN = "frame_id"
     }
 
     abstract fun rgbFramesDao(): RgbFramesDao

@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 
 class RgbFrameDialogFragment() : DialogFragmentWithPresenter() {
-
     @Inject
     lateinit var presenter: RgbFrameDialogPresenter
 
@@ -19,9 +18,9 @@ class RgbFrameDialogFragment() : DialogFragmentWithPresenter() {
 
         val FRAME_NAME: String = "args.frameName"
 
-        fun buildArguments(frameName: String): Bundle {
+        fun buildArguments(frameName: Long): Bundle {
             val args = Bundle()
-            args.putString(FRAME_NAME, frameName)
+            args.putLong(FRAME_NAME, frameName)
             return args
         }
 
@@ -35,7 +34,15 @@ class RgbFrameDialogFragment() : DialogFragmentWithPresenter() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.init(inflater, container)
+        presenter.init(view, getFrameName())
         return view.rootXml
+    }
+
+    private fun getFrameName(): Long? {
+        arguments?.let {
+            return it.getLong(FRAME_NAME)
+        }
+        return null
     }
 
 }

@@ -10,8 +10,11 @@ interface RgbFramesDao {
     @Query("SELECT * FROM ${AppDatabase.RGB_FRAMES_TABLE_NAME}")
     fun getAll() : List<MutableRgbFrame>
 
+    @Query("SELECT * FROM ${AppDatabase.RGB_FRAMES_TABLE_NAME} WHERE ${AppDatabase.FRAME_ID_COLUMN} IS :frameId")
+    fun getFrame(frameId : Long) : MutableRgbFrame?
+
     @Delete
-    fun delete(recipe : MutableRgbFrame)
+    fun delete(frame : MutableRgbFrame)
 
     @Insert
     fun insert(recipe : MutableRgbFrame)
