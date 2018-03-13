@@ -1,14 +1,14 @@
 package nyc.jsjrobotics.palmrgb.createFrame
 
 import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.support.v4.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
+import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import javax.inject.Inject
 
 class CreateFramePresenter @Inject constructor(val dialogModel : CreateFrameDialogModel,
-                                               val createFrameModel: CreateFrameModel) : LifecycleObserver {
+                                               val createFrameModel: CreateFrameModel) : DefaultPresenter() {
     private lateinit var view: CreateFrameView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : CreateFrameDialog? = null

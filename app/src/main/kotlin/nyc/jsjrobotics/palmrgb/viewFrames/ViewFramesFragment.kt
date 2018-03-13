@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultFragment
+import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentWithPresenter
 import javax.inject.Inject
 
 
-class ViewFramesFragment : DefaultFragment() {
+class ViewFramesFragment : FragmentWithPresenter() {
     companion object {
         val TAG = "ViewFramesFragment"
     }
@@ -21,7 +22,7 @@ class ViewFramesFragment : DefaultFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(presenter)
+        setPresenter(presenter)
     }
 
 

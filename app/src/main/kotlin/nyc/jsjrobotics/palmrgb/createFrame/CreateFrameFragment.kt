@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultFragment
+import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentWithPresenter
 import javax.inject.Inject
 
 
-class CreateFrameFragment : DefaultFragment() {
+class CreateFrameFragment : FragmentWithPresenter() {
 
     companion object {
         val TAG = "CreateFrameFragment"
@@ -22,7 +23,7 @@ class CreateFrameFragment : DefaultFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(presenter)
+        setPresenter(presenter)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

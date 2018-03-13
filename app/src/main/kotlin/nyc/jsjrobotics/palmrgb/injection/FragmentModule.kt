@@ -11,13 +11,16 @@ import dagger.multibindings.IntoMap
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameDialogModel
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.CreateFrameFragmentSubcomponent
+import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.RgbFrameDialogFragmentSubcomponent
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.ViewFramesFragmentSubcomponent
 import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment
+import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
 import javax.inject.Singleton
 
 @Module(subcomponents = arrayOf(
         CreateFrameFragmentSubcomponent::class,
-        ViewFramesFragmentSubcomponent::class
+        ViewFramesFragmentSubcomponent::class,
+        RgbFrameDialogFragmentSubcomponent::class
 ))
 internal abstract class FragmentModule {
     @Binds
@@ -29,4 +32,9 @@ internal abstract class FragmentModule {
     @IntoMap
     @FragmentKey(ViewFramesFragment::class)
     internal abstract fun bindViewFramesFragmentInjectorFactory(builder: ViewFramesFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
+
+    @Binds
+    @IntoMap
+    @FragmentKey(RgbFrameDialogFragment::class)
+    internal abstract fun bindRgbFrameDialogFragmentInjectorFactory(builder: RgbFrameDialogFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
 }

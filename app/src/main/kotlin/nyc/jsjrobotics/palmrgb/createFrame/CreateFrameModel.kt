@@ -2,7 +2,7 @@ package nyc.jsjrobotics.palmrgb.createFrame
 
 import android.content.Intent
 import nyc.jsjrobotics.palmrgb.Application
-import nyc.jsjrobotics.palmrgb.PalmRgbBackground
+import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ServiceKey
 import dagger.multibindings.IntoMap
-import nyc.jsjrobotics.palmrgb.PalmRgbBackground
+import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
 
 @Module(subcomponents = arrayOf(
         PalmRgbBackgroundSubcomponent::class

@@ -22,4 +22,6 @@ class ViewFramesView @Inject constructor(val savedFramesAdapter : SavedFramesAda
 
     fun setData(frames: List<MutableRgbFrame>) = savedFramesAdapter.setData(frames)
 
+    fun onFrameSelected() = savedFramesAdapter.onFrameSelected
+
 }

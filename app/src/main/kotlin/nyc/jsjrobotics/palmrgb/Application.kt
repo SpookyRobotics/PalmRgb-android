@@ -1,7 +1,6 @@
 package nyc.jsjrobotics.palmrgb
 
 import android.app.Activity
-import android.app.DialogFragment
 import android.app.Service
 import android.arch.persistence.room.Room
 import android.support.v4.app.Fragment
@@ -11,7 +10,7 @@ import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.injection.ApplicationComponent
 import nyc.jsjrobotics.palmrgb.injection.ApplicationModule
 import nyc.jsjrobotics.palmrgb.injection.DaggerApplicationComponent
-import nyc.jsjrobotics.palmrgb.viewFrames.SavedFrameView
+import nyc.jsjrobotics.palmrgb.viewFrames.SavedFrameViewHolder
 import javax.inject.Inject
 
 
@@ -73,8 +72,8 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
             instance().serviceInjector().inject(service)
         }
 
-        fun inject(savedFrameView: SavedFrameView) {
-            instance().injector?.inject(savedFrameView)
+        fun inject(savedFrameViewHolder: SavedFrameViewHolder) {
+            instance().injector?.inject(savedFrameViewHolder)
         }
     }
 }

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import nyc.jsjrobotics.palmrgb.BuildConfig
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment
+import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
 
 enum class FragmentId(
         val tag: String,
@@ -14,6 +15,11 @@ enum class FragmentId(
     CREATE_FRAME_FRAGMENT(
             CreateFrameFragment.TAG,
             { addArgments(CreateFrameFragment(), it) }
+    ),
+
+    RGB_FRAME_DIALOG_FRAGMENT(
+            RgbFrameDialogFragment.TAG,
+            { addArgments(RgbFrameDialogFragment(), it)}
     ),
 
     VIEW_FRAMES_FRAGMENT(

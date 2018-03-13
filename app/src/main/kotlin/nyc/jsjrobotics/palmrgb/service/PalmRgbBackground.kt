@@ -1,8 +1,10 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.service
 
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import nyc.jsjrobotics.palmrgb.Application
+import nyc.jsjrobotics.palmrgb.DEBUG
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import java.util.concurrent.ArrayBlockingQueue
