@@ -53,7 +53,8 @@ abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
 
     protected fun selectBottonNavigationItemId(itemId: Int): Boolean {
         val navigationOptions = listOf<Pair<Int, Runnable>>(
-                Pair(R.id.tab_create_frame, Runnable { showFragment(FragmentId.CREATE_FRAME_FRAGMENT) })
+                Pair(R.id.tab_create_frame, Runnable { showFragment(FragmentId.CREATE_FRAME_FRAGMENT) }),
+                Pair(R.id.tab_view_frames, Runnable { showFragment(FragmentId.VIEW_FRAMES_FRAGMENT) })
         )
 
         val runnable = navigationOptions.filter { it.first == itemId }

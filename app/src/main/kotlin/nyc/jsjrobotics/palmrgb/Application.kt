@@ -11,6 +11,7 @@ import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.injection.ApplicationComponent
 import nyc.jsjrobotics.palmrgb.injection.ApplicationModule
 import nyc.jsjrobotics.palmrgb.injection.DaggerApplicationComponent
+import nyc.jsjrobotics.palmrgb.viewFrames.SavedFrameView
 import javax.inject.Inject
 
 
@@ -70,6 +71,10 @@ class Application : android.app.Application(), HasActivityInjector, HasSupportFr
 
         fun inject(service: Service) {
             instance().serviceInjector().inject(service)
+        }
+
+        fun inject(savedFrameView: SavedFrameView) {
+            instance().injector?.inject(savedFrameView)
         }
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <include android:id="@+id/row1" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row2" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row3" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row4" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row5" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row6" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row7" layout="@layout/row_of_diodes" />
+  <include android:id="@+id/row8" layout="@layout/row_of_diodes" />
+
+</LinearLayout>

@@ -1,5 +1,7 @@
 package nyc.jsjrobotics.palmrgb
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,4 +18,12 @@ fun Any.ERROR(message: String) {
 fun ViewGroup.inflate(layoutId: Int, attachToView : Boolean = false): View {
     val inflater = LayoutInflater.from(context)
     return inflater.inflate(layoutId, this, attachToView )
+}
+
+fun executeInThread(function: () -> Unit) {
+    Thread({ function() }).start()
+}
+
+fun runOnMainThread(runnable: Runnable) {
+    Handler(Looper.getMainLooper()).post(runnable)
 }

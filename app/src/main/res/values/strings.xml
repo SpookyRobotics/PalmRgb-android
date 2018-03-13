@@ -4,4 +4,5 @@
   <string name="select_a_frame_name">Please enter a name for this visual frame</string>
   <string name="cancel">Cancel</string>
   <string name="frame_name">Frame Name</string>
+  <string name="view_frames">View Frames</string>
 </resources>

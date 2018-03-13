@@ -13,14 +13,11 @@
       android:columnWidth="@dimen/fixed_diode_size"
       android:numColumns="8"
       android:verticalSpacing="@dimen/xsmall_margin"
-      android:horizontalSpacing="@dimen/xsmall_margin"
       android:stretchMode="spacingWidthUniform"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintBottom_toTopOf="@id/create_frame">
-
-  </GridView>
+      app:layout_constraintBottom_toTopOf="@id/create_frame" />
 
   <Button
       android:id="@+id/create_frame"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import nyc.jsjrobotics.palmrgb.BuildConfig
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
+import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment
 
 enum class FragmentId(
         val tag: String,
@@ -13,6 +14,11 @@ enum class FragmentId(
     CREATE_FRAME_FRAGMENT(
             CreateFrameFragment.TAG,
             { addArgments(CreateFrameFragment(), it) }
+    ),
+
+    VIEW_FRAMES_FRAGMENT(
+            ViewFramesFragment.TAG,
+            { addArgments(ViewFramesFragment(), it) }
     );
 
     companion object {

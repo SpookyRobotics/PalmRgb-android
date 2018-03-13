@@ -3,6 +3,7 @@ package nyc.jsjrobotics.palmrgb.injection
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import nyc.jsjrobotics.palmrgb.Application
+import nyc.jsjrobotics.palmrgb.viewFrames.SavedFrameView
 import javax.inject.Singleton
 
 @Singleton
@@ -18,4 +19,5 @@ import javax.inject.Singleton
 
 interface ApplicationComponent {
     fun inject(app: Application)
+    fun inject(view: SavedFrameView)
 }
