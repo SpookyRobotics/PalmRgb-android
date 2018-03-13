@@ -5,4 +5,5 @@
   <string name="cancel">Cancel</string>
   <string name="frame_name">Frame Name</string>
   <string name="view_frames">View Frames</string>
+  <string name="reset_frame">Reset</string>
 </resources>

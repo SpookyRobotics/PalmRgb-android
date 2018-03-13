@@ -9,12 +9,15 @@ import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
 class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameModel) : BaseAdapter() {
+    private var resetting: Boolean = false
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view : RgbDiode
         if (convertView != null) {
             view = convertView as RgbDiode
-            createFrameModel.saveDiodeState(view.indexInMatrix, view.currentColor())
+            if (!resetting) {
+                createFrameModel.saveDiodeState(view.indexInMatrix, view.currentColor())
+            }
         } else {
             view = parent.inflate(R.layout.single_diode) as RgbDiode
             view.id = View.generateViewId()
@@ -25,6 +28,9 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
         val lastColor = createFrameModel.displayedColors.get(position)
         view.setCurrentColor(lastColor)
         view.invalidate()
+        if (position == createFrameModel.diodeRange().last) {
+            resetting = false
+        }
         return view
 
     }
@@ -36,6 +42,12 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
     }
 
     override fun getCount(): Int = createFrameModel.displayedColors.size
+
+    fun reset() {
+        resetting = true
+        createFrameModel.reset()
+        notifyDataSetChanged()
+    }
 
 
 }

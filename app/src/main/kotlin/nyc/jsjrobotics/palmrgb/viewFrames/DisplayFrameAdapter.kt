@@ -16,6 +16,7 @@ class DisplayFrameAdapter @Inject constructor() : BaseAdapter() {
         } else {
             view = parent.inflate(R.layout.single_diode) as RgbDiode
             view.id = View.generateViewId()
+            view.isClickable = false
         }
 
         view.indexInMatrix = position

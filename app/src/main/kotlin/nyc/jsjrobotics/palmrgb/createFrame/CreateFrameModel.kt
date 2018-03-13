@@ -9,13 +9,14 @@ import javax.inject.Singleton
 @Singleton
 class CreateFrameModel @Inject constructor(val application: Application){
     val colorStateList: MutableList<Int> = mutableListOf(
+            0xff000000.toInt(),
             0xffff9283.toInt(),
             0xff0070ff.toInt(),
             0xff08ff70.toInt(),
             0xff179033.toInt()
     )
 
-    var displayedColors : MutableList<Int> = diodeRange().map { colorStateList.first() }.toMutableList()
+    var displayedColors : MutableList<Int> = initialValues()
 
     fun diodeRange() : IntRange = IntRange(0, 63)
     fun saveDiodeState(index: Int, color: Int) {
@@ -30,4 +31,10 @@ class CreateFrameModel @Inject constructor(val application: Application){
         intent.putExtra(PalmRgbBackground.EXTRA_TITLE, frameTitle)
         application.startService(intent)
     }
+
+    fun reset() {
+        displayedColors = initialValues()
+    }
+
+    private fun initialValues(): MutableList<Int>  = diodeRange().map { colorStateList.first() }.toMutableList()
 }

@@ -17,28 +17,22 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
                                           val createFrameModel: CreateFrameModel){
     lateinit var rootXml: View
     private var savedState: ArrayList<Int>? = null
-    lateinit var gridView: GridView
-    lateinit var createFrameButton : Button
+    private lateinit var gridView: GridView
+    private lateinit var createFrameButton : Button
+    private lateinit var resetFrameButton : Button
     private val createFrameClicked : PublishSubject<Boolean> = PublishSubject.create()
     val onCreateFrameClicked : Observable<Boolean> = createFrameClicked
 
-    fun initView(container: ViewGroup, savedInstanceState: Bundle?) {
-        if (true) {
-            initView2(container, savedInstanceState)
-            return
-        }
-        rootXml = container.inflate(R.layout.fragment_create_frame)
-        createFrameButton = rootXml.findViewById(R.id.create_frame)
-        createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }
-    }
-
-    private fun initView2(container: ViewGroup, savedInstanceState:  Bundle?) {
+    fun initView(container: ViewGroup, savedInstanceState:  Bundle?) {
         rootXml = container.inflate(R.layout.fragment_create_frame)
         gridView = rootXml.findViewById(R.id.rgbMatrix)
+        resetFrameButton = rootXml.findViewById(R.id.reset_frame)
         gridView.adapter = gridAdapter
         savedInstanceState?.let { onRestoreInstanceState(it) }
         createFrameButton = rootXml.findViewById(R.id.create_frame)
-        createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }    }
+        createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }
+        resetFrameButton.setOnClickListener { gridAdapter.reset() }
+    }
 
     fun getDiode(diodeIndex: Int): RgbDiode {
         return gridView.getChildAt(diodeIndex) as RgbDiode

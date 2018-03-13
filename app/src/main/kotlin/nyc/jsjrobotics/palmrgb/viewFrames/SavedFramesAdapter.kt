@@ -2,7 +2,6 @@ package nyc.jsjrobotics.palmrgb.viewFrames
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import javax.inject.Inject
 

@@ -4,4 +4,5 @@
   <dimen name="medium_margin">16dp</dimen>
   <dimen name="small_margin">8dp</dimen>
   <dimen name="xsmall_margin">4dp</dimen>
+  <dimen name="large_margin">24dp</dimen>
 </resources>

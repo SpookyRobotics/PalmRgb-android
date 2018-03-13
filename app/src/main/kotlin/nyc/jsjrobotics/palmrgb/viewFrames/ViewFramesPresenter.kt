@@ -7,6 +7,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.executeInThread
+import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
 
 class ViewFramesPresenter @Inject constructor(val appDatabase: AppDatabase): LifecycleObserver {
@@ -24,7 +25,8 @@ class ViewFramesPresenter @Inject constructor(val appDatabase: AppDatabase): Lif
     fun refreshView() {
         executeInThread {
             val savedFrames = appDatabase.rgbFramesDao().getAll()
-            view.setData(savedFrames)
+            runOnMainThread ( Runnable{  view.setData(savedFrames) } )
+
         }
     }
 
