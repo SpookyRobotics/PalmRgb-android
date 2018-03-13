@@ -10,6 +10,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 
 /**
@@ -20,8 +23,11 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     private lateinit var rgbPaint: Paint
     private lateinit var blackOutlinePaint: Paint
     private lateinit var rectangle: Rect
-    var indexInMatrix: Int = -1
+    private val colorChanged: PublishSubject<Int> = PublishSubject.create()
+    val onColorChanged: Observable<Int> = colorChanged
+    private val disposables : CompositeDisposable = CompositeDisposable()
 
+    var indexInMatrix: Int = -1
     var colorStateList: MutableList<Int> = mutableListOf()
 
     // Overriden setter to guarantee value stays between 0 and colorStateList.size
@@ -31,7 +37,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         } else {
             field = value
         }
-        rgbPaint.color = currentColor()
+        val color = currentColor()
+        rgbPaint.color = color
+        colorChanged.onNext(color)
     }
 
     private var midX: Float = 0f
@@ -118,6 +126,11 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
 
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        clearSubscriptions()
+    }
+
     override fun onDraw(canvas: Canvas) {
         canvas.drawCircle(midX, midH, radius, rgbPaint )
         canvas.drawCircle(midX, midH, radius, blackOutlinePaint )
@@ -138,6 +151,14 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         }
 
 
+    }
+
+    fun subscribeOnColorChanged(callback: () -> Unit) {
+        disposables.add(onColorChanged.subscribe { callback() })
+    }
+
+    fun clearSubscriptions() {
+        disposables.clear()
     }
 
 }

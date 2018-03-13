@@ -16,12 +16,13 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
         if (convertView != null) {
             view = convertView as RgbDiode
             if (!resetting) {
-                createFrameModel.saveDiodeState(view.indexInMatrix, view.currentColor())
+                saveViewColor(view)
             }
         } else {
             view = parent.inflate(R.layout.single_diode) as RgbDiode
             view.id = View.generateViewId()
             view.colorStateList = createFrameModel.colorStateList
+            view.subscribeOnColorChanged { saveViewColor(view) }
         }
 
         view.indexInMatrix = position
@@ -33,6 +34,12 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
         }
         return view
 
+    }
+
+
+
+    private fun saveViewColor(view: RgbDiode) {
+        createFrameModel.saveDiodeState(view.indexInMatrix, view.currentColor())
     }
 
     override fun getItem(position: Int): Any = position
