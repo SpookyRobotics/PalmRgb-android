@@ -20,5 +20,6 @@
       </intent-filter>
     </activity>
     <service android:name=".service.PalmRgbBackground" />
+    <service android:name=".service.remoteInterface.HackdayLightsBackend" />
   </application>
 </manifest>
