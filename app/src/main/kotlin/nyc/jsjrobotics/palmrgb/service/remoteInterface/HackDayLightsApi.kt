@@ -7,5 +7,8 @@ interface HackDayLightsApi {
     @GET(Paths.RAINBOW_PATH)
     fun triggerFunction(@Header("FUNCTION" ) function: String): Call<StatusResponse>
 
+    @GET(Paths.RAINBOW_PATH)
+    fun connectionCheck(): Call<String>
+
 }
 

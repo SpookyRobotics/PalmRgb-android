@@ -4,6 +4,7 @@ package nyc.jsjrobotics.palmrgb.androidInterfaces
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import nyc.jsjrobotics.palmrgb.BuildConfig
+import nyc.jsjrobotics.palmrgb.connectionStatus.ConnectionStatusFragment
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment
 import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
@@ -25,6 +26,10 @@ enum class FragmentId(
     VIEW_FRAMES_FRAGMENT(
             ViewFramesFragment.TAG,
             { addArgments(ViewFramesFragment(), it) }
+    ),
+    CONNECTION_STATUS(
+            ConnectionStatusFragment.TAG,
+            { addArgments(ConnectionStatusFragment(), it) }
     );
 
     companion object {

@@ -16,7 +16,7 @@ class MainActivity : DefaultActivity(), BottomNavigationView.OnNavigationItemSel
         bottomNavigation = findViewById(R.id.bottomNavigationView)
         bottomNavigation.setOnNavigationItemSelectedListener(this)
         if (savedInstanceState == null) {
-            bottomNavigation.selectedItemId = R.id.tab_view_frames
+            bottomNavigation.selectedItemId = R.id.tab_connection_status
         }
     }
 

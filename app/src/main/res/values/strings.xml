@@ -4,9 +4,13 @@
   <string name="select_a_frame_name">Please enter a name for this visual frame</string>
   <string name="cancel">Cancel</string>
   <string name="frame_name">Frame Name</string>
-  <string name="view_frames">View Frames</string>
+  <string name="saved_frames">Saved Frames</string>
   <string name="reset_frame">Reset</string>
   <string name="upload_frame">Upload Frame</string>
   <string name="no_saved_frames">No Saved Frames</string>
   <string name="delete_frame">Delete Frame</string>
+  <string name="disconnected">Disconnected</string>
+  <string name="connection_status">Connection Status</string>
+  <string name="connected">Connected</string>
+
 </resources>

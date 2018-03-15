@@ -8,8 +8,10 @@ import dagger.Provides
 import dagger.android.AndroidInjector
 import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
+import nyc.jsjrobotics.palmrgb.connectionStatus.ConnectionStatusFragment
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameDialogModel
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
+import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.ConnectionStatusFragmentSubcomponent
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.CreateFrameFragmentSubcomponent
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.RgbFrameDialogFragmentSubcomponent
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.ViewFramesFragmentSubcomponent
@@ -20,7 +22,8 @@ import javax.inject.Singleton
 @Module(subcomponents = arrayOf(
         CreateFrameFragmentSubcomponent::class,
         ViewFramesFragmentSubcomponent::class,
-        RgbFrameDialogFragmentSubcomponent::class
+        RgbFrameDialogFragmentSubcomponent::class,
+        ConnectionStatusFragmentSubcomponent::class
 ))
 internal abstract class FragmentModule {
     @Binds
@@ -37,4 +40,10 @@ internal abstract class FragmentModule {
     @IntoMap
     @FragmentKey(RgbFrameDialogFragment::class)
     internal abstract fun bindRgbFrameDialogFragmentInjectorFactory(builder: RgbFrameDialogFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
+
+    @Binds
+    @IntoMap
+    @FragmentKey(ConnectionStatusFragment::class)
+    internal abstract fun bindConnectionStatusFragmentInjectorFactory(builder: ConnectionStatusFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
+
 }

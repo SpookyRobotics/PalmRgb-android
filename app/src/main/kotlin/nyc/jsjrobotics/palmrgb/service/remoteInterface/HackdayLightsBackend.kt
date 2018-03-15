@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.os.IBinder
+import android.support.v4.content.LocalBroadcastManager
 import com.google.gson.GsonBuilder
 import nyc.jsjrobotics.palmrgb.DEBUG
 import nyc.jsjrobotics.palmrgb.ERROR
@@ -27,6 +28,7 @@ class HackdayLightsBackend : Service() {
     companion object {
         private val RPC_TYPE = "RPC_TYPE"
         private val RPC_FUNCTION = "RPC_FUNCTION"
+        val CONNECTION_CHECK_RESPONSE = "CONNECTION_CHECK_RESPONSE"
         fun intent(requestType: RequestType) : Intent {
             val intent = Intent()
             intent.component = ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
@@ -61,16 +63,16 @@ class HackdayLightsBackend : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
-            val toDownload = intent.getStringExtra(RPC_TYPE)
+            val requestType = intent.getStringExtra(RPC_TYPE)
             val requestFunction = intent.getStringExtra(RPC_FUNCTION)
-            startRequestThread(toDownload, requestFunction)
+            startRequestThread(requestType, requestFunction)
         }
         return START_NOT_STICKY
     }
 
-    private fun startRequestThread(toDownload: String, rpcFunction: String?) {
+    private fun startRequestThread(requestType: String, rpcFunction: String?) {
         downloadsInProgress.getAndIncrement()
-        val requestType = RequestType.valueOf(toDownload)
+        val requestType = RequestType.valueOf(requestType)
         Thread( Runnable {
             if (requestType == RequestType.LEFT_IDLE) {
                 if (rpcFunction == null) {
@@ -78,11 +80,32 @@ class HackdayLightsBackend : Service() {
                     return@Runnable
                 }
                 rainbowRequest(rpcFunction)
+            } else if (requestType == RequestType.CHECK_CONNECTION) {
+                connectionCheck()
             } else {
                 ERROR("UNKNOWN request")
             }
         }).start()
 
+    }
+
+    private fun connectionCheck() {
+        val request = backendApi.connectionCheck()
+        try {
+            val response = request.execute()
+            DEBUG("Result: ${response.isSuccessful}")
+            broadcastConnectionCheckResult(response.isSuccessful)
+        } catch (e : Exception) {
+            ERROR("Failed to connection check: $e")
+        }
+        checkStopSelf()
+    }
+
+    private fun broadcastConnectionCheckResult(successful: Boolean) {
+        val intent = Intent(CONNECTION_CHECK_RESPONSE)
+        intent.putExtra(CONNECTION_CHECK_RESPONSE, successful)
+        LocalBroadcastManager.getInstance(applicationContext)
+                .sendBroadcast(intent)
     }
 
     private fun rainbowRequest(rpcFunction: String) {
