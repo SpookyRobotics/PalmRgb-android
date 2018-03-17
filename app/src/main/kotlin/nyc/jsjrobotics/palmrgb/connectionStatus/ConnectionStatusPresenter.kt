@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
+import nyc.jsjrobotics.palmrgb.runOnMainThread
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.RequestType
@@ -31,7 +32,9 @@ class ConnectionStatusPresenter @Inject constructor() : DefaultPresenter() {
         return object: BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 if (intent.hasExtra(HackdayLightsBackend.CONNECTION_CHECK_RESPONSE)) {
-                    view.displayConnected(intent.getBooleanExtra(HackdayLightsBackend.CONNECTION_CHECK_RESPONSE, false))
+                    runOnMainThread( Runnable {
+                        view.displayConnected(intent.getBooleanExtra(HackdayLightsBackend.CONNECTION_CHECK_RESPONSE, false))
+                    })
                 }
             }
 

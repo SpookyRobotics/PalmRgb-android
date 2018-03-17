@@ -29,6 +29,11 @@ class HackdayLightsBackend : Service() {
         private val RPC_TYPE = "RPC_TYPE"
         private val RPC_FUNCTION = "RPC_FUNCTION"
         val CONNECTION_CHECK_RESPONSE = "CONNECTION_CHECK_RESPONSE"
+
+        fun connectionCheckIntent() : Intent {
+            return Intent(CONNECTION_CHECK_RESPONSE)
+        }
+
         fun intent(requestType: RequestType) : Intent {
             val intent = Intent()
             intent.component = ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
@@ -97,15 +102,16 @@ class HackdayLightsBackend : Service() {
             broadcastConnectionCheckResult(response.isSuccessful)
         } catch (e : Exception) {
             ERROR("Failed to connection check: $e")
+            broadcastConnectionCheckResult(false)
         }
         checkStopSelf()
     }
 
     private fun broadcastConnectionCheckResult(successful: Boolean) {
-        val intent = Intent(CONNECTION_CHECK_RESPONSE)
+        val intent = connectionCheckIntent()
         intent.putExtra(CONNECTION_CHECK_RESPONSE, successful)
         LocalBroadcastManager.getInstance(applicationContext)
-                .sendBroadcast(intent)
+                .sendBroadcastSync(intent)
     }
 
     private fun rainbowRequest(rpcFunction: String) {

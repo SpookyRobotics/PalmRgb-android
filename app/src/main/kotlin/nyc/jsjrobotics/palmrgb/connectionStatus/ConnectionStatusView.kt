@@ -21,9 +21,10 @@ class ConnectionStatusView @Inject constructor() {
 
     fun displayConnected(connected: Boolean) {
         if (connected) {
-            toolbar.title = rootXml.context.getString(R.string.disconnected)
-        } else {
             toolbar.title = rootXml.context.getString(R.string.connected)
+        } else {
+            toolbar.title = rootXml.context.getString(R.string.disconnected)
+
         }
     }
 
