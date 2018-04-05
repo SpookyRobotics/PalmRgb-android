@@ -22,8 +22,8 @@ class PresenterManager {
     }
 
     fun subscribeToPresenter(presenter: DefaultPresenter, fragment : Fragment) {
-        val activityAction = presenter.activityNeeded().subscribe { it.accept(fragment.activity as IDefaultActivity) }
-        val fragmentAction = presenter.fragmentNeeded().subscribe { it.accept(fragment as IDefaultFragment) }
+        val activityAction = presenter.activityNeeded().subscribe { it.invoke(fragment.activity as IDefaultActivity) }
+        val fragmentAction = presenter.fragmentNeeded().subscribe { it.invoke(fragment as IDefaultFragment) }
         disposables.addAll(activityAction, fragmentAction)
     }
 

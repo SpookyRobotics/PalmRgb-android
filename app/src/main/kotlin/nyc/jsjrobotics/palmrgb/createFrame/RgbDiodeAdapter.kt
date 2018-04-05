@@ -21,7 +21,7 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
         } else {
             view = parent.inflate(R.layout.single_diode) as RgbDiode
             view.id = View.generateViewId()
-            view.colorStateList = createFrameModel.colorStateList
+            view.colorStateList = createFrameModel.displayedPalette.colors
             view.subscribeOnColorChanged { saveViewColor(view) }
         }
 

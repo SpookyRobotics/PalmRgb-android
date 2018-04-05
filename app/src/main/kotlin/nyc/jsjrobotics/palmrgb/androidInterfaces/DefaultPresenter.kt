@@ -7,9 +7,9 @@ import io.reactivex.subjects.PublishSubject
 
 abstract class DefaultPresenter : LifecycleObserver {
     // Only presenters should call on next to send requests for activity / fragment
-    protected val activityNeeded: PublishSubject<Consumer<IDefaultActivity>> = PublishSubject.create()
-    protected val fragmentNeeded: PublishSubject<Consumer<IDefaultFragment>> = PublishSubject.create()
+    protected val activityNeeded: PublishSubject<(IDefaultActivity) -> Unit> = PublishSubject.create()
+    protected val fragmentNeeded: PublishSubject<(IDefaultFragment) -> Unit> = PublishSubject.create()
 
-    fun activityNeeded() : Observable<Consumer<IDefaultActivity>> = activityNeeded
-    fun fragmentNeeded(): Observable<Consumer<IDefaultFragment>> = fragmentNeeded
+    fun activityNeeded() : Observable<(IDefaultActivity) -> Unit> = activityNeeded
+    fun fragmentNeeded(): Observable<(IDefaultFragment) -> Unit> = fragmentNeeded
 }

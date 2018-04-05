@@ -6,6 +6,7 @@ import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
+import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
@@ -28,14 +29,13 @@ abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
         super.onCreate(savedInstanceState)
     }
 
-
     override fun onDestroy() {
         disposables.clear()
         super.onDestroy()
 
     }
 
-    open fun showFragment(fragmentToShow: FragmentId, fragmentArguments : Bundle? = null) {
+    override fun showFragment(fragmentToShow: FragmentId, fragmentArguments : Bundle?) {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         var fragmentDisplayed: Fragment? = supportFragmentManager.findFragmentByTag(fragmentToShow.tag)
         if (fragmentDisplayed == null) {
@@ -49,6 +49,11 @@ abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
                 .forEach { transaction.hide(it) }
 
         transaction.commit()
+    }
+
+    override fun showNavigationBar(show: Boolean) {
+        val visibility = if (show) View.VISIBLE else View.GONE
+        findViewById<View>(R.id.bottomNavigationView)?.visibility = visibility
     }
 
     protected fun selectBottonNavigationItemId(itemId: Int): Boolean {

@@ -9,7 +9,7 @@ import dagger.multibindings.IntoMap
 import nyc.jsjrobotics.palmrgb.connectionStatus.ConnectionStatusFragment
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.dialogs.changeDisplay.ChangeDisplayDialog
-import nyc.jsjrobotics.palmrgb.dialogs.SelectPaletteDialog
+import nyc.jsjrobotics.palmrgb.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.dialogs.saveFrame.SaveRgbFrameDialog
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.*
 import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment

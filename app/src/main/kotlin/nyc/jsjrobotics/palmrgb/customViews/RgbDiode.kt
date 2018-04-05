@@ -30,7 +30,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     var indexInMatrix: Int = -1
     var colorStateList: MutableList<Int> = mutableListOf()
 
-    // Overriden setter to guarantee value stays between 0 and colorStateList.size
+    // Overriden setter to guarantee value stays between 0 and displayedPalette.size
     var currentColorIndex = 0 ; private set(value) {
         if (value >= colorStateList.size) {
             field = 0

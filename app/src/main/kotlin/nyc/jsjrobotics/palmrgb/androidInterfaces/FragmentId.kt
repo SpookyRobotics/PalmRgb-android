@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import nyc.jsjrobotics.palmrgb.BuildConfig
 import nyc.jsjrobotics.palmrgb.connectionStatus.ConnectionStatusFragment
+import nyc.jsjrobotics.palmrgb.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment
 import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
@@ -30,6 +31,10 @@ enum class FragmentId(
     CONNECTION_STATUS(
             ConnectionStatusFragment.TAG,
             { addArgments(ConnectionStatusFragment(), it) }
+    ),
+    CREATE_COLOR(
+        CreateColorFragment.TAG,
+        { addArgments(CreateColorFragment(), it)}
     );
 
     companion object {

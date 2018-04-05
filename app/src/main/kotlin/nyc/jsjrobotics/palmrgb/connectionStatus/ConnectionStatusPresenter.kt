@@ -43,10 +43,10 @@ class ConnectionStatusPresenter @Inject constructor() : DefaultPresenter() {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun registerUpdateConnectionReceiver() {
-        activityNeeded.onNext(Consumer { activity ->
+        activityNeeded.onNext{activity ->
             val intentFilter = IntentFilter(HackdayLightsBackend.CONNECTION_CHECK_RESPONSE)
             LocalBroadcastManager.getInstance(activity.applicationContext()).registerReceiver(updateConnectionStatus, intentFilter)
-        })
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -59,9 +59,9 @@ class ConnectionStatusPresenter @Inject constructor() : DefaultPresenter() {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun unregisterUpdateConnectionReceiver() {
-        activityNeeded.onNext(Consumer { activity ->
+        activityNeeded.onNext{activity ->
             LocalBroadcastManager.getInstance(activity.applicationContext()).unregisterReceiver(updateConnectionStatus)
-        })
+        }
     }
 
 }

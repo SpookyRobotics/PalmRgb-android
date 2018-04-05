@@ -1,10 +1,14 @@
-package nyc.jsjrobotics.palmrgb.dialogs
+package nyc.jsjrobotics.palmrgb.dialogs.selectPalette
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import nyc.jsjrobotics.palmrgb.PaletteOptions
 import nyc.jsjrobotics.palmrgb.R
+import nyc.jsjrobotics.palmrgb.dataStructures.Palette
+import nyc.jsjrobotics.palmrgb.dialogs.DialogFragmentWithPresenter
+import javax.inject.Inject
 
 class SelectPaletteDialog : DialogFragmentWithPresenter() {
     companion object {
@@ -12,6 +16,12 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
     }
 
     override fun tag(): String = TAG
+
+    @Inject
+    lateinit var model : SelectPaletteModel
+
+    @Inject
+    lateinit var paletteOptions : PaletteOptions
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = activity!!.layoutInflater
@@ -34,12 +44,14 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
 
     private fun buildNeutralButtonHandler(): DialogInterface.OnClickListener? {
         return DialogInterface.OnClickListener { dialog, id ->
+            model.selectCreatePalette()
             dialog.dismiss()
         }
     }
 
     private fun buildPositiveButtonHandler(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialog, id ->
+            model.selectPalette(Palette("test", listOf(0x555555)))
             dialog.dismiss()
         }
     }

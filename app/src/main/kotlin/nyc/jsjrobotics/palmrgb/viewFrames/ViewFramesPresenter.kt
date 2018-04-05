@@ -47,7 +47,7 @@ class ViewFramesPresenter @Inject constructor(val appDatabase: AppDatabase): Def
     }
 
     private fun frameSelected(frameId: Long) {
-        activityNeeded.onNext( Consumer { activity ->
+        activityNeeded.onNext( { activity ->
             val fragmentManager = activity.getActivity().supportFragmentManager
             val fragmentId = FragmentId.RGB_FRAME_DIALOG_FRAGMENT
             val arguments = RgbFrameDialogFragment.buildArguments(frameId)
@@ -58,17 +58,17 @@ class ViewFramesPresenter @Inject constructor(val appDatabase: AppDatabase): Def
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun registerUpdateViewFramesReceiver() {
-        activityNeeded.onNext(Consumer { activity ->
+        activityNeeded.onNext{activity ->
             val intentFilter = IntentFilter(UPDATE_VIEW_FRAMES)
             LocalBroadcastManager.getInstance(activity.applicationContext()).registerReceiver(updateViewFramesReceiver, intentFilter)
-        })
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun unregisterUpdateViewFramesReceiver() {
-        activityNeeded.onNext(Consumer { activity ->
+        activityNeeded.onNext{activity ->
             LocalBroadcastManager.getInstance(activity.applicationContext()).unregisterReceiver(updateViewFramesReceiver)
-        })
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
