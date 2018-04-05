@@ -9,7 +9,7 @@ import nyc.jsjrobotics.palmrgb.Application
 /***
  * A fragment that injects dependencies before onCreate
  */
-abstract class DefaultFragment : Fragment() {
+abstract class DefaultFragment : Fragment(), IDefaultFragment {
 
     private val hiddenChanged : PublishSubject<Boolean> = PublishSubject.create()
     val onHiddenChanged : Observable<Boolean> = hiddenChanged
@@ -23,6 +23,8 @@ abstract class DefaultFragment : Fragment() {
         super.onHiddenChanged(hidden)
         hiddenChanged.onNext(hidden)
     }
+
+    override fun fragment() = this
 
 
 }

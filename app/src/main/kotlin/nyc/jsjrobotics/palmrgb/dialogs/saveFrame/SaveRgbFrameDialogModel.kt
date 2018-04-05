@@ -1,12 +1,14 @@
-package nyc.jsjrobotics.palmrgb.createFrame
+package nyc.jsjrobotics.palmrgb.dialogs.saveFrame
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Singleton
 
-class CreateFrameDialogModel {
+@Singleton
+class SaveRgbFrameDialogModel private constructor(){
     companion object {
-        private val instance: CreateFrameDialogModel = CreateFrameDialogModel()
-        fun instance() : CreateFrameDialogModel {
+        private val instance: SaveRgbFrameDialogModel = SaveRgbFrameDialogModel()
+        fun instance() : SaveRgbFrameDialogModel {
             return instance
         }
     }

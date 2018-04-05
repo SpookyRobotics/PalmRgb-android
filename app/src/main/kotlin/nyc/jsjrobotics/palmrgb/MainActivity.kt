@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.view.MenuItem
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultActivity
-import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentId
 
 
 class MainActivity : DefaultActivity(), BottomNavigationView.OnNavigationItemSelectedListener  {

@@ -2,15 +2,17 @@ package nyc.jsjrobotics.palmrgb.injection
 
 import dagger.Module
 import dagger.Provides
-import nyc.jsjrobotics.palmrgb.Application
-import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameDialogModel
-import nyc.jsjrobotics.palmrgb.database.AppDatabase
+import nyc.jsjrobotics.palmrgb.dialogs.changeDisplay.ChangeDisplayDialogModel
+import nyc.jsjrobotics.palmrgb.dialogs.saveFrame.SaveRgbFrameDialogModel
 
 
 @Module
 class ModelModule {
     @Provides
-    internal fun provideCreateFrameModel() : CreateFrameDialogModel = CreateFrameDialogModel.instance()
+    internal fun provideCreateFrameModel() : SaveRgbFrameDialogModel = SaveRgbFrameDialogModel.instance()
+
+    @Provides
+    internal fun provideChangeDisplayDialogModel() : ChangeDisplayDialogModel = ChangeDisplayDialogModel.instance()
 
 
 }

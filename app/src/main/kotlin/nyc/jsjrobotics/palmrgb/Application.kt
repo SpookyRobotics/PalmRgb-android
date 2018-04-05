@@ -4,7 +4,10 @@ import android.app.Activity
 import android.app.Service
 import android.arch.persistence.room.Room
 import android.support.v4.app.Fragment
-import dagger.android.*
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import dagger.android.HasServiceInjector
 import dagger.android.support.HasSupportFragmentInjector
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.injection.ApplicationComponent

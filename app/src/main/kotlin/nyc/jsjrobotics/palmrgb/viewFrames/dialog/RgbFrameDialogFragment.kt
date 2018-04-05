@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import nyc.jsjrobotics.palmrgb.dialogs.DialogFragmentWithPresenter
 import javax.inject.Inject
 
 
@@ -26,6 +27,8 @@ class RgbFrameDialogFragment() : DialogFragmentWithPresenter() {
 
         val TAG: String = "RECIPE_DIALOG_FRAGMENT"
     }
+
+    override fun tag(): String = TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

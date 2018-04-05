@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.viewFrames.dialog
+package nyc.jsjrobotics.palmrgb.dialogs
 
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.androidInterfaces.HasPresenter

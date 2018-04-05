@@ -1,9 +1,8 @@
-package nyc.jsjrobotics.palmrgb.viewFrames.dialog
+package nyc.jsjrobotics.palmrgb.dialogs
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultFragment
 

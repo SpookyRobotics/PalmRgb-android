@@ -12,5 +12,13 @@
   <string name="disconnected">Disconnected</string>
   <string name="connection_status">Connection Status</string>
   <string name="connected">Connected</string>
+  <string name="select_palette">Select Palette</string>
+  <string name="create_palette">Create Palette</string>
+  <string name="select_a_palette">Select a color palette</string>
+  <string name="select">Select</string>
+  <string name="change_display">Change Display</string>
+  <string name="select_rgb_display">Select RGB Display</string>
+  <string name="sixty_four_diodes">64 diodes</string>
+  <string name="thirty_two_diodes">32 Diodes</string>
 
 </resources>

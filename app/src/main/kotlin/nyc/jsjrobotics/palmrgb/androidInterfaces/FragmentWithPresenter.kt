@@ -14,6 +14,9 @@ abstract class FragmentWithPresenter : DefaultFragment(), HasPresenter {
 
     override fun subscribeToPresenter(presenter: DefaultPresenter) = presenterManager.subscribeToPresenter(presenter, this)
 
+    override fun finish() {
+        activity?.finish()
+    }
 
     override fun onDestroy() {
         presenterManager.onDestroy()

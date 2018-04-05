@@ -4,4 +4,5 @@ import android.support.v4.app.Fragment
 interface IDefaultFragment {
     fun fragment() : Fragment
     fun finish()
+    fun tag() : String
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentWithPresenter
+import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
 import javax.inject.Inject
 
 
@@ -19,6 +20,8 @@ class ConnectionStatusFragment : FragmentWithPresenter() {
 
     @Inject
     lateinit var presenter : ConnectionStatusPresenter
+
+    override fun tag(): String = CreateFrameFragment.TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

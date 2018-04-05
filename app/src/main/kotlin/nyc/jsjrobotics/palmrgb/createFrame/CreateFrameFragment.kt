@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultFragment
 import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentWithPresenter
 import javax.inject.Inject
 
@@ -20,6 +19,8 @@ class CreateFrameFragment : FragmentWithPresenter() {
 
     @Inject
     lateinit var presenter: CreateFramePresenter
+
+    override fun tag(): String = TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

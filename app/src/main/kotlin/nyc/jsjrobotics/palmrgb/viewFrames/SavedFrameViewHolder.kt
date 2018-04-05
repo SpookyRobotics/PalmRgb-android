@@ -5,8 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.TextView
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
