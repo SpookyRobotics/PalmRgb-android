@@ -75,7 +75,7 @@ class ViewFramesPresenter @Inject constructor(val appDatabase: AppDatabase): Def
     fun refreshView() {
         executeInThread {
             val savedFrames = appDatabase.rgbFramesDao().getAll()
-            runOnMainThread ( Runnable{  view.setData(savedFrames) } )
+            runOnMainThread {  view.setData(savedFrames) }
 
         }
     }

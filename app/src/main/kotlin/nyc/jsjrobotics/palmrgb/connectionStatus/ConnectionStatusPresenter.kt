@@ -32,9 +32,9 @@ class ConnectionStatusPresenter @Inject constructor() : DefaultPresenter() {
         return object: BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 if (intent.hasExtra(HackdayLightsBackend.CONNECTION_CHECK_RESPONSE)) {
-                    runOnMainThread( Runnable {
+                    runOnMainThread {
                         view.displayConnected(intent.getBooleanExtra(HackdayLightsBackend.CONNECTION_CHECK_RESPONSE, false))
-                    })
+                    }
                 }
             }
 

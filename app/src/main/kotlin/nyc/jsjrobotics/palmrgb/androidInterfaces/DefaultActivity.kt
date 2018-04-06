@@ -11,6 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.SubActivityToolbar
+import javax.inject.Inject
 
 /**
  * Default Activity subscribes to abtest changes for recreate and
@@ -19,6 +20,9 @@ import nyc.jsjrobotics.palmrgb.customViews.SubActivityToolbar
 abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
+
+    @Inject
+    lateinit var navigationBarSettings : NavigationBarSettings
 
     override fun getActivity(): FragmentActivity = this
 
@@ -35,7 +39,7 @@ abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
 
     }
 
-    override fun showFragment(fragmentToShow: FragmentId, fragmentArguments : Bundle?) {
+    override fun showFragment(fragmentToShow: FragmentId, fragmentArguments : Bundle?, addToBackStack: String?) {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         var fragmentDisplayed: Fragment? = supportFragmentManager.findFragmentByTag(fragmentToShow.tag)
         if (fragmentDisplayed == null) {
@@ -46,9 +50,17 @@ abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
         }
         FragmentId.values().filter { it != fragmentToShow }
                 .mapNotNull { supportFragmentManager.findFragmentByTag(it.tag) }
+                .filter { it.isVisible }
                 .forEach { transaction.hide(it) }
 
+        if (addToBackStack != null) {
+            transaction.addToBackStack(addToBackStack)
+        }
         transaction.commit()
+
+        val hideNavigationBar = navigationBarSettings.HIDE_NAVIGATION_BAR
+                .contains(fragmentToShow)
+        showNavigationBar(!hideNavigationBar)
     }
 
     override fun showNavigationBar(show: Boolean) {

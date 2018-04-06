@@ -10,6 +10,6 @@ interface IDefaultActivity {
     fun getActivity(): FragmentActivity
     fun finish()
     fun startActivity(intent: Intent)
-    fun showFragment(fragmentToShow: FragmentId, fragmentArguments : Bundle? = null)
     fun showNavigationBar(show: Boolean)
+    fun showFragment(fragmentToShow: FragmentId, fragmentArguments : Bundle? = null, addToBackStack : String? = null)
 }

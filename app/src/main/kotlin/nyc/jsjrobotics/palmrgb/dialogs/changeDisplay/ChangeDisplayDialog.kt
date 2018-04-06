@@ -16,7 +16,7 @@ class ChangeDisplayDialog : DialogFragmentWithPresenter() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
-        builder.setMessage(R.string.select_rgb_display)
+        builder.setTitle(R.string.select_rgb_display)
                 .setPositiveButton(R.string.sixty_four_diodes, buildPositiveButtonHandler())
                 .setNegativeButton(R.string.thirty_two_diodes, buildNegativeButtonHandler())
         return builder.create()

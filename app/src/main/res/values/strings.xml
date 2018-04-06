@@ -20,5 +20,6 @@
   <string name="select_rgb_display">Select RGB Display</string>
   <string name="sixty_four_diodes">64 diodes</string>
   <string name="thirty_two_diodes">32 Diodes</string>
+    <string name="no_saved_color_palettes">No Saved Color Palettes</string>
 
 </resources>

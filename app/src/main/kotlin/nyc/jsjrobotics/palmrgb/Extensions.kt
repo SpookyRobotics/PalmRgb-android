@@ -24,6 +24,6 @@ fun executeInThread(function: () -> Unit) {
     Thread({ function() }).start()
 }
 
-fun runOnMainThread(runnable: Runnable) {
+fun runOnMainThread(runnable: () -> Unit) {
     Handler(Looper.getMainLooper()).post(runnable)
 }

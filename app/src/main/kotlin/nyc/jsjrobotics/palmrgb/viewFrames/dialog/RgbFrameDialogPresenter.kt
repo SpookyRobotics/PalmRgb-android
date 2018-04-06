@@ -29,7 +29,7 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
                 fragmentNeeded.onNext{it.finish() }
                 return@executeInThread
             }
-            runOnMainThread( Runnable { view.setData(frame) } )
+            runOnMainThread { view.setData(frame) }
         }
 
         val onDisplayDisposable = view.onDisplayFrameClicked.subscribe {
@@ -46,7 +46,7 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
         executeInThread {
             appDatabase.rgbFramesDao().delete(frame)
 
-            fragmentNeeded.onNext{fragment ->
+            fragmentNeeded.onNext{ fragment ->
                 sendBroadcast(fragment.fragment().activity!!)
                 fragment.finish()
             }

@@ -34,8 +34,7 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         }
         val createPaletteClicked = selectPaletteModel.onCreatePaletteSelected.subscribe {
             activityNeeded.onNext { activity ->
-                activity.showNavigationBar(false)
-                activity.showFragment(FragmentId.CREATE_COLOR)
+                activity.showFragment(FragmentId.CREATE_COLOR, addToBackStack = FragmentId.CREATE_COLOR.tag)
             }
         }
         val selectPaletteClicked = view.onSelectPaletteClicked.subscribe {
