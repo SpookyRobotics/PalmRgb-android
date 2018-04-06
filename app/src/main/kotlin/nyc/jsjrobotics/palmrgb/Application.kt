@@ -13,7 +13,7 @@ import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.injection.ApplicationComponent
 import nyc.jsjrobotics.palmrgb.injection.ApplicationModule
 import nyc.jsjrobotics.palmrgb.injection.DaggerApplicationComponent
-import nyc.jsjrobotics.palmrgb.viewFrames.SavedFrameViewHolder
+import nyc.jsjrobotics.palmrgb.fragments.viewFrames.SavedFrameViewHolder
 import javax.inject.Inject
 
 

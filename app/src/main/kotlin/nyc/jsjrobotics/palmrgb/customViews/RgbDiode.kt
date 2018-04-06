@@ -30,7 +30,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     var indexInMatrix: Int = -1
     var colorStateList: MutableList<Int> = mutableListOf()
 
-    // Overriden setter to guarantee value stays between 0 and displayedPalette.size
+    // Overridd en setter to guarantee value stays between 0 and displayedPalette.size
     var currentColorIndex = 0 ; private set(value) {
         if (value >= colorStateList.size) {
             field = 0
@@ -84,6 +84,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     }
 
     fun displayNextColor() {
+        if (colorStateList.isEmpty()) {
+            return
+        }
         currentColorIndex += 1
         colorStateList.filterIndexed { index, color -> index == currentColorIndex }
                 .firstOrNull()

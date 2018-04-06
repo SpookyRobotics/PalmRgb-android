@@ -2,8 +2,8 @@ package nyc.jsjrobotics.palmrgb.injection
 
 import dagger.Module
 import dagger.Provides
-import nyc.jsjrobotics.palmrgb.dialogs.changeDisplay.ChangeDisplayDialogModel
-import nyc.jsjrobotics.palmrgb.dialogs.saveFrame.SaveRgbFrameDialogModel
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialogModel
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialogModel
 
 
 @Module

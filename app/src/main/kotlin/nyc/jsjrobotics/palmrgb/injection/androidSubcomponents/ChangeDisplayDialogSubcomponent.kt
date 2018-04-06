@@ -2,7 +2,7 @@ package nyc.jsjrobotics.palmrgb.injection.androidSubcomponents
 
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
-import nyc.jsjrobotics.palmrgb.dialogs.changeDisplay.ChangeDisplayDialog
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
 
 @Subcomponent
 interface ChangeDisplayDialogSubcomponent : AndroidInjector<ChangeDisplayDialog> {

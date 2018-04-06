@@ -2,8 +2,7 @@ package nyc.jsjrobotics.palmrgb.injection.androidSubcomponents
 
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
-import nyc.jsjrobotics.palmrgb.createColor.CreateColorFragment
-import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
+import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 
 @Subcomponent
 interface CreateColorFragmentSubcomponent : AndroidInjector<CreateColorFragment> {

@@ -3,7 +3,7 @@ package nyc.jsjrobotics.palmrgb.injection
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import nyc.jsjrobotics.palmrgb.Application
-import nyc.jsjrobotics.palmrgb.viewFrames.SavedFrameViewHolder
+import nyc.jsjrobotics.palmrgb.fragments.viewFrames.SavedFrameViewHolder
 import javax.inject.Singleton
 
 @Singleton

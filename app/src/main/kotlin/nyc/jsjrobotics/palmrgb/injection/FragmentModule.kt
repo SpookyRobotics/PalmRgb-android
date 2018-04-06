@@ -6,15 +6,16 @@ import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
-import nyc.jsjrobotics.palmrgb.connectionStatus.ConnectionStatusFragment
-import nyc.jsjrobotics.palmrgb.createColor.CreateColorFragment
-import nyc.jsjrobotics.palmrgb.createFrame.CreateFrameFragment
-import nyc.jsjrobotics.palmrgb.dialogs.changeDisplay.ChangeDisplayDialog
-import nyc.jsjrobotics.palmrgb.dialogs.selectPalette.SelectPaletteDialog
-import nyc.jsjrobotics.palmrgb.dialogs.saveFrame.SaveRgbFrameDialog
+import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusFragment
+import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
+import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameFragment
+import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialog
 import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.*
-import nyc.jsjrobotics.palmrgb.viewFrames.ViewFramesFragment
-import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
+import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesFragment
+import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragment
 
 @Module(subcomponents = arrayOf(
         CreateFrameFragmentSubcomponent::class,
@@ -24,7 +25,8 @@ import nyc.jsjrobotics.palmrgb.viewFrames.dialog.RgbFrameDialogFragment
         SaveRgbFrameDialogSubcomponent::class,
         SelectPaletteDialogSubcomponent::class,
         ChangeDisplayDialogSubcomponent::class,
-        CreateColorFragmentSubcomponent::class
+        CreateColorFragmentSubcomponent::class,
+        CreatePaletteFragmentSubcomponent::class
 ))
 internal abstract class FragmentModule {
     @Binds
@@ -66,5 +68,10 @@ internal abstract class FragmentModule {
     @IntoMap
     @FragmentKey(CreateColorFragment::class)
     internal abstract fun bindCreateColorFragmentInjectorFactory(builder: CreateColorFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
+
+    @Binds
+    @IntoMap
+    @FragmentKey(CreatePaletteFragment::class)
+    internal abstract fun bindCreatePaletteFragmentInjectorFactory(builder: CreatePaletteFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
 
 }
