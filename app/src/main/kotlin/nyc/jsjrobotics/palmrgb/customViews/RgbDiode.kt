@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.annotation.IntRange
 import android.util.AttributeSet
 import android.view.View
 import io.reactivex.Observable
@@ -162,6 +163,33 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
 
     fun clearSubscriptions() {
         disposables.clear()
+    }
+
+    fun setGreenComponent(@IntRange(from = 0, to = 255) green: Int) {
+        val currentColor = rgbPaint.color
+        val alpha = Color.alpha(currentColor)
+        val red = Color.red(currentColor)
+        val blue = Color.blue(currentColor)
+        rgbPaint.color = Color.argb(alpha, red, green, blue)
+        invalidate()
+    }
+
+    fun setRedComponent(@IntRange(from = 0, to = 255) red: Int) {
+        val currentColor = rgbPaint.color
+        val alpha = Color.alpha(currentColor)
+        val green = Color.green(currentColor)
+        val blue = Color.blue(currentColor)
+        rgbPaint.color = Color.argb(alpha, red, green, blue)
+        invalidate()
+    }
+
+    fun setBlueComponent(@IntRange(from = 0, to = 255) blue: Int) {
+        val currentColor = rgbPaint.color
+        val alpha = Color.alpha(currentColor)
+        val red = Color.red(currentColor)
+        val green = Color.green(currentColor)
+        rgbPaint.color = Color.argb(alpha, red, green, blue)
+        invalidate()
     }
 
 }

@@ -7,7 +7,6 @@ import dagger.android.AndroidInjector
 import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusFragment
-import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
@@ -25,7 +24,6 @@ import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragmen
         SaveRgbFrameDialogSubcomponent::class,
         SelectPaletteDialogSubcomponent::class,
         ChangeDisplayDialogSubcomponent::class,
-        CreateColorFragmentSubcomponent::class,
         CreatePaletteFragmentSubcomponent::class
 ))
 internal abstract class FragmentModule {
@@ -63,11 +61,6 @@ internal abstract class FragmentModule {
     @IntoMap
     @FragmentKey(ConnectionStatusFragment::class)
     internal abstract fun bindConnectionStatusFragmentInjectorFactory(builder: ConnectionStatusFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
-
-    @Binds
-    @IntoMap
-    @FragmentKey(CreateColorFragment::class)
-    internal abstract fun bindCreateColorFragmentInjectorFactory(builder: CreateColorFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
 
     @Binds
     @IntoMap

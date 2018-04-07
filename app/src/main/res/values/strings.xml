@@ -20,9 +20,12 @@
   <string name="select_rgb_display">Select RGB Display</string>
   <string name="sixty_four_diodes">64 diodes</string>
   <string name="thirty_two_diodes">32 Diodes</string>
-    <string name="no_saved_color_palettes">No Saved Color Palettes</string>
-    <string name="create_color">Create Color</string>
-    <string name="add_color_message">Add a color from below</string>
-    <string name="choose_color_message">Choose from standard colors or create your own</string>
+  <string name="no_saved_color_palettes">No Saved Color Palettes</string>
+  <string name="create_color">Create Color</string>
+  <string name="add_color_message">Add a color from below</string>
+  <string name="choose_color_message">Choose from standard colors or create your own</string>
+  <string name="red">Red</string>
+  <string name="blue">Blue</string>
+  <string name="green">Green</string>
 
 </resources>
