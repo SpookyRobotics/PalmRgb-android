@@ -27,4 +27,12 @@
     <item name="android:elevation">4dp</item>
     <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
   </style>
+
+  <style name="Divider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">@dimen/divider_height</item>
+    <item name="android:background">@color/black</item>
+    <item name="android:layout_marginLeft">@dimen/large_margin</item>
+    <item name="android:layout_marginRight">@dimen/large_margin</item>
+  </style>
 </resources>

@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.fragments
+package nyc.jsjrobotics.palmrgb.customViews
 
 import android.app.Activity
 import android.content.Context

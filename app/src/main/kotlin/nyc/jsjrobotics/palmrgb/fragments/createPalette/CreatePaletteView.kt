@@ -14,18 +14,13 @@ import javax.inject.Inject
 class CreatePaletteView @Inject constructor(){
     lateinit var rootXml: View
 
-    private val greenValueChanged: PublishSubject<Int> = PublishSubject.create()
-    private val redValueChanged: PublishSubject<Int> = PublishSubject.create()
-    private val blueValueChanged: PublishSubject<Int> = PublishSubject.create()
-
-    val onGreenValueChanged: Observable<Int> = greenValueChanged
-    val onBlueValueChanged: Observable<Int> = blueValueChanged
-    val onRedValueChanged: Observable<Int> = redValueChanged
-
+    private lateinit var createColorSubview : CreateColorSubview
 
     fun initView(activity: Activity, container: ViewGroup, savedInstanceState: Bundle?) {
-        rootXml = container.inflate(R.layout.fragment_create_color)
+        rootXml = container.inflate(R.layout.fragment_create_palette)
         val toolbar : SubActivityToolbar = rootXml.findViewById(R.id.toolbar)
         toolbar.setNavigateUpActivity(activity)
+        val colorSubview = rootXml.findViewById<View>(R.id.create_color_subview)
+        createColorSubview = CreateColorSubview(colorSubview)
     }
 }

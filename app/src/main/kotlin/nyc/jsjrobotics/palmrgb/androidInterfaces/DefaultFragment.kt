@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.Application
-import java.net.IDN
+import nyc.jsjrobotics.palmrgb.fragments.NavigationBarSettings
 import javax.inject.Inject
 
 /***

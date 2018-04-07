@@ -11,6 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.SubActivityToolbar
+import nyc.jsjrobotics.palmrgb.fragments.NavigationBarSettings
 import javax.inject.Inject
 
 /**

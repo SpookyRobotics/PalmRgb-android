@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb
+package nyc.jsjrobotics.palmrgb.dataStructures
 
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette

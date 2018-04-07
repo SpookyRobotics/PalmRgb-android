@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import nyc.jsjrobotics.palmrgb.BuildConfig
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusFragment
-import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesFragment
@@ -36,10 +35,6 @@ enum class FragmentId(
     CREATE_PALETTE(
             CreatePaletteFragment.TAG,
             { addArgments(CreatePaletteFragment(), it)}
-    ),
-    CREATE_COLOR(
-        CreateColorFragment.TAG,
-        { addArgments(CreateColorFragment(), it)}
     );
 
     companion object {
