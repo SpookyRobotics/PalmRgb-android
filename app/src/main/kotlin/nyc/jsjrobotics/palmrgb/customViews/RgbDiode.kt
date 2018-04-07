@@ -105,7 +105,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     override fun onRestoreInstanceState(state: Parcelable?) {
         val bundle = state as Bundle
         super.onRestoreInstanceState(bundle.getParcelable("parent"))
-        currentColorIndex = bundle.getInt("colorIndex")
+        if (colorStateList.isNotEmpty()) {
+            currentColorIndex = bundle.getInt("colorIndex")
+        }
     }
 
     public override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
@@ -165,7 +167,8 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         disposables.clear()
     }
 
-    fun setGreenComponent(@IntRange(from = 0, to = 255) green: Int) {
+    fun setGreenComponent(nextGreen: Int) {
+        val green = safeRgb(nextGreen)
         val currentColor = rgbPaint.color
         val alpha = Color.alpha(currentColor)
         val red = Color.red(currentColor)
@@ -174,7 +177,8 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         invalidate()
     }
 
-    fun setRedComponent(@IntRange(from = 0, to = 255) red: Int) {
+    fun setRedComponent(nextRed: Int) {
+        val red = safeRgb(nextRed)
         val currentColor = rgbPaint.color
         val alpha = Color.alpha(currentColor)
         val green = Color.green(currentColor)
@@ -183,13 +187,23 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         invalidate()
     }
 
-    fun setBlueComponent(@IntRange(from = 0, to = 255) blue: Int) {
+    fun setBlueComponent(nextBlue: Int) {
+        val blue = safeRgb(nextBlue)
         val currentColor = rgbPaint.color
         val alpha = Color.alpha(currentColor)
         val red = Color.red(currentColor)
         val green = Color.green(currentColor)
         rgbPaint.color = Color.argb(alpha, red, green, blue)
         invalidate()
+    }
+
+    private fun safeRgb(value: Int): Int {
+        if (value < 0) {
+            return  0
+        } else if (value > 255) {
+            return 255
+        }
+        return value
     }
 
 }

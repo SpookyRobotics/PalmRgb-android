@@ -22,9 +22,14 @@ class CreatePaletteFragment : FragmentWithPresenter() {
 
     override fun tag(): String = TAG
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setPresenter(presenter)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.initView(activity as Activity, container!!, savedInstanceState)
-        presenter.init(view)
+        presenter.init(fragmentManager!!, view)
         return view.rootXml
     }
 }

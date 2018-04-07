@@ -20,7 +20,8 @@ class CreatePaletteView @Inject constructor(){
         rootXml = container.inflate(R.layout.fragment_create_palette)
         val toolbar : SubActivityToolbar = rootXml.findViewById(R.id.toolbar)
         toolbar.setNavigateUpActivity(activity)
-        val colorSubview = rootXml.findViewById<View>(R.id.create_color_subview)
-        createColorSubview = CreateColorSubview(colorSubview)
+        createColorSubview = CreateColorSubview(rootXml)
     }
+
+    fun createColorSelected() : Observable<Boolean> = createColorSubview.onCreateColorSelected
 }
