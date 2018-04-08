@@ -1,5 +1,7 @@
 package nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.support.v4.content.LocalBroadcastManager
 import io.reactivex.disposables.CompositeDisposable
@@ -39,6 +41,11 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
 
 
         disposables.addAll(onDeleteDisposable, onDisplayDisposable)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun unsubscribe() {
+        disposables.clear()
     }
 
     private fun deleteFrame(frame: MutableRgbFrame) {

@@ -15,13 +15,16 @@ class CreatePaletteView @Inject constructor(){
     lateinit var rootXml: View
 
     private lateinit var createColorSubview : CreateColorSubview
+    private lateinit var chooseColorSubview : ChooseColorSubview
 
     fun initView(activity: Activity, container: ViewGroup, savedInstanceState: Bundle?) {
         rootXml = container.inflate(R.layout.fragment_create_palette)
         val toolbar : SubActivityToolbar = rootXml.findViewById(R.id.toolbar)
         toolbar.setNavigateUpActivity(activity)
         createColorSubview = CreateColorSubview(rootXml)
+        chooseColorSubview = ChooseColorSubview(rootXml)
     }
 
-    fun createColorSelected() : Observable<Boolean> = createColorSubview.onCreateColorSelected
+    fun createColorSelected(): Observable<Boolean> = createColorSubview.onCreateColorSelected
+    fun getCreateColorInput(): Int = createColorSubview.getCreateColorInput()
 }

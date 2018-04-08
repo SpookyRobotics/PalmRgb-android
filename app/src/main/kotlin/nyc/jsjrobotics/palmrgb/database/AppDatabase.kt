@@ -6,7 +6,10 @@ import android.arch.persistence.room.TypeConverters
 
 
 @Database(
-        entities = arrayOf(MutableRgbFrame::class),
+        entities = arrayOf(
+                MutableRgbFrame::class,
+                MutableColorOption::class
+        ),
         version = 1
 )
 
@@ -19,8 +22,13 @@ abstract class AppDatabase : RoomDatabase() {
         const val FRAME_NAME_COLUMN = "frame_name"
         const val COLOR_LIST_COLUMN = "color_list"
         const val FRAME_ID_COLUMN = "frame_id"
+        const val SAVED_COLORS_TABLE_NAME = "savedColors"
+        const val COLOR_NAME_COLUMN = "color_name"
+        const val COLOR_VALUE_COLUMN = "color_value"
     }
 
     abstract fun rgbFramesDao(): RgbFramesDao
+
+    abstract fun savedColorsDao() : SavedColorsDao
 
 }

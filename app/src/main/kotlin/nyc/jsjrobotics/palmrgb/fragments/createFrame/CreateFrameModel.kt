@@ -28,6 +28,7 @@ class CreateFrameModel @Inject constructor(val application: Application){
         val data = ArrayList<Int>()
         data.addAll(displayedColors)
         val intent = Intent(application, PalmRgbBackground::class.java)
+        intent.putExtra(PalmRgbBackground.EXTRA_FUNCTION, PalmRgbBackground.FUNCTION_SAVE_RGB_FRAME)
         intent.putIntegerArrayListExtra(PalmRgbBackground.EXTRA_RGB_MATRIX, data)
         intent.putExtra(PalmRgbBackground.EXTRA_TITLE, frameTitle)
         application.startService(intent)

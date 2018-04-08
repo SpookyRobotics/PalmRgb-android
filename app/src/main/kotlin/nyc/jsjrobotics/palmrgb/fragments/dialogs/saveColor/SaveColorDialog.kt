@@ -5,8 +5,13 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.Toast
 import nyc.jsjrobotics.palmrgb.R
+import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
+import nyc.jsjrobotics.palmrgb.database.AppDatabase
+import nyc.jsjrobotics.palmrgb.executeInThread
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
+import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
 
 class SaveColorDialog : DialogFragmentWithPresenter() {
@@ -16,6 +21,10 @@ class SaveColorDialog : DialogFragmentWithPresenter() {
 
     @Inject
     lateinit var model: SaveColorDialogModel
+
+    @Inject
+    lateinit var appDatabase: AppDatabase
+
     private lateinit var displayedDialog : AlertDialog
 
     override fun tag(): String = TAG
@@ -43,8 +52,22 @@ class SaveColorDialog : DialogFragmentWithPresenter() {
 
     private fun buildPositiveButtonHandler(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialog, id ->
-            model.requestSaveCurrentFrame(getTitle())
-            dialog.dismiss()
+            executeInThread {
+                val alreadyExistingTitles = appDatabase.savedColorsDao().getAll().map { it.title }
+                val title = getTitle()
+                if (alreadyExistingTitles.contains(title)) {
+                    displayAlreadyExistsError()
+                    return@executeInThread
+                }
+                model.requestSaveColorOption(getTitle())
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun displayAlreadyExistsError() {
+        runOnMainThread {
+            Toast.makeText(context, R.string.color_name_already_exists, Toast.LENGTH_SHORT).show()
         }
     }
 

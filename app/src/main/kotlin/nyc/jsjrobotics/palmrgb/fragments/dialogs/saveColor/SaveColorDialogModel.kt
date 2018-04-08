@@ -16,7 +16,9 @@ class SaveColorDialogModel private constructor(){
     private val saveColor : PublishSubject<String> = PublishSubject.create()
     val onSaveColorRequested : Observable<String> = saveColor
 
-    fun requestSaveCurrentFrame(title: String) {
+    var colorToSave : Int? = null
+
+    fun requestSaveColorOption(title: String) {
         saveColor.onNext(title)
     }
 }

@@ -143,9 +143,8 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         canvas.drawRect(rectangle, blackOutlinePaint)
     }
 
-    fun currentColor(): Int {
-        return colorStateList[currentColorIndex]
-    }
+    fun currentColor(): Int = rgbPaint.color
+
 
     fun setCurrentColor(nextColor: Int) {
         val colorIndex = colorStateList.indexOf(nextColor)

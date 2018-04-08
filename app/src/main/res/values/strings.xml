@@ -29,5 +29,7 @@
   <string name="green">Green</string>
   <string name="enter_color_name">Enter a name for this color</string>
   <string name="color_name">Color Name</string>
+    <string name="color_name_already_exists">A color with that name already exists</string>
+  <string name="added_color">Added Color %s</string>
 
 </resources>

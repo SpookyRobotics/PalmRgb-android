@@ -76,4 +76,6 @@ class CreateColorSubview(val rootXml: View) {
         }
     }
 
+    fun getCreateColorInput(): Int = rgbDiode.currentColor()
+
 }
