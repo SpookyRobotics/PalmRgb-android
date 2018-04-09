@@ -40,27 +40,23 @@ class SavedColorsModel @Inject constructor(val appDatabase: AppDatabase){
         }
     }
 
-    fun loadStandardColors(): Single<List<ColorOption>> {
-        return Single.create<List<ColorOption>> { emitter ->
-            val context = Application.instance()
-            val colorList = listOf(
-                    Pair(R.string.red, R.color.red),
-                    Pair(R.string.green, R.color.green),
-                    Pair(R.string.blue, R.color.blue),
-                    Pair(R.string.black, R.color.black),
-                    Pair(R.string.yellow, R.color.yellow),
-                    Pair(R.string.white, R.color.white)
+    fun standardColors(): List<ColorOption> {
+        val context = Application.instance()
+        val colorList = listOf(
+                Pair(R.string.black, R.color.black),
+                Pair(R.string.red, R.color.red),
+                Pair(R.string.green, R.color.green),
+                Pair(R.string.blue, R.color.blue),
+                Pair(R.string.yellow, R.color.yellow),
+                Pair(R.string.white, R.color.white)
+        )
+        val standardColors = colorList.map {
+            ColorOption(
+                    context.getString(it.first),
+                    context.getColor(it.second)
             )
-            val standardColors = colorList.map {
-                ColorOption(
-                        context.getString(it.first),
-                        context.getColor(it.second)
-                )
-            }
-            runOnMainThread {
-                emitter.onSuccess(standardColors)
-            }
         }
+        return standardColors
     }
 
 }

@@ -38,7 +38,6 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
         val view = inflater.inflate(R.layout.dialog_select_palette, null)
         builder.setView(view)
                 .setTitle(R.string.select_a_palette)
-                .setNeutralButton(R.string.create_palette, buildNeutralButtonHandler())
                 .setNegativeButton(R.string.cancel, buildNegativeButtonHandler())
 
         spinner = view.findViewById(R.id.palette_options)
@@ -65,13 +64,6 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
 
     private fun buildNegativeButtonHandler(): DialogInterface.OnClickListener? {
         return DialogInterface.OnClickListener { dialog, id ->
-            dialog.dismiss()
-        }
-    }
-
-    private fun buildNeutralButtonHandler(): DialogInterface.OnClickListener? {
-        return DialogInterface.OnClickListener { dialog, id ->
-            model.selectCreatePalette()
             dialog.dismiss()
         }
     }

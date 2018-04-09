@@ -11,15 +11,9 @@ class SelectPaletteModel @Inject constructor() {
     private val paletteSelected : PublishSubject<Palette> = PublishSubject.create()
     val onPaletteSelected : Observable<Palette> = paletteSelected
 
-    private val createPaletteSelected : PublishSubject<Boolean> = PublishSubject.create()
-    val onCreatePaletteSelected : Observable<Boolean> = createPaletteSelected
-
     fun selectPalette(palette: Palette) {
         paletteSelected.onNext(palette)
     }
 
-    fun selectCreatePalette() {
-        createPaletteSelected.onNext(true)
-    }
 
 }

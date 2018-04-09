@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDialogModel,
                                                val changeDisplayModel : ChangeDisplayDialogModel,
-                                               val selectPaletteModel: SelectPaletteModel,
                                                val createFrameModel: CreateFrameModel) : DefaultPresenter() {
     private lateinit var view: CreateFrameView
     private val disposables : CompositeDisposable = CompositeDisposable()
@@ -32,11 +31,7 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         val saveFrameSubscription = saveRgbModel.onSaveFrameRequested.subscribe { frameTitle ->
             createFrameModel.writeCurrentFrameToDatabase(frameTitle)
         }
-        val createPaletteClicked = selectPaletteModel.onCreatePaletteSelected.subscribe {
-            activityNeeded.onNext { activity ->
-                activity.showFragment(FragmentId.CREATE_PALETTE, addToBackStack = FragmentId.CREATE_PALETTE.tag)
-            }
-        }
+
         val selectPaletteClicked = view.onSelectPaletteClicked.subscribe {
             displayDialog(fragmentManager, SelectPaletteDialog())
         }
@@ -47,8 +42,7 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
                 createDialogSubscription,
                 saveFrameSubscription,
                 selectPaletteClicked,
-                changeDisplayClicked,
-                createPaletteClicked
+                changeDisplayClicked
         )
     }
 

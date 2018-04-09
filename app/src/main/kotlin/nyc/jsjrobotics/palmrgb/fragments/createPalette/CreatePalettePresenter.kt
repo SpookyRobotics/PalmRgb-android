@@ -26,9 +26,7 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
     }
 
     private fun loadStandardColors() {
-        savedColorsModel.loadStandardColors().subscribe { options ->
-            view.setStandardColors(options)
-        }
+        view.setStandardColors(savedColorsModel.standardColors())
     }
 
     private fun loadSavedColors() {

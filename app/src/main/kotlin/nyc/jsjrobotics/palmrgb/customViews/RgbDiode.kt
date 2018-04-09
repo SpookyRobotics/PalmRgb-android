@@ -22,7 +22,6 @@ import nyc.jsjrobotics.palmrgb.R
 class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(context, attrs, style) {
     private lateinit var rgbPaint: Paint
     private lateinit var blackOutlinePaint: Paint
-    private lateinit var rectanglePaint: Paint
     private lateinit var rectangle: Rect
     private val colorChanged: PublishSubject<Int> = PublishSubject.create()
     val onColorChanged: Observable<Int> = colorChanged
@@ -31,16 +30,16 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     var indexInMatrix: Int = -1
     var colorStateList: MutableList<Int> = mutableListOf()
 
-    // Overridd en setter to guarantee value stays between 0 and displayedPalette.size
-    var currentColorIndex = 0 ; private set(value) {
-        if (value >= colorStateList.size) {
+    // Overridden setter to guarantee value stays between 0 and displayedPalette.size
+    // Setting the current color index will trigger color changed
+    private var currentColorIndex = 0 ; private set(value) {
+        if (value < 0 || value >= colorStateList.size) {
             field = 0
         } else {
             field = value
         }
-        val color = currentColor()
+        val color = colorStateList[field]
         rgbPaint.color = color
-        colorChanged.onNext(color)
     }
 
     private var midX: Float = 0f
@@ -52,11 +51,8 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0) {
         blackOutlinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
         blackOutlinePaint.color = Color.BLACK
-        blackOutlinePaint.style = Paint.Style.STROKE
+        blackOutlinePaint.style = Paint.Style.FILL_AND_STROKE
         blackOutlinePaint.strokeWidth = 2.0f
-
-        rectanglePaint = Paint(blackOutlinePaint)
-        rectanglePaint.style = Paint.Style.FILL_AND_STROKE
 
         rgbPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         rgbPaint.setStyle(Paint.Style.FILL)
@@ -71,7 +67,6 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         colorStateList.addAll(listOfNotNull(initialColor, secondColor, thirdColor))
 
         if (colorStateList.isNotEmpty()) {
-            rgbPaint.color = colorStateList[0]
             currentColorIndex = 0
         }
     }
@@ -92,10 +87,12 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
             return
         }
         currentColorIndex += 1
-        colorStateList.filterIndexed { index, color -> index == currentColorIndex }
-                .firstOrNull()
-                ?.let { rgbPaint.color = it }
+        notifyColorChanged()
         invalidate()
+    }
+
+    private fun notifyColorChanged() {
+        colorChanged.onNext(rgbPaint.color)
     }
 
     override fun onSaveInstanceState(): Parcelable {
@@ -142,41 +139,32 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawCircle(midX, midH, radius, rgbPaint )
-        canvas.drawCircle(midX, midH, radius, blackOutlinePaint )
 
         // Left
-        canvas.drawRect(0f, 0f, 3f, height.toFloat(), rectanglePaint)
+        canvas.drawRect(0f, 0f, 3f, height.toFloat(), blackOutlinePaint)
 
         //Top
-        canvas.drawRect(0f, 0f, width.toFloat(), 3f, rectanglePaint)
-
-        //canvas.drawLine(0f,0f, width.toFloat(), 0f, blackOutlinePaint)
-        //canvas.drawLine(0f,1f, width.toFloat(), 1f, blackOutlinePaint)
+        canvas.drawRect(0f, 0f, width.toFloat(), 3f, blackOutlinePaint)
 
         //Right
-        canvas.drawRect(width.toFloat() - 3f,0f, width.toFloat(), height.toFloat(), rectanglePaint)
+        canvas.drawRect(width.toFloat() - 3f,0f, width.toFloat(), height.toFloat(), blackOutlinePaint)
 
         //Bottom
-        canvas.drawRect(0f,height.toFloat() - 3f, width.toFloat(), height.toFloat(), rectanglePaint)
-        //canvas.drawLine(width.toFloat(),0f, width.toFloat(), height.toFloat(), blackOutlinePaint)
-
-        //canvas.drawLine(0f,height.toFloat(), width.toFloat(), height.toFloat(), blackOutlinePaint)
+        canvas.drawRect(0f,height.toFloat() - 3f, width.toFloat(), height.toFloat(), blackOutlinePaint)
     }
 
     fun currentColor(): Int = rgbPaint.color
 
 
     fun setCurrentColor(nextColor: Int) {
-        val colorIndex = colorStateList.indexOf(nextColor)
-        if (colorIndex != -1) {
-            currentColorIndex = colorIndex
+        val requestedColorIndex = colorStateList.indexOf(nextColor)
+        if (requestedColorIndex != -1) {
+            currentColorIndex = requestedColorIndex
         } else {
-            // Bypass saving of color state and just display the color
             rgbPaint.color = nextColor
         }
+        notifyColorChanged()
         invalidate()
-
-
     }
 
     fun subscribeOnColorChanged(callback: () -> Unit) {
@@ -194,6 +182,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val red = Color.red(currentColor)
         val blue = Color.blue(currentColor)
         rgbPaint.color = Color.argb(alpha, red, green, blue)
+        notifyColorChanged()
         invalidate()
     }
 
@@ -204,6 +193,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val green = Color.green(currentColor)
         val blue = Color.blue(currentColor)
         rgbPaint.color = Color.argb(alpha, red, green, blue)
+        notifyColorChanged()
         invalidate()
     }
 
@@ -214,6 +204,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val red = Color.red(currentColor)
         val green = Color.green(currentColor)
         rgbPaint.color = Color.argb(alpha, red, green, blue)
+        notifyColorChanged()
         invalidate()
     }
 

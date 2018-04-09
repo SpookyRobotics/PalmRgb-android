@@ -3,19 +3,17 @@ package nyc.jsjrobotics.palmrgb.fragments.createFrame
 import android.content.Intent
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.dataStructures.MutablePalette
+import nyc.jsjrobotics.palmrgb.dataStructures.Palette
+import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
+import nyc.jsjrobotics.palmrgb.dataStructures.SavedPaletteModel
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CreateFrameModel @Inject constructor(val application: Application){
-    val displayedPalette: MutablePalette = MutablePalette(
-            0xff000000.toInt(),
-            0xffff9283.toInt(),
-            0xff0070ff.toInt(),
-            0xff08ff70.toInt(),
-            0xff179033.toInt()
-    )
+class CreateFrameModel @Inject constructor(private val application: Application,
+                                           private val savedPalettesModel: SavedPaletteModel){
+    val displayedPalette: Palette = savedPalettesModel.getStandardPalette()
 
     var displayedColors : MutableList<Int> = initialValues()
 

@@ -9,34 +9,26 @@ import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
 class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameModel) : BaseAdapter() {
-    private var resetting: Boolean = false
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view : RgbDiode
         if (convertView != null) {
             view = convertView as RgbDiode
-            if (!resetting) {
-                saveViewColor(view)
-            }
+            view.clearSubscriptions()
         } else {
             view = parent.inflate(R.layout.single_diode) as RgbDiode
             view.id = View.generateViewId()
-            view.colorStateList = createFrameModel.displayedPalette.colors
-            view.subscribeOnColorChanged { saveViewColor(view) }
+            view.colorStateList = createFrameModel.displayedPalette.colors.toMutableList()
         }
 
         view.indexInMatrix = position
-        val lastColor = createFrameModel.displayedColors.get(position)
-        view.setCurrentColor(lastColor)
+        val colorToDisplay = createFrameModel.displayedColors.get(position)
+        view.setCurrentColor(colorToDisplay)
+        // Subscribe after changing color
+        view.subscribeOnColorChanged { saveViewColor(view) }
         view.invalidate()
-        if (position == createFrameModel.diodeRange().last) {
-            resetting = false
-        }
         return view
-
     }
-
-
 
     private fun saveViewColor(view: RgbDiode) {
         createFrameModel.saveDiodeState(view.indexInMatrix, view.currentColor())
@@ -51,7 +43,6 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
     override fun getCount(): Int = createFrameModel.displayedColors.size
 
     fun reset() {
-        resetting = true
         createFrameModel.reset()
         notifyDataSetChanged()
     }
