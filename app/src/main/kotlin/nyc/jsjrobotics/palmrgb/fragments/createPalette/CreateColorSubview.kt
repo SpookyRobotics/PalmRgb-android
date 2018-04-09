@@ -7,8 +7,11 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+import javax.inject.Inject
 
-class CreateColorSubview(val rootXml: View) {
+class CreateColorSubview @Inject constructor() {
+
+    lateinit var rootXml: View
     private val greenValueChanged: PublishSubject<Int> = PublishSubject.create()
     private val redValueChanged: PublishSubject<Int> = PublishSubject.create()
     private val blueValueChanged: PublishSubject<Int> = PublishSubject.create()
@@ -19,15 +22,21 @@ class CreateColorSubview(val rootXml: View) {
     val onRedValueChanged: Observable<Int> = redValueChanged
     val onCreateColorSelected : Observable<Boolean> = createColorSelected
 
-    private val greenSeekBar : SeekBar = rootXml.findViewById(R.id.green_seekbar)
-    private val blueSeekBar : SeekBar = rootXml.findViewById(R.id.blue_seekbar)
-    private val redSeekBar : SeekBar = rootXml.findViewById(R.id.red_seekbar)
-    private val rgbDiode : RgbDiode = rootXml.findViewById(R.id.preview_diode)
-    private val createColor : Button = rootXml.findViewById(R.id.save)
+    private lateinit var greenSeekBar : SeekBar
+    private lateinit var blueSeekBar : SeekBar
+    private lateinit var redSeekBar : SeekBar
+    private lateinit var rgbDiode : RgbDiode
+    private lateinit var createColor : Button
 
     private val RGB_MAX: Int = 255
 
-    init {
+    fun init(xml : View) {
+        rootXml = xml
+        greenSeekBar = rootXml.findViewById(R.id.green_seekbar)
+        blueSeekBar = rootXml.findViewById(R.id.blue_seekbar)
+        redSeekBar = rootXml.findViewById(R.id.red_seekbar)
+        rgbDiode = rootXml.findViewById(R.id.preview_diode)
+        createColor = rootXml.findViewById(R.id.save)
         greenSeekBar.max = RGB_MAX
         redSeekBar.max = RGB_MAX
         blueSeekBar.max = RGB_MAX

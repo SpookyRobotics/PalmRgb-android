@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
@@ -14,100 +13,77 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.constraint.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/empty_palette_message"
                 android:text="@string/add_color_message"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/divider1"
-                android:gravity="center"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginBottom="@dimen/large_margin"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/palette_colors"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="@id/empty_palette_message"
-                app:layout_constraintBottom_toBottomOf="@id/empty_palette_message"/>
+                android:layout_height="wrap_content"
+                android:clipToPadding="true" />
 
 
             <View
                 android:id="@+id/divider1"
                 style="@style/Divider"
-                app:layout_constraintTop_toBottomOf="@id/empty_palette_message"
-                app:layout_constraintBottom_toTopOf="@id/color_options"/>
+                android:layout_marginBottom="@dimen/large_margin"/>
 
             <TextView
                 android:id="@+id/choose_color_message"
                 android:text="@string/choose_color_message"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/divider1"
-                app:layout_constraintBottom_toTopOf="@id/divider2"
-                app:layout_constraintDimensionRatio="H, 2:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                />
+                android:layout_marginBottom="@dimen/small_margin" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/color_options"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="@id/choose_color_message"
-                app:layout_constraintBottom_toBottomOf="@id/choose_color_message"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_margin"/>
 
             <View
                 android:id="@+id/divider2"
                 style="@style/Divider"
-                app:layout_constraintTop_toBottomOf="@id/choose_color_message"
-                app:layout_constraintBottom_toTopOf="@id/create_color_header"/>
+                android:layout_marginBottom="@dimen/large_margin"/>
 
             <TextView
                 android:id="@+id/create_color_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/divider2"
-                app:layout_constraintBottom_toTopOf="@id/preview_diode"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="@string/create_color"/>
+                android:text="@string/create_color"
+                android:layout_marginBottom="@dimen/small_margin"
+                />
 
             <!-- TODO fix width and height to be relative values-->
             <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
                 android:id="@+id/preview_diode"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintTop_toBottomOf="@id/create_color_header"
-                app:layout_constraintBottom_toTopOf="@id/red_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_height="100dp"/>
 
             <TextView
                 android:id="@+id/red_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/red"
-                app:layout_constraintTop_toBottomOf="@id/preview_diode"
-                app:layout_constraintBottom_toTopOf="@id/red_seekbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:text="@string/red"/>
 
             <SeekBar
                 android:id="@+id/red_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/red_title"
-                app:layout_constraintBottom_toTopOf="@id/green_title"
                 android:layout_marginLeft="@dimen/large_margin"
                 android:layout_marginRight="@dimen/large_margin" />
 
@@ -115,18 +91,12 @@
                 android:id="@+id/green_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/green"
-                app:layout_constraintTop_toBottomOf="@id/red_seekbar"
-                app:layout_constraintBottom_toTopOf="@id/green_seekbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:text="@string/green"/>
 
             <SeekBar
                 android:id="@+id/green_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/green_title"
-                app:layout_constraintBottom_toTopOf="@id/blue_title"
                 android:layout_marginLeft="@dimen/large_margin"
                 android:layout_marginRight="@dimen/large_margin" />
 
@@ -134,18 +104,12 @@
                 android:id="@+id/blue_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/blue"
-                app:layout_constraintTop_toBottomOf="@id/green_seekbar"
-                app:layout_constraintBottom_toTopOf="@id/blue_seekbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:text="@string/blue"/>
 
             <SeekBar
                 android:id="@+id/blue_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/blue_title"
-                app:layout_constraintBottom_toTopOf="@id/save"
                 android:layout_marginLeft="@dimen/large_margin"
                 android:layout_marginRight="@dimen/large_margin" />
 
@@ -153,12 +117,8 @@
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/green_seekbar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:text="@string/create_color"/>
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

@@ -23,6 +23,7 @@ import nyc.jsjrobotics.palmrgb.R
 class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(context, attrs, style) {
     private lateinit var rgbPaint: Paint
     private lateinit var blackOutlinePaint: Paint
+    private lateinit var rectanglePaint: Paint
     private lateinit var rectangle: Rect
     private val colorChanged: PublishSubject<Int> = PublishSubject.create()
     val onColorChanged: Observable<Int> = colorChanged
@@ -54,6 +55,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         blackOutlinePaint.color = Color.BLACK
         blackOutlinePaint.style = Paint.Style.STROKE
         blackOutlinePaint.strokeWidth = 2.0f
+
+        rectanglePaint = Paint(blackOutlinePaint)
+        rectanglePaint.style = Paint.Style.FILL_AND_STROKE
 
         rgbPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         rgbPaint.setStyle(Paint.Style.FILL)
@@ -125,10 +129,10 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val rectTop : Int = (midH - radius - borderPadding).toInt()
         val rectRight : Int = (midX + radius + borderPadding).toInt()
         val rectBottom : Int = (midH + radius + borderPadding).toInt()
-        rectangle = Rect(rectLeft,
-                rectTop,
-                rectRight,
-                rectBottom)
+        rectangle = Rect(0,
+                0,
+                width-1,
+                height-1)
 
     }
 
@@ -140,7 +144,24 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     override fun onDraw(canvas: Canvas) {
         canvas.drawCircle(midX, midH, radius, rgbPaint )
         canvas.drawCircle(midX, midH, radius, blackOutlinePaint )
-        canvas.drawRect(rectangle, blackOutlinePaint)
+
+        // Left
+        canvas.drawRect(0f, 0f, 3f, height.toFloat(), rectanglePaint)
+
+        //Top
+        canvas.drawRect(0f, 0f, width.toFloat(), 3f, rectanglePaint)
+
+        //canvas.drawLine(0f,0f, width.toFloat(), 0f, blackOutlinePaint)
+        //canvas.drawLine(0f,1f, width.toFloat(), 1f, blackOutlinePaint)
+
+        //Right
+        canvas.drawRect(width.toFloat() - 3f,0f, width.toFloat(), height.toFloat(), rectanglePaint)
+
+        //Bottom
+        canvas.drawRect(0f,height.toFloat() - 3f, width.toFloat(), height.toFloat(), rectanglePaint)
+        //canvas.drawLine(width.toFloat(),0f, width.toFloat(), height.toFloat(), blackOutlinePaint)
+
+        //canvas.drawLine(0f,height.toFloat(), width.toFloat(), height.toFloat(), blackOutlinePaint)
     }
 
     fun currentColor(): Int = rgbPaint.color
@@ -154,6 +175,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
             // Bypass saving of color state and just display the color
             rgbPaint.color = nextColor
         }
+        invalidate()
 
 
     }

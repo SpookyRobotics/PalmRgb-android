@@ -19,6 +19,6 @@ class SaveColorDialogModel private constructor(){
     var colorToSave : Int? = null
 
     fun requestSaveColorOption(title: String) {
-        saveColor.onNext(title)
+            saveColor.onNext(title)
     }
 }

@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
+import nyc.jsjrobotics.palmrgb.database.MutableColorOption
 import nyc.jsjrobotics.palmrgb.executeInThread
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.runOnMainThread
@@ -19,6 +22,7 @@ class SaveColorDialog : DialogFragmentWithPresenter() {
         val TAG = "SaveColorDialog"
     }
 
+    private var alreadyExistingTitles : List<String>? = null
     @Inject
     lateinit var model: SaveColorDialogModel
 
@@ -28,6 +32,20 @@ class SaveColorDialog : DialogFragmentWithPresenter() {
     private lateinit var displayedDialog : AlertDialog
 
     override fun tag(): String = TAG
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getExistingTitles()
+    }
+
+    private fun getExistingTitles(postUpdate : () -> Unit = {}) {
+        executeInThread {
+            if (alreadyExistingTitles == null) {
+                alreadyExistingTitles = appDatabase.savedColorsDao().getAll().map { it.title }
+            }
+            postUpdate.invoke()
+        }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = activity!!.layoutInflater
@@ -52,18 +70,18 @@ class SaveColorDialog : DialogFragmentWithPresenter() {
 
     private fun buildPositiveButtonHandler(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialog, id ->
-            executeInThread {
-                val alreadyExistingTitles = appDatabase.savedColorsDao().getAll().map { it.title }
+            getExistingTitles {
                 val title = getTitle()
-                if (alreadyExistingTitles.contains(title)) {
+                if (alreadyExistingTitles!!.contains(title)) {
                     displayAlreadyExistsError()
-                    return@executeInThread
+                    return@getExistingTitles
                 }
                 model.requestSaveColorOption(getTitle())
                 dialog.dismiss()
             }
         }
     }
+
 
     private fun displayAlreadyExistsError() {
         runOnMainThread {
