@@ -13,8 +13,8 @@ import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentId
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.executeInThread
-import nyc.jsjrobotics.palmrgb.runOnMainThread
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragment
+import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
 
 class ViewFramesPresenter @Inject constructor(val appDatabase: AppDatabase): DefaultPresenter() {

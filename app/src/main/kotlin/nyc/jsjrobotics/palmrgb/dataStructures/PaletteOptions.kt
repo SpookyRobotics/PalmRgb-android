@@ -1,7 +1,6 @@
 package nyc.jsjrobotics.palmrgb.dataStructures
 
 import io.reactivex.subjects.PublishSubject
-import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import javax.inject.Inject
 import javax.inject.Singleton
 

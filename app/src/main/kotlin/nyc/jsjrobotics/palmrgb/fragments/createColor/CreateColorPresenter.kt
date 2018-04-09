@@ -7,7 +7,6 @@ import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
-import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteView
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialogModel

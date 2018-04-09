@@ -9,10 +9,10 @@ import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import nyc.jsjrobotics.palmrgb.executeInThread
+import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesPresenter
 import nyc.jsjrobotics.palmrgb.runOnMainThread
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.RequestType
-import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesPresenter
 import javax.inject.Inject
 
 class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) : DefaultPresenter(){

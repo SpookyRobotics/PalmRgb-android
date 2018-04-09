@@ -6,17 +6,17 @@ import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
-import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusFragment
+import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialog
-import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialog
-import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.*
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragment
+import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.*
 
 @Module(subcomponents = arrayOf(
         CreateFrameFragmentSubcomponent::class,

@@ -2,7 +2,6 @@ package nyc.jsjrobotics.palmrgb.androidInterfaces
 
 import android.arch.lifecycle.LifecycleObserver
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 
 abstract class DefaultPresenter : LifecycleObserver {

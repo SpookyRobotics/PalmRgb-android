@@ -9,11 +9,10 @@ import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
-import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialog
-import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialogModel
 import javax.inject.Inject
 
-class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase) : DefaultPresenter(){
+class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
+                                                 val savedColorsModel: SavedColorsModel ) : DefaultPresenter(){
     private lateinit var view: CreatePaletteView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : DialogFragmentWithPresenter? = null
@@ -22,6 +21,20 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase) :
         this.view = view
         subscribeToInsertColor()
         subscribeToAddColorToPalette()
+        loadStandardColors()
+        loadSavedColors()
+    }
+
+    private fun loadStandardColors() {
+        savedColorsModel.loadStandardColors().subscribe { options ->
+            view.setStandardColors(options)
+        }
+    }
+
+    private fun loadSavedColors() {
+        savedColorsModel.loadSavedColors().subscribe { options ->
+            view.setSavedColors(options)
+        }
     }
 
     private fun subscribeToAddColorToPalette() {
@@ -35,7 +48,7 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase) :
 
     private fun subscribeToInsertColor() {
         val saveColorsModified = appDatabase.savedColorsDao().getAllFlowable().subscribe {
-            view.refreshSavedColors()
+            loadSavedColors()
         }
         disposables.add(saveColorsModified)
     }

@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import nyc.jsjrobotics.palmrgb.dataStructures.PaletteOptions
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette
+import nyc.jsjrobotics.palmrgb.dataStructures.PaletteOptions
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import javax.inject.Inject
 

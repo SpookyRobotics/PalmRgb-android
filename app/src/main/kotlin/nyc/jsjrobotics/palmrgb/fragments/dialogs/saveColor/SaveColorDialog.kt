@@ -4,14 +4,10 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import nyc.jsjrobotics.palmrgb.R
-import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
-import nyc.jsjrobotics.palmrgb.database.MutableColorOption
 import nyc.jsjrobotics.palmrgb.executeInThread
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.runOnMainThread

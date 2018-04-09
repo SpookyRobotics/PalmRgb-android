@@ -5,20 +5,28 @@ import android.view.ViewGroup
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
-import nyc.jsjrobotics.palmrgb.database.AppDatabase
-import nyc.jsjrobotics.palmrgb.executeInThread
-import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
 
-class ColorOptionsAdapter @Inject constructor(val appDatabase: AppDatabase) : RecyclerView.Adapter<ColorOptionViewHolder>() {
+class ColorOptionsAdapter @Inject constructor() : RecyclerView.Adapter<ColorOptionViewHolder>() {
 
-    private var colorOptions : List<ColorOption> = emptyList()
-    //private var loadedColors : Boolean = false
+    var colorOptions : List<ColorOption> = emptyList() ; private set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
     private val colorSelected: PublishSubject<ColorOption> = PublishSubject.create()
     val onColorSelected: Observable<ColorOption> = colorSelected
+    var savedColors: List<ColorOption> = emptyList() ; set(value) {
+        field = value
+        val finalList = standardColors.toMutableList()
+        finalList.addAll(value)
+        colorOptions = finalList
+    }
 
-    init {
-        getColorOptions()
+    var standardColors: List<ColorOption> = emptyList() ; set(value) {
+        field = value
+        val finalList = value.toMutableList()
+        finalList.addAll(savedColors)
+        colorOptions = finalList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorOptionViewHolder {
@@ -30,21 +38,5 @@ class ColorOptionsAdapter @Inject constructor(val appDatabase: AppDatabase) : Re
     override fun onBindViewHolder(holder: ColorOptionViewHolder, position: Int) {
         val colorOption = colorOptions[position]
         holder.bind(colorOption, {colorSelected.onNext(colorOption)})
-    }
-
-    private fun getColorOptions(postUpdate : () -> Unit = {}) {
-        executeInThread {
-            colorOptions = appDatabase.savedColorsDao().getAll().map { it.immutable() }
-            postUpdate.invoke()
-        }
-    }
-
-    fun invalideColorList() {
-        getColorOptions({
-            runOnMainThread {
-                notifyDataSetChanged()
-
-            }
-        })
     }
 }

@@ -6,12 +6,12 @@ import android.support.v4.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentId
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialogModel
-import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
-import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialogModel
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteModel
 import javax.inject.Inject
 
