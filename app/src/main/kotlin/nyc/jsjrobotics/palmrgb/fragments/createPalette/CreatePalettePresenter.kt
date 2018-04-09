@@ -13,16 +13,13 @@ import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialogModel
 import javax.inject.Inject
 
-class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
-                                                 val saveColorDialogModel: SaveColorDialogModel,
-                                                 val savedColors : SavedColorsModel) : DefaultPresenter(){
+class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase) : DefaultPresenter(){
     private lateinit var view: CreatePaletteView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : DialogFragmentWithPresenter? = null
 
     fun init(fragmentManager : FragmentManager, view: CreatePaletteView) {
         this.view = view
-        subscribeToCreateColor(fragmentManager)
         subscribeToInsertColor()
         subscribeToAddColorToPalette()
     }
@@ -47,23 +44,4 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
     fun unsubscribe() {
         disposables.clear()
     }
-
-    private fun subscribeToCreateColor(fragmentManager: FragmentManager) {
-        val createColorSelected = view.onCreateColor().subscribe {
-            activityNeeded.onNext {
-                val createdColor = view.getCreateColorInput()
-                saveColorDialogModel.colorToSave = createdColor
-                displayedDialog?.dismiss()
-                val dialog = SaveColorDialog()
-                dialog.show(fragmentManager, dialog.tag)
-            }
-        }
-        val colorNameSelected = saveColorDialogModel.onSaveColorRequested.subscribe{ colorName ->
-            saveColorDialogModel.colorToSave?.let { colorToSave ->
-                savedColors.saveNewColor(colorName, colorToSave)
-            }
-        }
-        disposables.addAll(createColorSelected, colorNameSelected)
-    }
-
 }

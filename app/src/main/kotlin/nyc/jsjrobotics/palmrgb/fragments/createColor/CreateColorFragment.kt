@@ -1,6 +1,5 @@
-package nyc.jsjrobotics.palmrgb.fragments.createPalette
+package nyc.jsjrobotics.palmrgb.fragments.createColor
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,19 +7,14 @@ import android.view.ViewGroup
 import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentWithPresenter
 import javax.inject.Inject
 
-class CreatePaletteFragment : FragmentWithPresenter() {
-
-    @Inject
-    lateinit var presenter : CreatePalettePresenter
-
-    @Inject
-    lateinit var view : CreatePaletteView
-
-    companion object {
-        val TAG : String = "CreatePaletteFragment"
-    }
-
+class CreateColorFragment : FragmentWithPresenter() {
     override fun tag(): String = TAG
+
+    @Inject
+    lateinit var presenter: CreateColorPresenter
+
+    @Inject
+    lateinit var view : CreateColorView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +25,9 @@ class CreatePaletteFragment : FragmentWithPresenter() {
         view.initView(container!!, savedInstanceState)
         presenter.init(fragmentManager!!, view)
         return view.rootXml
+    }
+
+    companion object {
+        val TAG = "CreateColorFragment"
     }
 }

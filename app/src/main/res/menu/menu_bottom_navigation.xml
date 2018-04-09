@@ -21,4 +21,18 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_view_recipes"
          />
+
+    <item android:id="@+id/tab_create_palette"
+        android:title="@string/create_palette"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_create_palette"
+        />
+
+    <item android:id="@+id/tab_create_color"
+        android:title="@string/create_color"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_colors"
+        />
 </menu>

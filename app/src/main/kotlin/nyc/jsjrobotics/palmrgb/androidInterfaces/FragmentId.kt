@@ -4,6 +4,7 @@ package nyc.jsjrobotics.palmrgb.androidInterfaces
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import nyc.jsjrobotics.palmrgb.BuildConfig
+import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusFragment
 import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameFragment
 import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
@@ -31,6 +32,10 @@ enum class FragmentId(
     CONNECTION_STATUS(
             ConnectionStatusFragment.TAG,
             { addArgments(ConnectionStatusFragment(), it) }
+    ),
+    CREATE_COLOR(
+            CreateColorFragment.TAG,
+            { addArgments(CreateColorFragment(), it)}
     ),
     CREATE_PALETTE(
             CreatePaletteFragment.TAG,

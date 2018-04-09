@@ -1,15 +1,18 @@
-package nyc.jsjrobotics.palmrgb.fragments.createPalette
+package nyc.jsjrobotics.palmrgb.fragments.createColor
 
+import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SeekBar
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
-class CreateColorSubview @Inject constructor() {
+class CreateColorView @Inject constructor() {
 
     lateinit var rootXml: View
     private val greenValueChanged: PublishSubject<Int> = PublishSubject.create()
@@ -30,8 +33,8 @@ class CreateColorSubview @Inject constructor() {
 
     private val RGB_MAX: Int = 255
 
-    fun init(xml : View) {
-        rootXml = xml
+    fun initView(viewGroup: ViewGroup, savedInstanceState : Bundle?) {
+        rootXml = viewGroup.inflate(R.layout.fragment_create_color)
         greenSeekBar = rootXml.findViewById(R.id.green_seekbar)
         blueSeekBar = rootXml.findViewById(R.id.blue_seekbar)
         redSeekBar = rootXml.findViewById(R.id.red_seekbar)
