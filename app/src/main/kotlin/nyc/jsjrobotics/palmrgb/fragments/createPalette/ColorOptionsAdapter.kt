@@ -9,25 +9,21 @@ import javax.inject.Inject
 
 class ColorOptionsAdapter @Inject constructor() : RecyclerView.Adapter<ColorOptionViewHolder>() {
 
-    var colorOptions : List<ColorOption> = emptyList() ; private set(value) {
+    var colorOptions : List<ColorOption> = emptyList() ; set(value) {
         field = value
+        notifyColorsChanged()
         notifyDataSetChanged()
     }
-    private val colorSelected: PublishSubject<ColorOption> = PublishSubject.create()
-    val onColorSelected: Observable<ColorOption> = colorSelected
-    var savedColors: List<ColorOption> = emptyList() ; set(value) {
-        field = value
-        val finalList = standardColors.toMutableList()
-        finalList.addAll(value)
-        colorOptions = finalList
+
+    private fun notifyColorsChanged() {
+        colorsChanged.onNext(colorOptions)
     }
 
-    var standardColors: List<ColorOption> = emptyList() ; set(value) {
-        field = value
-        val finalList = value.toMutableList()
-        finalList.addAll(savedColors)
-        colorOptions = finalList
-    }
+    private val colorSelected: PublishSubject<ColorOption> = PublishSubject.create()
+    val onColorSelected: Observable<ColorOption> = colorSelected
+
+    private val colorsChanged: PublishSubject<List<ColorOption>> = PublishSubject.create()
+    val onColorsChanged: Observable<List<ColorOption>> = colorsChanged
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorOptionViewHolder {
         return ColorOptionViewHolder(parent)
@@ -38,5 +34,11 @@ class ColorOptionsAdapter @Inject constructor() : RecyclerView.Adapter<ColorOpti
     override fun onBindViewHolder(holder: ColorOptionViewHolder, position: Int) {
         val colorOption = colorOptions[position]
         holder.bind(colorOption, {colorSelected.onNext(colorOption)})
+    }
+
+    fun addColor(colorSelected: ColorOption) {
+        val finalList = colorOptions.toMutableList()
+        finalList.add(colorSelected)
+        colorOptions = finalList
     }
 }

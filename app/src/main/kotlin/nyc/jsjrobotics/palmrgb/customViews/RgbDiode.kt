@@ -114,17 +114,12 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         midX = (width/2).toFloat()
         midH = (height/2).toFloat()
         radius = if (width < height) (width/3).toFloat() else (height/3).toFloat()
-        var borderPadding = (radius * 0.1).toInt()
 
-        while (midX - radius - borderPadding < 0) {
-            radius = (radius * 0.9).toFloat()
-            borderPadding = (radius * 0.1).toInt()
-        }
 
-        val rectLeft : Int = (midX - radius - borderPadding).toInt()
-        val rectTop : Int = (midH - radius - borderPadding).toInt()
-        val rectRight : Int = (midX + radius + borderPadding).toInt()
-        val rectBottom : Int = (midH + radius + borderPadding).toInt()
+        val rectLeft : Int = (midX - radius + paddingStart).toInt()
+        val rectTop : Int = (midH - radius + paddingTop).toInt()
+        val rectRight : Int = (midX + radius - paddingEnd).toInt()
+        val rectBottom : Int = (midH + radius - paddingBottom).toInt()
         rectangle = Rect(0,
                 0,
                 width-1,

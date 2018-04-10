@@ -22,7 +22,16 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/palette_colors"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_margin" />
+
+        <Button
+            android:id="@+id/create_palette"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_palette"
+            android:layout_marginBottom="@dimen/large_margin"/>
 
 
         <View

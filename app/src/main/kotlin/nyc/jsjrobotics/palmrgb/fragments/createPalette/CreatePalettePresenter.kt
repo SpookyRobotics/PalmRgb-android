@@ -7,12 +7,14 @@ import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
+import nyc.jsjrobotics.palmrgb.dataStructures.SavedPaletteModel
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import javax.inject.Inject
 
 class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
-                                                 val savedColorsModel: SavedColorsModel ) : DefaultPresenter(){
+                                                 val savedColorsModel: SavedColorsModel,
+                                                 val createPaletteModel: CreatePaletteModel) : DefaultPresenter(){
     private lateinit var view: CreatePaletteView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : DialogFragmentWithPresenter? = null
@@ -23,25 +25,39 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
         subscribeToAddColorToPalette()
         loadStandardColors()
         loadSavedColors()
+        updateCreatePaletteButton()
+        subscribeCreatePaletteButton()
+    }
+
+    private fun subscribeCreatePaletteButton() {
+        val createPaletteDisposable = view.onCreatePaletteSelected.subscribe {
+            // Save created palette by showing dialog
+        }
+        disposables.add(createPaletteDisposable)
     }
 
     private fun loadStandardColors() {
-        view.setStandardColors(savedColorsModel.standardColors())
+        view.standardColors = savedColorsModel.standardColors()
     }
 
     private fun loadSavedColors() {
-        savedColorsModel.loadSavedColors().subscribe { options ->
-            view.setSavedColors(options)
+        val loadColors = savedColorsModel.loadSavedColors().subscribe { options ->
+            view.savedColors = options
         }
+        disposables.add(loadColors)
     }
 
     private fun subscribeToAddColorToPalette() {
-        val addColorDisposable = view.onAddColor().subscribe {colorSelected ->
-            activityNeeded.onNext {
-                Toast.makeText(it.applicationContext(), "Selected ${colorSelected.title}", Toast.LENGTH_SHORT).show()
-            }
+        val addColorDisposable = view.onAddColor().subscribe { colorSelected ->
+            createPaletteModel.addColorOption(colorSelected)
+            view.addPaletteColor(colorSelected)
+            updateCreatePaletteButton()
         }
         disposables.add(addColorDisposable)
+    }
+
+    private fun updateCreatePaletteButton() {
+        view.showCreatePaletteButton(!view.getCreatePaletteColors().isEmpty())
     }
 
     private fun subscribeToInsertColor() {

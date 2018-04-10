@@ -6,33 +6,64 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
 import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
-class CreatePaletteView @Inject constructor(private val adapter : ColorOptionsAdapter){
+class CreatePaletteView @Inject constructor(private val colorOptionsAdapter : ColorOptionsAdapter,
+                                            private val newPaletteAdapter : ColorOptionsAdapter){
     lateinit var rootXml: View
     private lateinit var optionsList : RecyclerView
+    private lateinit var newPalette : RecyclerView
+    private lateinit var createPaletteButton: Button
+    private val createPaletteSelected: PublishSubject<Boolean> = PublishSubject.create()
+    val onCreatePaletteSelected: Observable<Boolean> = createPaletteSelected
+
+    var savedColors: List<ColorOption> = emptyList() ; set(value) {
+        field = value
+        setColorOptions()
+    }
+
+    var standardColors: List<ColorOption> = emptyList() ; set(value) {
+        field = value
+        setColorOptions()
+    }
 
     fun initView( container: ViewGroup, savedInstanceState: Bundle?) {
         rootXml = container.inflate(R.layout.fragment_create_palette)
         optionsList = rootXml.findViewById(R.id.color_options)
+        newPalette = rootXml.findViewById(R.id.palette_colors)
+        createPaletteButton = rootXml.findViewById(R.id.create_palette)
+
         optionsList.layoutManager = GridLayoutManager(rootXml.context,4)
-        optionsList.adapter = adapter
-        optionsList.isHorizontalScrollBarEnabled
+        optionsList.adapter = colorOptionsAdapter
+
+        newPalette.layoutManager = LinearLayoutManager(rootXml.context, RecyclerView.HORIZONTAL, false)
+        newPalette.adapter = newPaletteAdapter
+        showCreatePaletteButton(!newPaletteAdapter.colorOptions.isEmpty())
+
     }
 
-    fun onAddColor(): Observable<ColorOption> = adapter.onColorSelected
-
-    fun setSavedColors(options: List<ColorOption>) {
-        adapter.savedColors = options
+    fun showCreatePaletteButton(isVisibile: Boolean) {
+        val visibility = if (isVisibile) View.VISIBLE else View.GONE
+        createPaletteButton.visibility = visibility
     }
 
-    fun setStandardColors(options: List<ColorOption>) {
-        adapter.standardColors = options
+    fun onAddColor(): Observable<ColorOption> = colorOptionsAdapter.onColorSelected
+
+    private fun setColorOptions() {
+        val finalList = standardColors.toMutableList()
+        finalList.addAll(savedColors)
+        colorOptionsAdapter.colorOptions = finalList
     }
 
+    fun addPaletteColor(colorSelected: ColorOption) {
+        newPaletteAdapter.addColor(colorSelected)
+    }
 
+    fun getCreatePaletteColors() = newPaletteAdapter.colorOptions
 }
