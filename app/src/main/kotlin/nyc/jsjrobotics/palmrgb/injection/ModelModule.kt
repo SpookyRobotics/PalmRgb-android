@@ -5,6 +5,7 @@ import dagger.Provides
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialogModel
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialogModel
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialogModel
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.savePalette.SavePaletteDialogModel
 
 
 @Module
@@ -18,5 +19,7 @@ class ModelModule {
     @Provides
     internal fun provideSaveColorDialogModel() : SaveColorDialogModel = SaveColorDialogModel.instance()
 
+    @Provides
+    internal fun provideSavePaletteDialogModel() : SavePaletteDialogModel = SavePaletteDialogModel.instance()
 
 }

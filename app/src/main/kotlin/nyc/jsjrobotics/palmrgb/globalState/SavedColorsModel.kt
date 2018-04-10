@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.dataStructures
+package nyc.jsjrobotics.palmrgb.globalState
 
 import android.content.Intent
 import io.reactivex.Observable
@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
+import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.executeInThread
 import nyc.jsjrobotics.palmrgb.runOnMainThread

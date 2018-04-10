@@ -3,17 +3,18 @@ package nyc.jsjrobotics.palmrgb.fragments.createPalette
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.OnLifecycleEvent
 import android.support.v4.app.FragmentManager
-import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
-import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
-import nyc.jsjrobotics.palmrgb.dataStructures.SavedPaletteModel
+import nyc.jsjrobotics.palmrgb.globalState.SavedColorsModel
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.savePalette.SavePaletteDialog
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.savePalette.SavePaletteDialogModel
 import javax.inject.Inject
 
 class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
                                                  val savedColorsModel: SavedColorsModel,
+                                                 val savedPaletteDialogModel: SavePaletteDialogModel,
                                                  val createPaletteModel: CreatePaletteModel) : DefaultPresenter(){
     private lateinit var view: CreatePaletteView
     private val disposables : CompositeDisposable = CompositeDisposable()
@@ -26,12 +27,20 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
         loadStandardColors()
         loadSavedColors()
         updateCreatePaletteButton()
-        subscribeCreatePaletteButton()
+        subscribeCreatePaletteButton(fragmentManager)
+        subscribeSavePaletteButton()
     }
 
-    private fun subscribeCreatePaletteButton() {
+    private fun subscribeSavePaletteButton() {
+        val savePaletteDisposable = savedPaletteDialogModel.onSaveColorRequested.subscribe { paletteName ->
+            createPaletteModel.requestSavePalette(paletteName)
+        }
+        disposables.add(savePaletteDisposable)
+    }
+
+    private fun subscribeCreatePaletteButton(fragmentManager: FragmentManager) {
         val createPaletteDisposable = view.onCreatePaletteSelected.subscribe {
-            // Save created palette by showing dialog
+            displayDialog(fragmentManager, SavePaletteDialog())
         }
         disposables.add(createPaletteDisposable)
     }
@@ -65,6 +74,11 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
             loadSavedColors()
         }
         disposables.add(saveColorsModified)
+    }
+
+    private fun displayDialog(fragmentManager: FragmentManager, dialog : DialogFragmentWithPresenter) {
+        displayedDialog?.dismiss()
+        dialog.show(fragmentManager, dialog.tag)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

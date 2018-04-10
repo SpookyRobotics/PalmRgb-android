@@ -38,7 +38,7 @@ class CreatePaletteView @Inject constructor(private val colorOptionsAdapter : Co
         optionsList = rootXml.findViewById(R.id.color_options)
         newPalette = rootXml.findViewById(R.id.palette_colors)
         createPaletteButton = rootXml.findViewById(R.id.create_palette)
-
+        createPaletteButton.setOnClickListener { createPaletteSelected.onNext(true) }
         optionsList.layoutManager = GridLayoutManager(rootXml.context,4)
         optionsList.adapter = colorOptionsAdapter
 

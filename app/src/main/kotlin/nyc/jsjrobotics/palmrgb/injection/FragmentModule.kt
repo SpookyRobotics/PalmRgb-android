@@ -13,6 +13,7 @@ import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialog
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.savePalette.SavePaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragment
@@ -28,7 +29,8 @@ import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.*
         SelectPaletteDialogSubcomponent::class,
         ChangeDisplayDialogSubcomponent::class,
         CreatePaletteFragmentSubcomponent::class,
-        CreateColorFragmentSubcomponent::class
+        CreateColorFragmentSubcomponent::class,
+        SavePaletteDialogFragmentSubcomponent::class
 ))
 internal abstract class FragmentModule {
     @Binds
@@ -81,5 +83,10 @@ internal abstract class FragmentModule {
     @IntoMap
     @FragmentKey(CreateColorFragment::class)
     internal abstract fun bindCreateColorFragmentInjectorFactory(builder: CreateColorFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
+
+    @Binds
+    @IntoMap
+    @FragmentKey(SavePaletteDialog::class)
+    internal abstract fun bindSavePaletteDialogFragmentInjectorFactory(builder: SavePaletteDialogFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
 
 }

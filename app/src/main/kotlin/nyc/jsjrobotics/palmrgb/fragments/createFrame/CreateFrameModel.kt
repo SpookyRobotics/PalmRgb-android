@@ -2,10 +2,8 @@ package nyc.jsjrobotics.palmrgb.fragments.createFrame
 
 import android.content.Intent
 import nyc.jsjrobotics.palmrgb.Application
-import nyc.jsjrobotics.palmrgb.dataStructures.MutablePalette
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette
-import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
-import nyc.jsjrobotics.palmrgb.dataStructures.SavedPaletteModel
+import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
 import javax.inject.Inject
 import javax.inject.Singleton

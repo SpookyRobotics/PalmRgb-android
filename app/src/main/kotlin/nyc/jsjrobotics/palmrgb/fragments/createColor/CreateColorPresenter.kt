@@ -5,7 +5,7 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.support.v4.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
-import nyc.jsjrobotics.palmrgb.dataStructures.SavedColorsModel
+import nyc.jsjrobotics.palmrgb.globalState.SavedColorsModel
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveColor.SaveColorDialog

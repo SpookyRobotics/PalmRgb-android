@@ -1,5 +1,6 @@
-package nyc.jsjrobotics.palmrgb.dataStructures
+package nyc.jsjrobotics.palmrgb.globalState
 
+import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import javax.inject.Inject
 import javax.inject.Singleton
 
