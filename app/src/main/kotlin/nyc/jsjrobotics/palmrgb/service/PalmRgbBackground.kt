@@ -7,6 +7,7 @@ import android.widget.Toast
 import nyc.jsjrobotics.palmrgb.*
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.database.MutableColorOption
+import nyc.jsjrobotics.palmrgb.database.MutablePalette
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
@@ -27,6 +28,9 @@ class PalmRgbBackground : Service() {
         val FUNCTION_SAVE_RGB_FRAME = "save_rgb_frame_function"
         val EXTRA_COLOR_NAME = "extra_color_name"
         val EXTRA_COLOR_TO_SAVE = "extra_color_to_save"
+        val FUNCTION_SAVE_PALETTE = "save_palette_function"
+        val EXTRA_PALETTE_NAME = "extra_palette_name"
+        val EXTRA_PALETTE_COLORS_TO_SAVE = "extra_palette_colors"
     }
 
     private val taskQueue = ArrayBlockingQueue<Runnable>(10)
@@ -41,14 +45,25 @@ class PalmRgbBackground : Service() {
             return Service.START_NOT_STICKY
         }
         val function = intent.getStringExtra(EXTRA_FUNCTION)
-        if (function == FUNCTION_SAVE_RGB_FRAME) {
-            saveRgbFrame(intent, startId)
-        }
-
-        if (function == FUNCTION_SAVE_COLOR) {
-            saveColor(intent, startId)
+        when (function) {
+            FUNCTION_SAVE_RGB_FRAME -> saveRgbFrame(intent, startId)
+            FUNCTION_SAVE_COLOR -> saveColor(intent, startId)
+            FUNCTION_SAVE_PALETTE -> savePalette(intent, startId)
         }
         return Service.START_NOT_STICKY
+    }
+
+    private fun savePalette(intent: Intent, startId: Int) {
+        val paletteName : String = intent.getStringExtra(PalmRgbBackground.EXTRA_PALETTE_NAME)
+        val colorsToSave : IntArray = intent.getIntArrayExtra(PalmRgbBackground.EXTRA_PALETTE_COLORS_TO_SAVE)
+        runInBackground {
+            DEBUG("Saving palette $paletteName")
+            val palette = MutablePalette(paletteName, colorsToSave.toMutableList())
+            appDatabase.savedPalettesDao().insert(palette)
+            val notification = applicationContext.getString(R.string.added_palette, paletteName)
+            displayToast(notification)
+            stopSelf(startId)
+        }
     }
 
     private fun saveColor(intent: Intent, startId: Int) {
@@ -58,15 +73,15 @@ class PalmRgbBackground : Service() {
             DEBUG("Saving color $colorName")
             val colorOption = MutableColorOption(colorName, colorToSave)
             appDatabase.savedColorsDao().insert(colorOption)
-            displayColorSavedToast(colorName)
+            val notification = applicationContext.getString(R.string.added_color, colorName)
+            displayToast(notification)
             stopSelf(startId)
         }
     }
 
-    private fun displayColorSavedToast(colorName: String) {
+    private fun displayToast(notification: String) {
         runOnMainThread {
-            val colorSaved = applicationContext.getString(R.string.added_color, colorName)
-            Toast.makeText(applicationContext, colorSaved, Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, notification, Toast.LENGTH_SHORT).show()
         }
     }
 

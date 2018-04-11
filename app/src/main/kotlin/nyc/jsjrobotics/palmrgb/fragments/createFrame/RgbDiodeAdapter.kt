@@ -5,10 +5,14 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+import nyc.jsjrobotics.palmrgb.dataStructures.Palette
+import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteModel
 import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
-class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameModel) : BaseAdapter() {
+class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameModel,
+                                          private val selectPaletteModel: SelectPaletteModel) : BaseAdapter() {
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view : RgbDiode
@@ -18,9 +22,9 @@ class RgbDiodeAdapter @Inject constructor(val createFrameModel : CreateFrameMode
         } else {
             view = parent.inflate(R.layout.single_diode) as RgbDiode
             view.id = View.generateViewId()
-            view.colorStateList = createFrameModel.displayedPalette.colors.toMutableList()
         }
 
+        view.colorStateList = createFrameModel.selectedPalette.colors.toMutableList()
         view.indexInMatrix = position
         val colorToDisplay = createFrameModel.displayedColors.get(position)
         view.setCurrentColor(colorToDisplay)

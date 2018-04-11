@@ -20,7 +20,7 @@
   <string name="select_rgb_display">Select RGB Display</string>
   <string name="sixty_four_diodes">64 diodes</string>
   <string name="thirty_two_diodes">32 Diodes</string>
-  <string name="no_saved_color_palettes">No Saved Color Palettes</string>
+  <string name="no_saved_color_palettes">No Saved Color Palettes. Using Standard Palette</string>
   <string name="create_color">Create Color</string>
   <string name="add_color_message">Add a color from below</string>
   <string name="choose_color_message">Choose from standard colors or create your own</string>
@@ -32,6 +32,7 @@
   <string name="color_name_already_exists">A color with that name already exists</string>
   <string name="palette_name_already_exists">A palette with that name already exists</string>
   <string name="added_color">Added Color %s</string>
+  <string name="added_palette">Added Palette %s</string>
   <string name="black">Black</string>
   <string name="yellow">Yellow</string>
   <string name="white">White</string>

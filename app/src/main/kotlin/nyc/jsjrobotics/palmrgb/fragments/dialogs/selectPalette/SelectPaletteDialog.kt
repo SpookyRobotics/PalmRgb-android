@@ -11,8 +11,8 @@ import android.widget.Spinner
 import android.widget.TextView
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette
-import nyc.jsjrobotics.palmrgb.dataStructures.PaletteOptions
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
+import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
 import javax.inject.Inject
 
 class SelectPaletteDialog : DialogFragmentWithPresenter() {
@@ -26,7 +26,9 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
     lateinit var model : SelectPaletteModel
 
     @Inject
-    lateinit var paletteOptions : PaletteOptions
+    lateinit var savedPaletteModel : SavedPaletteModel
+
+    var allPaletteList: List<Palette> = emptyList()
 
     lateinit var spinner : Spinner
 
@@ -41,7 +43,8 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
                 .setNegativeButton(R.string.cancel, buildNegativeButtonHandler())
 
         spinner = view.findViewById(R.id.palette_options)
-        if (paletteOptions.currentPaletteList().isEmpty()) {
+        val currentOptions = savedPaletteModel.loadedPaletteList()
+        if (currentOptions.isEmpty()) {
             spinner.visibility = View.GONE
         } else {
             builder.setPositiveButton(R.string.select, buildPositiveButtonHandler())
@@ -51,11 +54,15 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
             spinner.adapter = selectPaletteAdapter
         }
 
+
         return builder.create()
     }
 
     private fun buildAdapter(context: Context): ArrayAdapter<String> {
-        val paletteArray = paletteOptions.currentPaletteList().map { it.name }.toTypedArray()
+        val paletteList = mutableListOf(savedPaletteModel.getStandardPalette())
+        allPaletteList = paletteList
+        paletteList.addAll(savedPaletteModel.loadedPaletteList())
+        val paletteArray = paletteList.map { it.name }.toTypedArray()
         return ArrayAdapter(context,
                 R.layout.item_select_palette,
                 R.id.palette_option_name,
@@ -70,8 +77,12 @@ class SelectPaletteDialog : DialogFragmentWithPresenter() {
 
     private fun buildPositiveButtonHandler(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialog, id ->
-            val selection = spinner.selectedItem as Palette
-            model.selectPalette(selection)
+            if (allPaletteList.isEmpty()) {
+                return@OnClickListener
+            }
+            val paletteName = spinner.selectedItem as String
+            val selection = allPaletteList.filter { it.name == paletteName }.firstOrNull()
+            selection?.let { model.selectPalette(it) }
             dialog.dismiss()
         }
     }

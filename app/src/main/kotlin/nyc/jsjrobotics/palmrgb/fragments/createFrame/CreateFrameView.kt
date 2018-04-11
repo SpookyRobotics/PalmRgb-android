@@ -84,4 +84,6 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
         savedState = savedInstanceState.getIntegerArrayList("colors")
         //gridAdapter.setRestoredState(savedState)
     }
+
+    fun notifyDataSetChanged() = gridAdapter.notifyDataSetChanged()
 }

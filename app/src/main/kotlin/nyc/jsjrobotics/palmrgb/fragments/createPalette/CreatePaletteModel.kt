@@ -1,29 +1,28 @@
 package nyc.jsjrobotics.palmrgb.fragments.createPalette
 
-import android.widget.Toast
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import nyc.jsjrobotics.palmrgb.Application
-import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
-import nyc.jsjrobotics.palmrgb.runOnMainThread
+import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CreatePaletteModel @Inject constructor() {
     private val newPaletteColors : MutableList<ColorOption> = mutableListOf()
-    private val colorsModified : PublishSubject<MutableList<ColorOption>> = PublishSubject.create()
-    val onColorsModified : Observable<MutableList<ColorOption>> = colorsModified
+    private val newPaletteColorsModified : PublishSubject<MutableList<ColorOption>> = PublishSubject.create()
+    val onNewPaletteColorsModified : Observable<MutableList<ColorOption>> = newPaletteColorsModified
+
+    val requstSavePalette : PublishSubject<Palette> = PublishSubject.create()
+    val onRequstSavePalette : Observable<Palette> = requstSavePalette
 
     fun addColorOption(colorSelected: ColorOption) {
         newPaletteColors.add(colorSelected)
+        newPaletteColorsModified.onNext(newPaletteColors)
     }
 
     fun requestSavePalette(title: String) {
-        runOnMainThread {
-            Toast.makeText(Application.instance(), "Saving Palette $title", Toast.LENGTH_SHORT).show()
-        }
+        requstSavePalette.onNext(Palette(title, newPaletteColors.map { it.color }))
     }
 
 }

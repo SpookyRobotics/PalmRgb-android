@@ -7,15 +7,16 @@ import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.globalState.SavedColorsModel
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
+import nyc.jsjrobotics.palmrgb.executeInThread
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.savePalette.SavePaletteDialog
-import nyc.jsjrobotics.palmrgb.fragments.dialogs.savePalette.SavePaletteDialogModel
+import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
 import javax.inject.Inject
 
 class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
                                                  val savedColorsModel: SavedColorsModel,
-                                                 val savedPaletteDialogModel: SavePaletteDialogModel,
-                                                 val createPaletteModel: CreatePaletteModel) : DefaultPresenter(){
+                                                 val createPaletteModel: CreatePaletteModel,
+                                                 val savedPaletteModel: SavedPaletteModel) : DefaultPresenter(){
     private lateinit var view: CreatePaletteView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : DialogFragmentWithPresenter? = null
@@ -32,8 +33,10 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
     }
 
     private fun subscribeSavePaletteButton() {
-        val savePaletteDisposable = savedPaletteDialogModel.onSaveColorRequested.subscribe { paletteName ->
-            createPaletteModel.requestSavePalette(paletteName)
+        val savePaletteDisposable = createPaletteModel.onRequstSavePalette.subscribe { paletteToSave ->
+            executeInThread {
+                savedPaletteModel.savePalette(paletteToSave)
+            }
         }
         disposables.add(savePaletteDisposable)
     }

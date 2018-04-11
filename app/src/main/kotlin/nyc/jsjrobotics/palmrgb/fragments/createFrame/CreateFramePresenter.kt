@@ -5,7 +5,6 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.support.v4.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
-import nyc.jsjrobotics.palmrgb.androidInterfaces.FragmentId
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialogModel
@@ -13,11 +12,15 @@ import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.saveFrame.SaveRgbFrameDialogModel
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteDialog
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteModel
+import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
+import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
 
 class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDialogModel,
                                                val changeDisplayModel : ChangeDisplayDialogModel,
-                                               val createFrameModel: CreateFrameModel) : DefaultPresenter() {
+                                               val createFrameModel: CreateFrameModel,
+                                               val savedPaletteModel: SavedPaletteModel,
+                                               private val selectPaletteModel: SelectPaletteModel) : DefaultPresenter() {
     private lateinit var view: CreateFrameView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : DialogFragmentWithPresenter? = null
@@ -25,25 +28,50 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
     fun init(fragmentManager : FragmentManager, view: CreateFrameView) {
         this.view = view
         disposables.clear()
-        val createDialogSubscription = view.onCreateFrameClicked.subscribe {
-            displayDialog(fragmentManager, SaveRgbFrameDialog())
-        }
-        val saveFrameSubscription = saveRgbModel.onSaveFrameRequested.subscribe { frameTitle ->
-            createFrameModel.writeCurrentFrameToDatabase(frameTitle)
-        }
+        subscribeToCreateDialog(fragmentManager)
+        subscribeToSaveFrame()
+        subscribeToSelectChangePalette(fragmentManager)
+        subscribeToChangeDisplay(fragmentManager)
+        subscribeToPaletteChanged()
+    }
 
-        val selectPaletteClicked = view.onSelectPaletteClicked.subscribe {
-            displayDialog(fragmentManager, SelectPaletteDialog())
+    private fun subscribeToPaletteChanged() {
+        selectPaletteModel.onPaletteSelected.subscribe{ ignored ->
+            runOnMainThread { view.notifyDataSetChanged() }
+
         }
+    }
+
+    private fun subscribeToChangeDisplay(fragmentManager: FragmentManager) {
         val changeDisplayClicked = view.onChangeDisplayClicked.subscribe {
             displayDialog(fragmentManager, ChangeDisplayDialog())
         }
-        disposables.addAll(
-                createDialogSubscription,
-                saveFrameSubscription,
-                selectPaletteClicked,
-                changeDisplayClicked
-        )
+        disposables.add(changeDisplayClicked)
+    }
+
+    private fun subscribeToSelectChangePalette(fragmentManager: FragmentManager) {
+        val selectPaletteClicked = view.onSelectPaletteClicked.subscribe {
+            val loadingPalettes = savedPaletteModel.loadPaletteList().subscribe { ignored ->
+                // After refreshing the palette list, display the dialog
+                displayDialog(fragmentManager, SelectPaletteDialog())
+            }
+            disposables.add(loadingPalettes)
+        }
+        disposables.add(selectPaletteClicked)
+    }
+
+    private fun subscribeToSaveFrame() {
+        val saveFrameSubscription = saveRgbModel.onSaveFrameRequested.subscribe { frameTitle ->
+            createFrameModel.writeCurrentFrameToDatabase(frameTitle)
+        }
+        disposables.add(saveFrameSubscription)
+    }
+
+    private fun subscribeToCreateDialog(fragmentManager: FragmentManager) {
+        val createDialogSubscription = view.onCreateFrameClicked.subscribe {
+            displayDialog(fragmentManager, SaveRgbFrameDialog())
+        }
+        disposables.add(createDialogSubscription)
     }
 
     private fun displayDialog(fragmentManager: FragmentManager, dialog : DialogFragmentWithPresenter) {

@@ -15,12 +15,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SavedColorsModel @Inject constructor(val appDatabase: AppDatabase){
+class SavedColorsModel @Inject constructor(private val application: Application,
+                                           private val appDatabase: AppDatabase){
     private val colorsUpdated : PublishSubject<Boolean> = PublishSubject.create()
     val onColorsUpdated : Observable<Boolean> = colorsUpdated
 
     fun saveNewColor(colorName: String, colorToSave: Int) {
-        val application = Application.instance()
         val intent = Intent(application, PalmRgbBackground::class.java)
         intent.putExtra(PalmRgbBackground.EXTRA_FUNCTION, PalmRgbBackground.FUNCTION_SAVE_COLOR)
         intent.putExtra(PalmRgbBackground.EXTRA_COLOR_NAME, colorName)
@@ -42,7 +42,6 @@ class SavedColorsModel @Inject constructor(val appDatabase: AppDatabase){
     }
 
     fun standardColors(): List<ColorOption> {
-        val context = Application.instance()
         val colorList = listOf(
                 Pair(R.string.black, R.color.black),
                 Pair(R.string.red, R.color.red),
@@ -53,8 +52,8 @@ class SavedColorsModel @Inject constructor(val appDatabase: AppDatabase){
         )
         val standardColors = colorList.map {
             ColorOption(
-                    context.getString(it.first),
-                    context.getColor(it.second)
+                    application.getString(it.first),
+                    application.getColor(it.second)
             )
         }
         return standardColors
