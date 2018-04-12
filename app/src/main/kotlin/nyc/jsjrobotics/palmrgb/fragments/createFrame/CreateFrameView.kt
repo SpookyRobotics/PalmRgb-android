@@ -49,18 +49,9 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
         changeDisplayButton.setOnClickListener{ changeDisplayClicked.onNext(true) }
     }
 
-    fun getDiode(diodeIndex: Int): RgbDiode {
-        return gridView.getChildAt(diodeIndex) as RgbDiode
+    fun setSelectedPaletteName(name: String) {
+        selectPaletteButton.text = rootXml.context.getString(R.string.selected_palette, name)
     }
-
-    /***
-     * Get 0 based diode from a viewgroup
-     */
-    fun getDiodeInRow(row : ViewGroup, index : Int) : RgbDiode {
-        return row.getChildAt(index) as RgbDiode
-    }
-
-    fun currentFrame(): List<Int> = createFrameModel.displayedColors
 
     /***
      * When saving state, all diodes may not currently be on screen.
@@ -86,4 +77,5 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
     }
 
     fun notifyDataSetChanged() = gridAdapter.notifyDataSetChanged()
+
 }

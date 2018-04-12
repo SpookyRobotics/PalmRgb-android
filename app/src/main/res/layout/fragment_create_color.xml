@@ -1,70 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/create_color_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/preview_diode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- TODO fix width and height to be relative values-->
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/preview_diode"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        />
+
+    <TextView
+        android:id="@+id/red_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/red"
+        app:layout_constraintTop_toBottomOf="@id/preview_diode"
+        app:layout_constraintBottom_toTopOf="@id/red_seekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <SeekBar
+        android:id="@+id/red_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-        <TextView
-            android:id="@+id/create_color_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_color"
-            android:layout_marginBottom="@dimen/small_margin"
-            />
+        android:layout_marginLeft="@dimen/large_margin"
+        android:layout_marginRight="@dimen/large_margin"
+        app:layout_constraintTop_toBottomOf="@id/red_title"
+        app:layout_constraintBottom_toTopOf="@id/green_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- TODO fix width and height to be relative values-->
-        <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
-            android:id="@+id/preview_diode"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+    <TextView
+        android:id="@+id/green_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/green"
+        app:layout_constraintTop_toBottomOf="@id/red_seekbar"
+        app:layout_constraintBottom_toTopOf="@id/green_seekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            android:id="@+id/red_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/red"/>
+    <SeekBar
+        android:id="@+id/green_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/large_margin"
+        android:layout_marginRight="@dimen/large_margin"
+        app:layout_constraintTop_toBottomOf="@id/green_title"
+        app:layout_constraintBottom_toTopOf="@id/blue_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <SeekBar
-            android:id="@+id/red_seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/large_margin"
-            android:layout_marginRight="@dimen/large_margin" />
+    <TextView
+        android:id="@+id/blue_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/blue"
+        app:layout_constraintTop_toBottomOf="@id/green_seekbar"
+        app:layout_constraintBottom_toTopOf="@id/blue_seekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            android:id="@+id/green_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/green"/>
+    <SeekBar
+        android:id="@+id/blue_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/large_margin"
+        android:layout_marginRight="@dimen/large_margin"
+        app:layout_constraintTop_toBottomOf="@id/blue_title"
+        app:layout_constraintBottom_toTopOf="@id/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <SeekBar
-            android:id="@+id/green_seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/large_margin"
-            android:layout_marginRight="@dimen/large_margin" />
-
-        <TextView
-            android:id="@+id/blue_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/blue"/>
-
-        <SeekBar
-            android:id="@+id/blue_seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/large_margin"
-            android:layout_marginRight="@dimen/large_margin" />
-
-        <Button
-            android:id="@+id/save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_color"/>
-    </LinearLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_color"
+        app:layout_constraintTop_toBottomOf="@id/blue_seekbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</android.support.constraint.ConstraintLayout>

@@ -33,7 +33,7 @@ class SavedPaletteModel @Inject constructor(private val application: Application
     private val onLoadingSuccessful = loadingComplete
 
     private val paletteListChanged : PublishSubject<Boolean> = PublishSubject.create()
-    private val onPaletteListChanged = paletteListChanged
+    val onPaletteListChanged = paletteListChanged
 
     private var paletteUpdateDisposable: Disposable
 
@@ -59,9 +59,10 @@ class SavedPaletteModel @Inject constructor(private val application: Application
     private fun setPaletteList(paletteOptions: List<MutablePalette>) {
         paletteList.clear()
         paletteList.addAll(paletteOptions.map { it.immutable() })
+        paletteListChanged.onNext(true)
     }
 
-    fun loadedPaletteList() = paletteList
+    fun loadedPaletteList() = paletteList.toList()
 
     fun getStandardPalette(): Palette {
         val colorValues = savedColorsModel.standardColors().map { it.color }

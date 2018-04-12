@@ -11,5 +11,6 @@
       android:layout_marginLeft="@dimen/medium_margin"
       android:layout_marginRight="@dimen/medium_margin"
       android:layout_marginBottom="@dimen/xsmall_margin"
+      android:maxLength="16"
       />
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.OnLifecycleEvent
 import android.support.v4.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.changeDisplay.ChangeDisplayDialog
@@ -24,6 +25,7 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
     private lateinit var view: CreateFrameView
     private val disposables : CompositeDisposable = CompositeDisposable()
     private var displayedDialog : DialogFragmentWithPresenter? = null
+    private var loadingPaletteDisposable : Disposable? = null
 
     fun init(fragmentManager : FragmentManager, view: CreateFrameView) {
         this.view = view
@@ -33,11 +35,19 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         subscribeToSelectChangePalette(fragmentManager)
         subscribeToChangeDisplay(fragmentManager)
         subscribeToPaletteChanged()
+        setCurrentPaletteName()
+    }
+
+    private fun setCurrentPaletteName() {
+        view.setSelectedPaletteName(createFrameModel.selectedPalette.name)
     }
 
     private fun subscribeToPaletteChanged() {
         selectPaletteModel.onPaletteSelected.subscribe{ ignored ->
-            runOnMainThread { view.notifyDataSetChanged() }
+            runOnMainThread {
+                setCurrentPaletteName()
+                view.notifyDataSetChanged()
+            }
 
         }
     }
@@ -51,11 +61,11 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
 
     private fun subscribeToSelectChangePalette(fragmentManager: FragmentManager) {
         val selectPaletteClicked = view.onSelectPaletteClicked.subscribe {
-            val loadingPalettes = savedPaletteModel.loadPaletteList().subscribe { ignored ->
+            loadingPaletteDisposable?.dispose()
+            loadingPaletteDisposable = savedPaletteModel.loadPaletteList().subscribe { ignored ->
                 // After refreshing the palette list, display the dialog
                 displayDialog(fragmentManager, SelectPaletteDialog())
             }
-            disposables.add(loadingPalettes)
         }
         disposables.add(selectPaletteClicked)
     }

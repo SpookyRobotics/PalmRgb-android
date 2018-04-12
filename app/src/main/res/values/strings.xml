@@ -38,5 +38,6 @@
   <string name="white">White</string>
   <string name="palette_name">Palette name</string>
   <string name="enter_palette_name">Enter palette name</string>
+    <string name="selected_palette">Palette:\n%s</string>
 
 </resources>

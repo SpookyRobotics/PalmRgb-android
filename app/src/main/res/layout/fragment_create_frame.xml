@@ -80,6 +80,8 @@
       app:layout_constraintStart_toEndOf="@id/guideline"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintBottom_toBottomOf="parent"
+      android:maxLines="2"
+      android:ellipsize="end"
       />
 
 
