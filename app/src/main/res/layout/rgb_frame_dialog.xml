@@ -14,7 +14,7 @@
       app:layout_constraintBottom_toTopOf="@id/saved_rgb_matrix"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      />
+      style="@style/SectionHeader"/>
 
   <GridView
       android:id="@+id/saved_rgb_matrix"

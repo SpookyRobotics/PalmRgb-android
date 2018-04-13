@@ -11,13 +11,13 @@
 
         <TextView
             android:id="@+id/empty_palette_message"
-            android:text="@string/add_color_message"
+            android:text="@string/select_color_to_add_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
-            />
+            style="@style/SectionHeader"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/palette_colors"
@@ -45,7 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/small_margin" />
+            android:layout_marginBottom="@dimen/small_margin"
+            style="@style/SectionHeader"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/color_options"

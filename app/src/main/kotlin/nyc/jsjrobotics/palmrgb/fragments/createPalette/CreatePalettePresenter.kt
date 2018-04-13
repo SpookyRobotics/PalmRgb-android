@@ -27,9 +27,17 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
         subscribeToAddColorToPalette()
         loadStandardColors()
         loadSavedColors()
-        updateCreatePaletteButton()
+        view.updateCreatePaletteButton()
         subscribeCreatePaletteButton(fragmentManager)
         subscribeSavePaletteButton()
+        subscribeRemoveColor()
+    }
+
+    private fun subscribeRemoveColor() {
+        val removeColorDisposable = view.onRemoveColorRequest().subscribe {
+            view.removeColor(it)
+        }
+        disposables.add(removeColorDisposable)
     }
 
     private fun subscribeSavePaletteButton() {
@@ -63,14 +71,11 @@ class CreatePalettePresenter @Inject constructor(val appDatabase: AppDatabase,
         val addColorDisposable = view.onAddColor().subscribe { colorSelected ->
             createPaletteModel.addColorOption(colorSelected)
             view.addPaletteColor(colorSelected)
-            updateCreatePaletteButton()
+            view.updateCreatePaletteButton()
         }
         disposables.add(addColorDisposable)
     }
 
-    private fun updateCreatePaletteButton() {
-        view.showCreatePaletteButton(!view.getCreatePaletteColors().isEmpty())
-    }
 
     private fun subscribeToInsertColor() {
         val saveColorsModified = appDatabase.savedColorsDao().getAllFlowable().subscribe {

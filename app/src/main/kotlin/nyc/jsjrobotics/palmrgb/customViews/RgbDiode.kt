@@ -71,6 +71,10 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         }
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
     private fun getOptionalColor(typedArray: TypedArray, attributeId: Int): Int? {
         if (typedArray.hasValue(attributeId)) {
             return typedArray.getColor(attributeId, Color.TRANSPARENT)

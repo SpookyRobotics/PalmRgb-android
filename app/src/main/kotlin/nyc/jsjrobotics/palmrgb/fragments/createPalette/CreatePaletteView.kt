@@ -12,6 +12,7 @@ import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.ColorOption
 import nyc.jsjrobotics.palmrgb.inflate
+import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
 
 class CreatePaletteView @Inject constructor(private val colorOptionsAdapter : ColorOptionsAdapter,
@@ -44,16 +45,19 @@ class CreatePaletteView @Inject constructor(private val colorOptionsAdapter : Co
 
         newPalette.layoutManager = LinearLayoutManager(rootXml.context, RecyclerView.HORIZONTAL, false)
         newPalette.adapter = newPaletteAdapter
-        showCreatePaletteButton(!newPaletteAdapter.colorOptions.isEmpty())
+        newPaletteAdapter.enableRemoveOption()
+        updateCreatePaletteButton()
 
     }
 
-    fun showCreatePaletteButton(isVisibile: Boolean) {
-        val visibility = if (isVisibile) View.VISIBLE else View.GONE
+    fun updateCreatePaletteButton() {
+        val isVisible: Boolean = !newPaletteAdapter.colorOptions.isEmpty()
+        val visibility = if (isVisible) View.VISIBLE else View.GONE
         createPaletteButton.visibility = visibility
     }
 
     fun onAddColor(): Observable<ColorOption> = colorOptionsAdapter.onColorSelected
+    fun onRemoveColorRequest() : Observable<Int> = newPaletteAdapter.onRemoveColorRequest
 
     private fun setColorOptions() {
         val finalList = standardColors.toMutableList()
@@ -63,7 +67,13 @@ class CreatePaletteView @Inject constructor(private val colorOptionsAdapter : Co
 
     fun addPaletteColor(colorSelected: ColorOption) {
         newPaletteAdapter.addColor(colorSelected)
+        newPalette.scrollToPosition(newPaletteAdapter.colorOptions.size -1)
+
     }
 
     fun getCreatePaletteColors() = newPaletteAdapter.colorOptions
+    fun removeColor(colorOption: Int) {
+        newPaletteAdapter.removeOption(colorOption)
+        updateCreatePaletteButton()
+    }
 }
