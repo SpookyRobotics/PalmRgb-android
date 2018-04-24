@@ -18,12 +18,8 @@ class SavedFramesAdapter @Inject constructor(): RecyclerView.Adapter<SavedFrameV
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SavedFrameViewHolder {
-        return SavedFrameViewHolder(parent!!)
-    }
-
-    override fun onViewDetachedFromWindow(holder: SavedFrameViewHolder?) {
-        super.onViewDetachedFromWindow(holder)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedFrameViewHolder {
+        return SavedFrameViewHolder(parent)
     }
 
     override fun getItemCount(): Int = data.size
