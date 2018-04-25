@@ -1,23 +1,23 @@
 package nyc.jsjrobotics.palmrgb.fragments.createFrame
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.GridView
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray64
 import nyc.jsjrobotics.palmrgb.inflate
-import java.util.*
 import javax.inject.Inject
 
-class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
-                                          val createFrameModel: CreateFrameModel){
+class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel,
+                                          val diodeArray: XmlDiodeArray64) : LifecycleObserver {
     lateinit var rootXml: View
-    private var savedState: ArrayList<Int>? = null
-    private lateinit var gridView: GridView
     private lateinit var createFrameButton : Button
     private lateinit var resetFrameButton : Button
     private lateinit var selectPaletteButton : Button
@@ -34,19 +34,26 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
 
     fun initView(container: ViewGroup, savedInstanceState:  Bundle?) {
         rootXml = container.inflate(R.layout.fragment_create_frame)
-        gridView = rootXml.findViewById(R.id.rgbMatrix)
+        diodeArray.setView(rootXml.findViewById(R.id.rgbMatrix))
+        diodeArray.subscribeOnDiodeChanged { diode -> saveDiodeColor(diode) }
+        refreshColors()
+
         resetFrameButton = rootXml.findViewById(R.id.reset_frame)
         changeDisplayButton = rootXml.findViewById(R.id.change_display)
         selectPaletteButton = rootXml.findViewById(R.id.select_palette)
         createFrameButton = rootXml.findViewById(R.id.create_frame)
 
-        gridView.adapter = gridAdapter
-        savedInstanceState?.let { onRestoreInstanceState(it) }
-
         createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }
         selectPaletteButton.setOnClickListener { selectPaletteClicked.onNext(true) }
-        resetFrameButton.setOnClickListener { gridAdapter.reset() }
+        resetFrameButton.setOnClickListener {
+            createFrameModel.reset()
+            refreshColors()
+        }
         changeDisplayButton.setOnClickListener{ changeDisplayClicked.onNext(true) }
+    }
+
+    private fun refreshColors() {
+        diodeArray.setPaletteColors(createFrameModel.selectedPalette.colors.toMutableList())
     }
 
     fun setSelectedPaletteName(name: String) {
@@ -61,7 +68,7 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
     fun writeStateToModel() {
         createFrameModel.diodeRange()
                 .forEach { index ->
-                    val diode = gridView.getChildAt(index) as RgbDiode?
+                    val diode = diodeArray.getDiode(index) as RgbDiode?
                     if (diode != null) {
                         createFrameModel.saveDiodeState(index, diode.currentColor())
                     }
@@ -69,13 +76,17 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
     }
 
 
-
-
-    fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        savedState = savedInstanceState.getIntegerArrayList("colors")
-        //gridAdapter.setRestoredState(savedState)
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun unsubscribe() {
+        diodeArray.unsubscribe()
     }
 
-    fun notifyDataSetChanged() = gridAdapter.notifyDataSetChanged()
+    fun notifyDataSetChanged() {
+        diodeArray.setPaletteColors(createFrameModel.displayedColors)
+    }
+
+    private fun saveDiodeColor(view: RgbDiode) {
+        createFrameModel.saveDiodeState(view.indexInMatrix, view.currentColor())
+    }
 
 }

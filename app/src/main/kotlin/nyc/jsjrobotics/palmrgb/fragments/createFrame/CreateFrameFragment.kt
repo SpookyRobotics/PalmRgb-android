@@ -29,6 +29,7 @@ class CreateFrameFragment : FragmentWithPresenter() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.initView(container!!, savedInstanceState)
+        lifecycle.addObserver(view)
         presenter.init(fragmentManager!!, view)
         return view.rootXml
     }

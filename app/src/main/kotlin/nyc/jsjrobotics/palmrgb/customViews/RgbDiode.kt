@@ -20,8 +20,8 @@ import nyc.jsjrobotics.palmrgb.R
  * Currently state is restored by the parent view calling setCurrentColorIndex
  */
 class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(context, attrs, style) {
-    private lateinit var rgbPaint: Paint
-    private lateinit var blackOutlinePaint: Paint
+    private var rgbPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var blackOutlinePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var rectangle: Rect
     private val colorChanged: PublishSubject<Int> = PublishSubject.create()
     val onColorChanged: Observable<Int> = colorChanged
@@ -49,14 +49,6 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     constructor(context: Context) : this(context, null, 0)
 
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0) {
-        blackOutlinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        blackOutlinePaint.color = Color.BLACK
-        blackOutlinePaint.style = Paint.Style.FILL_AND_STROKE
-        blackOutlinePaint.strokeWidth = 2.0f
-
-        rgbPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        rgbPaint.setStyle(Paint.Style.FILL)
-        rgbPaint.color = Color.BLACK
 
         val typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RgbDiode)
         val initialColor = getOptionalColor(typedArray, R.styleable.RgbDiode_prgb_initialColor)
@@ -71,8 +63,14 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         }
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    init {
+        blackOutlinePaint.color = Color.BLACK
+        blackOutlinePaint.style = Paint.Style.FILL_AND_STROKE
+        blackOutlinePaint.strokeWidth = 2.0f
+
+        rgbPaint.setStyle(Paint.Style.FILL)
+        rgbPaint.color = Color.BLACK
+        setOnClickListener { displayNextColor() }
     }
 
     private fun getOptionalColor(typedArray: TypedArray, attributeId: Int): Int? {
@@ -80,10 +78,6 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
             return typedArray.getColor(attributeId, Color.TRANSPARENT)
         }
         return null
-    }
-
-    init {
-        setOnClickListener { displayNextColor() }
     }
 
     fun displayNextColor() {

@@ -27,7 +27,7 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
         executeInThread {
             val frame = appDatabase.rgbFramesDao().getFrame(frameId)
             if (frame == null) {
-                fragmentNeeded.onNext{it.finish() }
+                fragmentNeeded.onNext{ it.finish() }
                 return@executeInThread
             }
             runOnMainThread { view.setData(frame) }

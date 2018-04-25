@@ -6,14 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_create_frame">
 
-  <GridView
+  <include
       android:id="@+id/rgbMatrix"
       android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:columnWidth="@dimen/fixed_diode_size"
-      android:numColumns="8"
-      android:verticalSpacing="@dimen/xsmall_margin"
-      android:stretchMode="spacingWidthUniform"
+      android:layout_height="0dp"
+      layout="@layout/diode_array_64"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
