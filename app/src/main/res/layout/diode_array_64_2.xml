@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Row 1 -->
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode1"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode2"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode1"
+        app:layout_constraintEnd_toStartOf="@id/diode3"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode3"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode2"
+        app:layout_constraintEnd_toStartOf="@id/diode4"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode4"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode3"
+        app:layout_constraintEnd_toStartOf="@id/diode5"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode5"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode4"
+        app:layout_constraintEnd_toStartOf="@id/diode6"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode6"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode5"
+        app:layout_constraintEnd_toStartOf="@id/diode7"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode7"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode6"
+        app:layout_constraintEnd_toStartOf="@id/diode8"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode8"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toEndOf="@id/diode7"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode9"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode1"
+        app:layout_constraintBottom_toTopOf="@id/diode17"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode17"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode9"
+        app:layout_constraintBottom_toTopOf="@id/diode25"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode25"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode17"
+        app:layout_constraintBottom_toTopOf="@id/diode33"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode33"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode25"
+        app:layout_constraintBottom_toTopOf="@id/diode41"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode41"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode33"
+        app:layout_constraintBottom_toTopOf="@id/diode49"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode49"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode41"
+        app:layout_constraintBottom_toTopOf="@id/diode57"/>
+
+    <nyc.jsjrobotics.palmrgb.customViews.RgbDiode
+        android:id="@+id/diode57"
+        style="@style/XmlDiodeArray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/diode2"
+        app:layout_constraintTop_toBottomOf="@id/diode49"
+        app:layout_constraintBottom_toBottomOf="parent"/>-->
+</android.support.constraint.ConstraintLayout>

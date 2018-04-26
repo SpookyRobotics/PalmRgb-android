@@ -13,13 +13,15 @@ class ConnectionStatusView @Inject constructor() {
     private lateinit var toolbar: Toolbar
 
     fun initView(container: ViewGroup, savedInstanceState: Bundle?) {
-        rootXml = container.inflate(R.layout.fragment_connection_status)
+        /*rootXml = container.inflate(R.layout.fragment_connection_status)
         toolbar = rootXml.findViewById(R.id.toolbar)
-        displayConnected(false)
+        displayConnected(false)*/
+        rootXml = container.inflate(R.layout.diode_array_64_2)
     }
 
 
     fun displayConnected(connected: Boolean) {
+        if (true) return
         if (connected) {
             toolbar.title = rootXml.context.getString(R.string.connected)
         } else {
