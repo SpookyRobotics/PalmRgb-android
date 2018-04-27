@@ -63,7 +63,7 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         val selectPaletteClicked = view.onSelectPaletteClicked.subscribe {
             loadingPaletteDisposable?.dispose()
             loadingPaletteDisposable = savedPaletteModel.loadPaletteList().subscribe { ignored ->
-                // After refreshing the palette list, display the dialog
+                // After refreshing the palette list, showColors the dialog
                 displayDialog(fragmentManager, SelectPaletteDialog())
             }
         }

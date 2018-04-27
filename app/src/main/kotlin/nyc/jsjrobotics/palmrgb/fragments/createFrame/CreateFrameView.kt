@@ -53,7 +53,8 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
     }
 
     private fun refreshColors() {
-        diodeArray.setPaletteColors(createFrameModel.selectedPalette.colors.toMutableList())
+        diodeArray.setPaletteColors(createFrameModel.selectedPalette.colors)
+        diodeArray.showColors(createFrameModel.displayedColors)
     }
 
     fun setSelectedPaletteName(name: String) {
@@ -82,7 +83,7 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
     }
 
     fun notifyDataSetChanged() {
-        diodeArray.setPaletteColors(createFrameModel.displayedColors)
+        diodeArray.setPaletteColors(createFrameModel.selectedPalette.colors)
     }
 
     private fun saveDiodeColor(view: RgbDiode) {

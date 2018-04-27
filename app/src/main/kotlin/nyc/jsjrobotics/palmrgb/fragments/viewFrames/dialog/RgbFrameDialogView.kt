@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.GridView
 import android.widget.TextView
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -13,7 +12,6 @@ import nyc.jsjrobotics.palmrgb.androidInterfaces.DialogUtil
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultActivity
 import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray64
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
-import nyc.jsjrobotics.palmrgb.fragments.viewFrames.DisplayFrameAdapter
 import javax.inject.Inject
 
 class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray64) {
@@ -43,7 +41,7 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray64) {
     fun setData(frame: MutableRgbFrame) {
         val frameId = frame.frameId!!
         title.text = frame.frameName
-        diodeArray.setDiodeColors(frame.colorList)
+        diodeArray.showColors(frame.colorList)
         displayButton.setOnClickListener { displayFrame.onNext(frame) }
         deleteButton.setOnClickListener { deleteFrame.onNext(frame) }
     }

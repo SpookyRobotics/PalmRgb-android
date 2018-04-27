@@ -22,12 +22,9 @@ class XmlDiodeArray64 @Inject constructor() {
 
 
     fun setPaletteColors(palette: List<Int>) {
-        if (palette.isEmpty()) return
-        val colorToDisplay = palette[0]
         getDiodes()
                 .forEach { diode ->
                     diode.colorStateList = palette.toMutableList()
-                    diode.setCurrentColor(colorToDisplay)
                 }
     }
 
@@ -61,7 +58,7 @@ class XmlDiodeArray64 @Inject constructor() {
         rootXml.setOnClickListener { onClick.invoke() }
     }
 
-    fun setDiodeColors(colorList: List<Int>) {
+    fun showColors(colorList: List<Int>) {
         getDiodes().zip(colorList).forEach { pair ->
             val diode = pair.first
             val colorToDisplay = pair.second

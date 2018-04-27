@@ -4,7 +4,6 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
 import android.widget.TextView
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
@@ -44,7 +43,7 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
         frameName = data.frameName
         title.text = frameName
         displayFrameAdapter.displayedColors = rgbFrame.colorList
-        diodeArray.setDiodeColors(rgbFrame.colorList)
+        diodeArray.showColors(rgbFrame.colorList)
         rootXml.setOnClickListener { onSelectedListener() }
         diodeArray.setDiodesClickable(false)
         diodeArray.setOnClickListener { onSelectedListener() }
