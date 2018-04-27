@@ -9,7 +9,7 @@ import android.view.View
 import nyc.jsjrobotics.palmrgb.R
 
 
-class DiodeArray(context: Context, attrs: AttributeSet?, style: Int) : ConstraintLayout(context, attrs, style) {
+class ProgrammaticDiodeArray(context: Context, attrs: AttributeSet?, style: Int) : ConstraintLayout(context, attrs, style) {
 
     private val ROW_COUNT: Int = 8
     private val SQUARE_COLUMN_COUNT: Int = 8
