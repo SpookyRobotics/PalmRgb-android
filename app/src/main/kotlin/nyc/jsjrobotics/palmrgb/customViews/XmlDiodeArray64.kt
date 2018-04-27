@@ -23,17 +23,22 @@ class XmlDiodeArray64 @Inject constructor(val createFrameModel : CreateFrameMode
     }
 
 
-    fun setPaletteColors(palette: MutableList<Int>) {
+    fun setPaletteColors(palette: List<Int>) {
         getIndexedDiodes()
                 .forEach {
                     val index = it.first
                     val diode = it.second
-                    diode.colorStateList = palette
+                    diode.colorStateList = palette.toMutableList()
                     diode.indexInMatrix = index
                     val colorToDisplay = createFrameModel.displayedColors.get(index)
                     diode.setCurrentColor(colorToDisplay)
                     diode.subscribeOnColorChanged { saveViewColor(diode) }
                 }
+    }
+
+    fun reset() {
+        createFrameModel.reset()
+        notifyPaletteChanged()
     }
 
     private fun getIndexedDiodes(): List<Pair<Int, RgbDiode>> {
@@ -53,9 +58,19 @@ class XmlDiodeArray64 @Inject constructor(val createFrameModel : CreateFrameMode
         getIndexedDiodes().forEach { it.second.clearSubscriptions() }
     }
 
+    fun notifyPaletteChanged() {
+        getIndexedDiodes().forEach {
+            val index = it.first
+            val diode = it.second
+            val colorToDisplay = createFrameModel.displayedColors.get(index)
+            diode.setCurrentColor(colorToDisplay)
+            diode.invalidate()
+        }
+    }
+
     companion object {
         private fun inflateView(context: Context): ConstraintLayout {
-            return LayoutInflater.from(context).inflate(R.layout.diode_array_64_2, null, false) as ConstraintLayout
+            return LayoutInflater.from(context).inflate(R.layout.diode_array_64, null, false) as ConstraintLayout
         }
     }
 }

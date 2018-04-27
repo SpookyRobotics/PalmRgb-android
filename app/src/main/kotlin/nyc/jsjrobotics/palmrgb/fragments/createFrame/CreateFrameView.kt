@@ -17,11 +17,9 @@ import nyc.jsjrobotics.palmrgb.inflate
 import java.util.*
 import javax.inject.Inject
 
-class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
-                                          val createFrameModel: CreateFrameModel,
+class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel,
                                           val diodeArray: XmlDiodeArray64) : LifecycleObserver {
     lateinit var rootXml: View
-    private var savedState: ArrayList<Int>? = null
     private lateinit var createFrameButton : Button
     private lateinit var resetFrameButton : Button
     private lateinit var selectPaletteButton : Button
@@ -44,11 +42,9 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
         selectPaletteButton = rootXml.findViewById(R.id.select_palette)
         createFrameButton = rootXml.findViewById(R.id.create_frame)
 
-        savedInstanceState?.let { onRestoreInstanceState(it) }
-
         createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }
         selectPaletteButton.setOnClickListener { selectPaletteClicked.onNext(true) }
-        resetFrameButton.setOnClickListener { gridAdapter.reset() }
+        resetFrameButton.setOnClickListener { diodeArray.reset() }
         changeDisplayButton.setOnClickListener{ changeDisplayClicked.onNext(true) }
     }
 
@@ -77,12 +73,6 @@ class CreateFrameView @Inject constructor(val gridAdapter: RgbDiodeAdapter,
         diodeArray.unsubscribe()
     }
 
-
-    fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        savedState = savedInstanceState.getIntegerArrayList("colors")
-        //gridAdapter.setRestoredState(savedState)
-    }
-
-    fun notifyDataSetChanged() = gridAdapter.notifyDataSetChanged()
+    fun notifyDataSetChanged() = diodeArray.notifyPaletteChanged()
 
 }

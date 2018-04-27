@@ -7,22 +7,27 @@ import android.widget.GridView
 import android.widget.TextView
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
+import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray64
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
 class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createLayout(parent)) {
 
-    init {
-        Application.inject(this)
-    }
-
     @Inject
     lateinit var displayFrameAdapter: DisplayFrameAdapter
 
+    @Inject
+    lateinit var diodeArray: XmlDiodeArray64
+
     private val rootXml = itemView
     private val title : TextView = rootXml.findViewById(R.id.frame_title)
-    private val rgbGrid : GridView = rootXml.findViewById(R.id.saved_rgb_matrix)
+
+    init {
+        Application.inject(this)
+        diodeArray.setView(rootXml.findViewById(R.id.saved_rgb_matrix))
+    }
+
     private lateinit var data: MutableRgbFrame
     companion object {
         fun createLayout(parent: ViewGroup) : View {
@@ -37,8 +42,7 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
         frameName = data.frameName
         title.text = frameName
         displayFrameAdapter.displayedColors = rgbFrame.colorList
-        rgbGrid.adapter = displayFrameAdapter
+        diodeArray.setPaletteColors(rgbFrame.colorList)
         rootXml.setOnClickListener { onSelectedListener() }
-        rgbGrid.setOnItemClickListener ({ _, _, _, _ -> onSelectedListener()})
     }
 }

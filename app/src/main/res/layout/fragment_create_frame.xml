@@ -10,7 +10,7 @@
       android:id="@+id/rgbMatrix"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      layout="@layout/diode_array_64_2"
+      layout="@layout/diode_array_64"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"

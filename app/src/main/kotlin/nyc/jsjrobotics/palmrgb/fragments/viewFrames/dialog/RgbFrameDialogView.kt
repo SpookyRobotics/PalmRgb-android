@@ -11,15 +11,15 @@ import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DialogUtil
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultActivity
+import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray64
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.DisplayFrameAdapter
 import javax.inject.Inject
 
-class RgbFrameDialogView @Inject constructor(val displayFrameAdapter: DisplayFrameAdapter) {
+class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray64) {
 
     lateinit var rootXml: View
     private lateinit var title: TextView
-    private lateinit var rgbMatrix: GridView
     private lateinit var displayButton: Button
     private lateinit var deleteButton: Button
     private val displayFrame : PublishSubject<MutableRgbFrame> = PublishSubject.create()
@@ -30,11 +30,9 @@ class RgbFrameDialogView @Inject constructor(val displayFrameAdapter: DisplayFra
     fun init(inflater: LayoutInflater, container: ViewGroup?) {
         rootXml = inflater.inflate(R.layout.rgb_frame_dialog, container, false)
         title = rootXml.findViewById(R.id.frame_title)
-        rgbMatrix = rootXml.findViewById(R.id.saved_rgb_matrix)
+        diodeArray.setView(rootXml.findViewById(R.id.saved_rgb_matrix))
         displayButton = rootXml.findViewById(R.id.display)
         deleteButton = rootXml.findViewById(R.id.delete)
-        rgbMatrix.adapter = displayFrameAdapter
-
     }
 
     fun dismiss(tag: String, activity: IDefaultActivity) {
@@ -44,8 +42,7 @@ class RgbFrameDialogView @Inject constructor(val displayFrameAdapter: DisplayFra
     fun setData(frame: MutableRgbFrame) {
         val frameId = frame.frameId!!
         title.text = frame.frameName
-        displayFrameAdapter.displayedColors =  frame.colorList
-        displayFrameAdapter.notifyDataSetChanged()
+        diodeArray.setPaletteColors(frame.colorList)
         displayButton.setOnClickListener { displayFrame.onNext(frame) }
         deleteButton.setOnClickListener { deleteFrame.onNext(frame) }
     }
