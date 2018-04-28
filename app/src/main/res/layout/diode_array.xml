@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/rgb_matrix64"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/diode_array_64" />
+    <include
+        android:id="@+id/rgb_matrix32"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/diode_array_32" />
+</FrameLayout>

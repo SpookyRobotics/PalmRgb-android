@@ -38,8 +38,8 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
 
     fun initView(container: ViewGroup, savedInstanceState:  Bundle?) {
         rootXml = container.inflate(R.layout.fragment_create_frame)
-        largeMatrix = rootXml.findViewById(R.id.rgbMatrix64)
-        smallMatrix = rootXml.findViewById(R.id.rgbMatrix32)
+        largeMatrix = rootXml.findViewById(R.id.rgb_matrix64)
+        smallMatrix = rootXml.findViewById(R.id.rgb_matrix32)
         displayLargeArray(createFrameModel.usingLargeArray)
         resetFrameButton = rootXml.findViewById(R.id.reset_frame)
         changeDisplayButton = rootXml.findViewById(R.id.change_display)

@@ -23,8 +23,8 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
 
     private val rootXml = itemView
     private val title : TextView = rootXml.findViewById(R.id.frame_title)
-    private val smallMatrix : ConstraintLayout = rootXml.findViewById(R.id.saved_rgb_matrix32)
-    private val largeMatrix : ConstraintLayout = rootXml.findViewById(R.id.saved_rgb_matrix64)
+    private val smallMatrix : ConstraintLayout = rootXml.findViewById(R.id.rgb_matrix32)
+    private val largeMatrix : ConstraintLayout = rootXml.findViewById(R.id.rgb_matrix64)
 
     init {
         Application.inject(this)

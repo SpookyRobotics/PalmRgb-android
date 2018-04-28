@@ -34,8 +34,8 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
         title = rootXml.findViewById(R.id.frame_title)
         displayButton = rootXml.findViewById(R.id.display)
         deleteButton = rootXml.findViewById(R.id.delete)
-        smallMatrix = rootXml.findViewById(R.id.saved_rgb_matrix32)
-        largeMatrix = rootXml.findViewById(R.id.saved_rgb_matrix64)
+        smallMatrix = rootXml.findViewById(R.id.rgb_matrix32)
+        largeMatrix = rootXml.findViewById(R.id.rgb_matrix64)
 
     }
 
