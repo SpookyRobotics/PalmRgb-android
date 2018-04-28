@@ -10,6 +10,7 @@ import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import nyc.jsjrobotics.palmrgb.inflate
+import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
 import javax.inject.Inject
 
 class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createLayout(parent)) {
@@ -22,11 +23,11 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
 
     private val rootXml = itemView
     private val title : TextView = rootXml.findViewById(R.id.frame_title)
-    private val rgbMatrix : ConstraintLayout = rootXml.findViewById(R.id.saved_rgb_matrix)
+    private val smallMatrix : ConstraintLayout = rootXml.findViewById(R.id.saved_rgb_matrix32)
+    private val largeMatrix : ConstraintLayout = rootXml.findViewById(R.id.saved_rgb_matrix64)
 
     init {
         Application.inject(this)
-        diodeArray.setView(rgbMatrix)
     }
 
     private lateinit var data: MutableRgbFrame
@@ -40,6 +41,16 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
 
     fun bind(rgbFrame: MutableRgbFrame, onSelectedListener: () -> Unit) {
         data = rgbFrame
+        val view : ConstraintLayout
+        if (rgbFrame.isLargeMatrix()) {
+            view = largeMatrix
+            smallMatrix.visibility = View.GONE
+        } else {
+            view = smallMatrix
+            largeMatrix.visibility = View.GONE
+        }
+        diodeArray.setView(view)
+
         frameName = data.frameName
         title.text = frameName
         displayFrameAdapter.displayedColors = rgbFrame.colorList

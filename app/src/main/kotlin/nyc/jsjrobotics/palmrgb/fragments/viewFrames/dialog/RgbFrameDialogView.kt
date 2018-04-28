@@ -1,5 +1,6 @@
 package nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog
 
+import android.support.constraint.ConstraintLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,9 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
     private lateinit var title: TextView
     private lateinit var displayButton: Button
     private lateinit var deleteButton: Button
+    private lateinit var smallMatrix : ConstraintLayout
+    private lateinit var largeMatrix : ConstraintLayout
+
     private val displayFrame : PublishSubject<MutableRgbFrame> = PublishSubject.create()
     private val deleteFrame : PublishSubject<MutableRgbFrame> = PublishSubject.create()
     val onDisplayFrameClicked : Observable<MutableRgbFrame> = displayFrame
@@ -28,10 +32,11 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
     fun init(inflater: LayoutInflater, container: ViewGroup?) {
         rootXml = inflater.inflate(R.layout.rgb_frame_dialog, container, false)
         title = rootXml.findViewById(R.id.frame_title)
-        diodeArray.setView(rootXml.findViewById(R.id.saved_rgb_matrix))
-        diodeArray.setDiodesClickable(false)
         displayButton = rootXml.findViewById(R.id.display)
         deleteButton = rootXml.findViewById(R.id.delete)
+        smallMatrix = rootXml.findViewById(R.id.saved_rgb_matrix32)
+        largeMatrix = rootXml.findViewById(R.id.saved_rgb_matrix64)
+
     }
 
     fun dismiss(tag: String, activity: IDefaultActivity) {
@@ -40,6 +45,16 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
 
     fun setData(frame: MutableRgbFrame) {
         val frameId = frame.frameId!!
+        val view : ConstraintLayout
+        if (frame.isLargeMatrix()) {
+            view = largeMatrix
+            smallMatrix.visibility = View.GONE
+        } else {
+            view = smallMatrix
+            largeMatrix.visibility = View.GONE
+        }
+        diodeArray.setView(view)
+        diodeArray.setDiodesClickable(false)
         title.text = frame.frameName
         diodeArray.showColors(frame.colorList)
         displayButton.setOnClickListener { displayFrame.onNext(frame) }

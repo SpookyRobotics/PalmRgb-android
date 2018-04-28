@@ -31,6 +31,9 @@ class PalmRgbBackground : Service() {
         val FUNCTION_SAVE_PALETTE = "save_palette_function"
         val EXTRA_PALETTE_NAME = "extra_palette_name"
         val EXTRA_PALETTE_COLORS_TO_SAVE = "extra_palette_colors"
+        val EXTRA_LARGE_MATRIX = "extra_large_matrix"
+        val SMALL_MATRIX_TYPE = 0
+        val LARGE_MATRIX_TYPE = 1
     }
 
     private val taskQueue = ArrayBlockingQueue<Runnable>(10)
@@ -88,11 +91,12 @@ class PalmRgbBackground : Service() {
     private fun saveRgbFrame(intent: Intent, startId: Int) {
         val title : String? = intent.getStringExtra(EXTRA_TITLE)
         val rgbMatrix : List<Int>? = intent.getIntegerArrayListExtra(EXTRA_RGB_MATRIX)
+        val largeMatrix : Boolean? = intent.getBooleanExtra(EXTRA_LARGE_MATRIX, true)
         // The service is starting, due to a call to startService()
         runInBackground {
-            if (title != null && rgbMatrix != null) {
+            if (title != null && rgbMatrix != null && largeMatrix != null) {
                 DEBUG("Saving RGB Frame $title")
-                val frame = MutableRgbFrame(title, rgbMatrix)
+                val frame = MutableRgbFrame(title, rgbMatrix, getMatrixType(largeMatrix))
                 val alreadyExistingTitles = appDatabase.savedColorsDao().getAll().map { it.title }
                 if (alreadyExistingTitles.contains(title)) {
                     ERROR("Attempt to insert duplicate title $title")
@@ -102,6 +106,13 @@ class PalmRgbBackground : Service() {
             }
             stopSelf(startId)
         }
+    }
+
+    private fun getMatrixType(largeMatrix: Boolean): Int {
+        if (largeMatrix) {
+            return LARGE_MATRIX_TYPE
+        }
+        return SMALL_MATRIX_TYPE
     }
 
 
