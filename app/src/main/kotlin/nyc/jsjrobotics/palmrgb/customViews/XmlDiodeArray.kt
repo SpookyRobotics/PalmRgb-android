@@ -65,4 +65,8 @@ class XmlDiodeArray @Inject constructor() {
             diode.setCurrentColor(colorToDisplay)
         }
     }
+
+    fun getColors() : List<Int> {
+        return getDiodes().map { it.currentColor() }
+    }
 }

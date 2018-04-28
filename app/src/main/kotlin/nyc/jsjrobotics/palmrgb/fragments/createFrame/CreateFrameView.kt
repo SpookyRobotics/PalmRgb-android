@@ -121,4 +121,8 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
         }
     }
 
+    fun getDisplayingColors(): List<Int> {
+        return diodeArray().getColors()
+    }
+
 }

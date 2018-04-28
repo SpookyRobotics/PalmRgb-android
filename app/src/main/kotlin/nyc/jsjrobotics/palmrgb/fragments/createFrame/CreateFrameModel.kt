@@ -17,7 +17,7 @@ class CreateFrameModel @Inject constructor(private val application: Application,
                                            private val savedPalettesModel: SavedPaletteModel,
                                            private val selectPaletteModel: SelectPaletteModel){
     var selectedPalette: Palette = savedPalettesModel.getStandardPalette()
-    var displayedColors : MutableList<Int> = initialValues()
+    var displayedColors : MutableList<Int> = initialValues() ; private set
     var usingLargeArray : Boolean = true ; set (value) {
         field = value
         matrixChangedDisposable.onNext(field)
@@ -54,4 +54,9 @@ class CreateFrameModel @Inject constructor(private val application: Application,
     }
 
     private fun initialValues(): MutableList<Int>  = largeArrayRange().map { selectedPalette.colors.first() }.toMutableList()
+
+    fun setDisplayingColors(displayingColors: List<Int>) {
+        reset()
+        displayingColors.forEachIndexed { index, color -> displayedColors[index] = color }
+    }
 }

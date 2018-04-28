@@ -56,6 +56,7 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         val displaySelected = changeDisplayModel.onChangeDisplayRequested.subscribe { useLargeArray ->
             createFrameModel.usingLargeArray = useLargeArray
             view.displayLargeArray(useLargeArray)
+            createFrameModel.setDisplayingColors(view.getDisplayingColors())
         }
         val changeDisplayClicked = view.onChangeDisplayClicked.subscribe {
             displayDialog(fragmentManager, ChangeDisplayDialog())
