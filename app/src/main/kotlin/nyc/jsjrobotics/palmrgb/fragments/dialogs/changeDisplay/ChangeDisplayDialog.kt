@@ -6,8 +6,12 @@ import android.content.DialogInterface
 import android.os.Bundle
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.DialogFragmentWithPresenter
+import javax.inject.Inject
 
 class ChangeDisplayDialog : DialogFragmentWithPresenter() {
+    @Inject
+    lateinit var model : ChangeDisplayDialogModel
+
     companion object {
         val TAG = "ChangeDisplayDialog"
     }
@@ -17,20 +21,22 @@ class ChangeDisplayDialog : DialogFragmentWithPresenter() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(R.string.select_rgb_display)
-                .setPositiveButton(R.string.sixty_four_diodes, buildPositiveButtonHandler())
-                .setNegativeButton(R.string.thirty_two_diodes, buildNegativeButtonHandler())
+                .setPositiveButton(R.string.sixty_four_diodes, buildLargeMatrixButtonHandler())
+                .setNegativeButton(R.string.thirty_two_diodes, buildSmallMatrixButtonHandler())
         return builder.create()
     }
 
-    private fun buildNegativeButtonHandler(): DialogInterface.OnClickListener? {
+    private fun buildSmallMatrixButtonHandler(): DialogInterface.OnClickListener? {
         return DialogInterface.OnClickListener { dialog, id ->
+            model.requestChangeDisplay(false)
             dialog.dismiss()
         }
     }
 
 
-    private fun buildPositiveButtonHandler(): DialogInterface.OnClickListener {
+    private fun buildLargeMatrixButtonHandler(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialog, id ->
+            model.requestChangeDisplay(true)
             dialog.dismiss()
         }
     }

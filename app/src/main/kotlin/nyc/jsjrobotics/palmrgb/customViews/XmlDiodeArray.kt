@@ -3,7 +3,7 @@ package nyc.jsjrobotics.palmrgb.customViews
 import android.support.constraint.ConstraintLayout
 import javax.inject.Inject
 
-class XmlDiodeArray64 @Inject constructor() {
+class XmlDiodeArray @Inject constructor() {
 
     private lateinit var rootXml: ConstraintLayout
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
-import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray64
+import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
     lateinit var displayFrameAdapter: DisplayFrameAdapter
 
     @Inject
-    lateinit var diodeArray: XmlDiodeArray64
+    lateinit var diodeArray: XmlDiodeArray
 
     private val rootXml = itemView
     private val title : TextView = rootXml.findViewById(R.id.frame_title)

@@ -10,11 +10,11 @@ import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DialogUtil
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultActivity
-import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray64
+import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import javax.inject.Inject
 
-class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray64) {
+class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
 
     lateinit var rootXml: View
     private lateinit var title: TextView

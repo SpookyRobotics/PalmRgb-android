@@ -46,17 +46,21 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         selectPaletteModel.onPaletteSelected.subscribe{ ignored ->
             runOnMainThread {
                 setCurrentPaletteName()
-                view.notifyDataSetChanged()
+                view.updateMatrixPaletteColors()
             }
 
         }
     }
 
     private fun subscribeToChangeDisplay(fragmentManager: FragmentManager) {
+        val displaySelected = changeDisplayModel.onChangeDisplayRequested.subscribe { useLargeArray ->
+            createFrameModel.usingLargeArray = useLargeArray
+            view.displayLargeArray(useLargeArray)
+        }
         val changeDisplayClicked = view.onChangeDisplayClicked.subscribe {
             displayDialog(fragmentManager, ChangeDisplayDialog())
         }
-        disposables.add(changeDisplayClicked)
+        disposables.addAll(changeDisplayClicked, displaySelected)
     }
 
     private fun subscribeToSelectChangePalette(fragmentManager: FragmentManager) {

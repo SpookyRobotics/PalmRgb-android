@@ -1,7 +1,9 @@
 package nyc.jsjrobotics.palmrgb.fragments.createFrame
 
 import android.content.Intent
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteModel
@@ -15,10 +17,16 @@ class CreateFrameModel @Inject constructor(private val application: Application,
                                            private val savedPalettesModel: SavedPaletteModel,
                                            private val selectPaletteModel: SelectPaletteModel){
     var selectedPalette: Palette = savedPalettesModel.getStandardPalette()
-
     var displayedColors : MutableList<Int> = initialValues()
+    var usingLargeArray : Boolean = true ; set (value) {
+        field = value
+        matrixChangedDisposable.onNext(field)
+    }
 
-    fun diodeRange() : IntRange = IntRange(0, 63)
+    fun largeArrayRange() = IntRange(0, 63)
+    fun smallArrayRange() = IntRange(0, 31)
+    fun diodeRange() : IntRange = if (usingLargeArray) largeArrayRange() else smallArrayRange()
+
     fun saveDiodeState(index: Int, color: Int) {
         displayedColors[index] =  color
     }
@@ -28,6 +36,8 @@ class CreateFrameModel @Inject constructor(private val application: Application,
                 selectedPalette = palette
             }
 
+    private val matrixChangedDisposable: PublishSubject<Boolean> = PublishSubject.create()
+    val onMatrixChangeSelected : Observable<Boolean> = matrixChangedDisposable
 
     fun writeCurrentFrameToDatabase(frameTitle: String) {
         val data = ArrayList<Int>()
@@ -43,5 +53,5 @@ class CreateFrameModel @Inject constructor(private val application: Application,
         displayedColors = initialValues()
     }
 
-    private fun initialValues(): MutableList<Int>  = diodeRange().map { selectedPalette.colors.first() }.toMutableList()
+    private fun initialValues(): MutableList<Int>  = largeArrayRange().map { selectedPalette.colors.first() }.toMutableList()
 }

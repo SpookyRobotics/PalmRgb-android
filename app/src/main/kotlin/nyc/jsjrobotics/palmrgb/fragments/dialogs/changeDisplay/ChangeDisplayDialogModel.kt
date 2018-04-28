@@ -13,10 +13,10 @@ class ChangeDisplayDialogModel private constructor(){
         }
     }
 
-    private val changeDisplay : PublishSubject<String> = PublishSubject.create()
-    val onChangeDisplayRequested : Observable<String> = changeDisplay
+    private val changeDisplay : PublishSubject<Boolean> = PublishSubject.create()
+    val onChangeDisplayRequested : Observable<Boolean> = changeDisplay
 
-    fun requestSaveCurrentFrame(title: String) {
-        changeDisplay.onNext(title)
+    fun requestChangeDisplay(largeDisplay: Boolean) {
+        changeDisplay.onNext(largeDisplay)
     }
 }
