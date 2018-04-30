@@ -12,7 +12,7 @@ import nyc.jsjrobotics.palmrgb.ERROR
 import nyc.jsjrobotics.palmrgb.service.DefaultService
 import nyc.jsjrobotics.palmrgb.service.HardwareState
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
@@ -33,7 +33,6 @@ class HackdayLightsBackend : DefaultService() {
 
     companion object {
         private val RPC_TYPE = "RPC_TYPE"
-        private val RPC_FUNCTION = "RPC_FUNCTION"
         val CONNECTION_CHECK_RESPONSE = "CONNECTION_CHECK_RESPONSE"
 
         fun connectionCheckIntent() : Intent {
@@ -44,7 +43,6 @@ class HackdayLightsBackend : DefaultService() {
             val intent = Intent()
             intent.component = ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
             intent.putExtra(RPC_TYPE, requestType.name)
-            intent.putExtra(RPC_FUNCTION, requestType.rpcFunction)
             return intent
         }
     }
@@ -61,12 +59,9 @@ class HackdayLightsBackend : DefaultService() {
     private fun createRetrofit() {
         val url = hardwareState.getUrl()
         if (url.isNotBlank()) {
-            val gson = GsonBuilder()
-                    .setLenient()
-                    .create()
             retrofit = Retrofit.Builder()
                     .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
             backendApi = retrofit?.create(HackDayLightsApi::class.java)
         }
@@ -85,28 +80,25 @@ class HackdayLightsBackend : DefaultService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
             val requestType = intent.getStringExtra(RPC_TYPE)
-            val requestFunction = intent.getStringExtra(RPC_FUNCTION)
-            startRequestThread(requestType, requestFunction)
+            startRequestThread(requestType)
         }
         return START_NOT_STICKY
     }
 
-    private fun startRequestThread(request: String, rpcFunction: String?) {
+    private fun startRequestThread(request: String) {
         downloadsInProgress.getAndIncrement()
-        val requestType = RequestType.valueOf(request)
-        Thread( Runnable {
-            if (requestType == RequestType.LEFT_IDLE) {
-                if (rpcFunction == null) {
-                    ERROR("NULL request function")
-                    return@Runnable
-                }
-                rainbowRequest(rpcFunction)
-            } else if (requestType == RequestType.CHECK_CONNECTION) {
+        val requestType : RequestType? = RequestType.values().firstOrNull() { it.name == request }
+        if (requestType == null) {
+            return
+        }
+        Thread {
+            if (requestType == RequestType.CHECK_CONNECTION) {
                 connectionCheck()
             } else {
-                ERROR("UNKNOWN request")
+                val rpcFunction = requestType.rpcFunction
+                rainbowRequest(rpcFunction)
             }
-        }).start()
+        }.start()
 
     }
 
@@ -138,7 +130,7 @@ class HackdayLightsBackend : DefaultService() {
             val request = triggerFunction(rpcFunction)
             try {
                 val response = request.execute()
-                DEBUG("Result:${response.body()?.status.orEmpty()}")
+                DEBUG("Result:${response.body()}")
             } catch (e : Exception) {
                 ERROR("Failed to trigger rainbow: $e")
             }

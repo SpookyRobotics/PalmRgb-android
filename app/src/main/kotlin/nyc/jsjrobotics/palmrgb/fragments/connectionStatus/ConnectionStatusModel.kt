@@ -59,4 +59,9 @@ class ConnectionStatusModel @Inject constructor(val application: Application,
     fun setUrl(newUrl: IpAddressInput) {
         hardwareState.setUrl(newUrl.ipAddress, newUrl.port)
     }
+
+    fun disconnect() {
+        hardwareState.isConnected = false
+        connectionStatusChanged.onNext(false)
+    }
 }

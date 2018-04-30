@@ -14,19 +14,27 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
 
     fun init(view: ConnectionStatusView, onHiddenChanged: Observable<Boolean>) {
         this.view = view
-        view.displayConnected(false)
-        
-        model.onConnectionStatusChanged.subscribe(this::updateConnectedDisplay)
-        model.updateConnectionStatus()
+
         subscribeFragmentVisible(onHiddenChanged)
         subscribeConnectClicked()
         subscribeConnectionActionSelected()
         subscribeDisconnectClicked()
+        subscribeConnectionStatusChanged()
+
+        model.updateConnectionStatus()
+        view.displayConnected(false)
+
+
+    }
+
+    private fun subscribeConnectionStatusChanged() {
+        val connectionDisposable = model.onConnectionStatusChanged.subscribe(this::updateConnectedDisplay)
+        disposables.add(connectionDisposable)
     }
 
     private fun subscribeDisconnectClicked() {
         val disconnectDisposable = view.onDisconnectClicked.subscribe {
-            // TODO disconnect
+            model.disconnect()
         }
         disposables.add(disconnectDisposable)
     }
