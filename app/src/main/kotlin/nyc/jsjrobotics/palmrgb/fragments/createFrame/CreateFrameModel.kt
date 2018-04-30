@@ -1,6 +1,5 @@
 package nyc.jsjrobotics.palmrgb.fragments.createFrame
 
-import android.content.Intent
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
@@ -42,11 +41,7 @@ class CreateFrameModel @Inject constructor(private val application: Application,
     fun writeCurrentFrameToDatabase(frameTitle: String) {
         val data = ArrayList<Int>()
         data.addAll(displayedColors)
-        val intent = Intent(application, PalmRgbBackground::class.java)
-        intent.putExtra(PalmRgbBackground.EXTRA_FUNCTION, PalmRgbBackground.FUNCTION_SAVE_RGB_FRAME)
-        intent.putIntegerArrayListExtra(PalmRgbBackground.EXTRA_RGB_MATRIX, data)
-        intent.putExtra(PalmRgbBackground.EXTRA_LARGE_MATRIX, usingLargeArray)
-        intent.putExtra(PalmRgbBackground.EXTRA_TITLE, frameTitle)
+        val intent = PalmRgbBackground.saveRgbFrame(frameTitle, usingLargeArray, data)
         application.startService(intent)
     }
 

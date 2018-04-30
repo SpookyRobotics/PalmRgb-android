@@ -14,13 +14,23 @@ import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
+/**
+ * Service to interact with local database
+ */
 class PalmRgbBackground : Service() {
-
     @Inject
     lateinit var appDatabase : AppDatabase
 
     companion object {
+        fun saveRgbFrame(frameTitle: String, usingLargeArray: Boolean, data: ArrayList<Int>): Intent {
+            val intent = Intent(Application.instance(), PalmRgbBackground::class.java)
+            intent.putExtra(PalmRgbBackground.EXTRA_FUNCTION, PalmRgbBackground.FUNCTION_SAVE_RGB_FRAME)
+            intent.putIntegerArrayListExtra(PalmRgbBackground.EXTRA_RGB_MATRIX, data)
+            intent.putExtra(PalmRgbBackground.EXTRA_LARGE_MATRIX, usingLargeArray)
+            intent.putExtra(PalmRgbBackground.EXTRA_TITLE, frameTitle)
+            return intent
+        }
+
         val EXTRA_RGB_MATRIX = "extra_rgb_matrix"
         val EXTRA_TITLE = "extra_title"
         val FUNCTION_SAVE_COLOR = "save_color_function"
