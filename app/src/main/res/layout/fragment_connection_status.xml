@@ -18,11 +18,28 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:hint="@string/enter_palmrgb_ip_address"
+      android:gravity="center"
       app:layout_constraintWidth_percent="0.7"
       app:layout_constraintTop_toBottomOf="@id/connection_status"
+      app:layout_constraintBottom_toTopOf="@id/palmrgb_port"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:inputType="numberDecimal"
+      android:digits="0123456789."/>
+
+  <EditText
+      android:id="@+id/palmrgb_port"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:hint="@string/enter_palmrgb_port"
+      app:layout_constraintWidth_percent="0.4"
+      app:layout_constraintTop_toBottomOf="@id/palmrgb_ip_address"
       app:layout_constraintBottom_toTopOf="@id/connect_button"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      app:layout_constraintEnd_toEndOf="parent"
+      android:inputType="number"
+      android:maxLength="4"
+      android:gravity="center"/>
 
   <Button
       android:id="@+id/connect_button"
@@ -30,7 +47,7 @@
       android:layout_height="wrap_content"
       android:text="@string/connect"
       app:layout_constraintWidth_percent="0.7"
-      app:layout_constraintTop_toBottomOf="@id/palmrgb_ip_address"
+      app:layout_constraintTop_toBottomOf="@id/palmrgb_port"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>

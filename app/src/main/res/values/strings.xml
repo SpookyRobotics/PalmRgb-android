@@ -41,5 +41,7 @@
   <string name="selected_palette">Palette:\n%s</string>
   <string name="enter_palmrgb_ip_address">PalmRgb Ip Address</string>
   <string name="connect">Connect</string>
+    <string name="enter_palmrgb_port">Port</string>
+    <string name="checking_connection">Checking Connection</string>
 
 </resources>

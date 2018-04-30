@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
 import com.google.gson.GsonBuilder
+import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.DEBUG
 import nyc.jsjrobotics.palmrgb.ERROR
 import nyc.jsjrobotics.palmrgb.service.DefaultService
@@ -24,7 +25,7 @@ class HackdayLightsBackend : DefaultService() {
 
     private var retrofit: Retrofit? = null
     private var backendApi : HackDayLightsApi? = null
-
+    private val disposables : CompositeDisposable = CompositeDisposable()
     private val downloadsInProgress : AtomicInteger = AtomicInteger(0)
 
     @Inject
@@ -52,17 +53,19 @@ class HackdayLightsBackend : DefaultService() {
         DEBUG("Starting HackdayLightsBackend")
 
         createRetrofit()
-        hardwareState.onUrlChanged.subscribe { createRetrofit() }
+        val onUrlChanged = hardwareState.onUrlChanged.subscribe { createRetrofit() }
+        disposables.add(onUrlChanged)
 
     }
 
     private fun createRetrofit() {
-        if (hardwareState.url.isNotBlank()) {
+        val url = hardwareState.getUrl()
+        if (url.isNotBlank()) {
             val gson = GsonBuilder()
                     .setLenient()
                     .create()
             retrofit = Retrofit.Builder()
-                    .baseUrl(hardwareState.url)
+                    .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()
             backendApi = retrofit?.create(HackDayLightsApi::class.java)
@@ -74,8 +77,9 @@ class HackdayLightsBackend : DefaultService() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        disposables.dispose()
         DEBUG("Shutting down HackdayLightsBackend")
+        super.onDestroy()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -117,7 +121,8 @@ class HackdayLightsBackend : DefaultService() {
                 ERROR("Failed to connection check: $e")
                 broadcastConnectionCheckResult(false)
             }
-        }
+        } ?: broadcastConnectionCheckResult(false)
+
         checkStopSelf()
     }
 
@@ -147,5 +152,4 @@ class HackdayLightsBackend : DefaultService() {
             stopSelf()
         }
     }
-
 }

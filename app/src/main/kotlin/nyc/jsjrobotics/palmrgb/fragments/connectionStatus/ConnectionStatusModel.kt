@@ -9,6 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultActivity
+import nyc.jsjrobotics.palmrgb.dataStructures.IpAddressInput
 import nyc.jsjrobotics.palmrgb.service.HardwareState
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
@@ -17,8 +18,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ConnectionStatusModel @Inject constructor(val application: Application) {
-    private val hardwareState: HardwareState = HardwareState()
+class ConnectionStatusModel @Inject constructor(val application: Application,
+                                                val hardwareState: HardwareState) {
     private val connectionStatusChanged: PublishSubject<Boolean> = PublishSubject.create()
     val onConnectionStatusChanged: Observable<Boolean> = connectionStatusChanged
     private val updateConnectionStatus: BroadcastReceiver = buildUpdateReceiver()
@@ -53,5 +54,9 @@ class ConnectionStatusModel @Inject constructor(val application: Application) {
 
     fun unregisterUpdateConnectionReceiver(activity: IDefaultActivity) {
         LocalBroadcastManager.getInstance(activity.applicationContext()).unregisterReceiver(updateConnectionStatus)
+    }
+
+    fun setUrl(newUrl: IpAddressInput) {
+        hardwareState.setUrl(newUrl.ipAddress, newUrl.port)
     }
 }

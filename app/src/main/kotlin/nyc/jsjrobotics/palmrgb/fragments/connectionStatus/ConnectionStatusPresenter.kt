@@ -3,6 +3,7 @@ package nyc.jsjrobotics.palmrgb.fragments.connectionStatus
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.OnLifecycleEvent
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.runOnMainThread
 import javax.inject.Inject
@@ -13,13 +14,33 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
     fun init(view: ConnectionStatusView, onHiddenChanged: Observable<Boolean>) {
         this.view = view
         view.displayConnected(false)
+        
         model.onConnectionStatusChanged.subscribe(this::updateConnectedDisplay)
         model.updateConnectionStatus()
-        onHiddenChanged.subscribe { hidden ->
+        subscribeFragmentVisible(onHiddenChanged)
+        subscribeConnectClicked()
+    }
+
+    private fun subscribeConnectClicked() {
+        val connectDisposable = view.onConnectClicked.subscribe {
+            runOnMainThread {
+                view.displayCheckingConnection()
+            }
+            model.setUrl(it)
+            model.updateConnectionStatus()
+        }
+        disposables.add(connectDisposable)
+    }
+
+    private val disposables: CompositeDisposable = CompositeDisposable()
+
+    private fun subscribeFragmentVisible(onHiddenChanged: Observable<Boolean>) {
+        val hiddenChanged = onHiddenChanged.subscribe { hidden ->
             if (!hidden) {
                 model.updateConnectionStatus()
             }
         }
+        disposables.add(hiddenChanged)
     }
 
     private fun updateConnectedDisplay(isConnected : Boolean) {
