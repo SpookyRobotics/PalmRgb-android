@@ -6,6 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.runOnMainThread
+import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
 import javax.inject.Inject
 
 class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatusModel) : DefaultPresenter() {
@@ -19,6 +20,22 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
         model.updateConnectionStatus()
         subscribeFragmentVisible(onHiddenChanged)
         subscribeConnectClicked()
+        subscribeConnectionActionSelected()
+        subscribeDisconnectClicked()
+    }
+
+    private fun subscribeDisconnectClicked() {
+        val disconnectDisposable = view.onDisconnectClicked.subscribe {
+            // TODO disconnect
+        }
+        disposables.add(disconnectDisposable)
+    }
+
+    private fun subscribeConnectionActionSelected() {
+        val requestSelectedDisposable = view.onConnectedActionSelected().subscribe {
+            HackdayLightsInterface.startRequest(it)
+        }
+        disposables.add(requestSelectedDisposable)
     }
 
     private fun subscribeConnectClicked() {

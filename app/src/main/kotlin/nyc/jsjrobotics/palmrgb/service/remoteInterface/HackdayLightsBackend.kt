@@ -91,9 +91,9 @@ class HackdayLightsBackend : DefaultService() {
         return START_NOT_STICKY
     }
 
-    private fun startRequestThread(requestType: String, rpcFunction: String?) {
+    private fun startRequestThread(request: String, rpcFunction: String?) {
         downloadsInProgress.getAndIncrement()
-        val requestType = RequestType.valueOf(requestType)
+        val requestType = RequestType.valueOf(request)
         Thread( Runnable {
             if (requestType == RequestType.LEFT_IDLE) {
                 if (rpcFunction == null) {

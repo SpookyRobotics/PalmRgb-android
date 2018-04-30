@@ -43,5 +43,6 @@
   <string name="connect">Connect</string>
     <string name="enter_palmrgb_port">Port</string>
     <string name="checking_connection">Checking Connection</string>
+    <string name="disconnect">Disconnect</string>
 
 </resources>
