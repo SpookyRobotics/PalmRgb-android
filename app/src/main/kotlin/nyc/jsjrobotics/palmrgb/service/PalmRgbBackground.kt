@@ -17,7 +17,7 @@ import javax.inject.Inject
 /**
  * Service to interact with local database
  */
-class PalmRgbBackground : Service() {
+class PalmRgbBackground : DefaultService() {
     @Inject
     lateinit var appDatabase : AppDatabase
 
@@ -127,7 +127,6 @@ class PalmRgbBackground : Service() {
 
 
     override fun onCreate() {
-        Application.inject(this)
         super.onCreate()
         DEBUG("Starting PalmRgbBackground")
     }

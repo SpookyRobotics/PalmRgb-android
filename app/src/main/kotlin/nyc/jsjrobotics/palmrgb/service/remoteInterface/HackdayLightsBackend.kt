@@ -8,22 +8,27 @@ import android.support.v4.content.LocalBroadcastManager
 import com.google.gson.GsonBuilder
 import nyc.jsjrobotics.palmrgb.DEBUG
 import nyc.jsjrobotics.palmrgb.ERROR
+import nyc.jsjrobotics.palmrgb.service.DefaultService
+import nyc.jsjrobotics.palmrgb.service.HardwareState
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
 
 /**
  * Service to download values from HackdayLightsBackend.
  * Always stop self after completing tasks, and do not allow binding
  */
-class HackdayLightsBackend : Service() {
+class HackdayLightsBackend : DefaultService() {
 
-    private lateinit var retrofit: Retrofit
-    private lateinit var backendApi : HackDayLightsApi
+    private var retrofit: Retrofit? = null
+    private var backendApi : HackDayLightsApi? = null
 
-    private val DOMAIN: String = Paths.SERVER_ADDRESS
     private val downloadsInProgress : AtomicInteger = AtomicInteger(0)
+
+    @Inject
+    lateinit var hardwareState: HardwareState
 
     companion object {
         private val RPC_TYPE = "RPC_TYPE"
@@ -45,16 +50,23 @@ class HackdayLightsBackend : Service() {
     override fun onCreate() {
         super.onCreate()
         DEBUG("Starting HackdayLightsBackend")
-        val gson = GsonBuilder()
-                .setLenient()
-                .create()
 
-        retrofit = Retrofit.Builder()
-                .baseUrl(DOMAIN)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-        backendApi = retrofit.create(HackDayLightsApi::class.java)
+        createRetrofit()
+        hardwareState.onUrlChanged.subscribe { createRetrofit() }
 
+    }
+
+    private fun createRetrofit() {
+        if (hardwareState.url.isNotBlank()) {
+            val gson = GsonBuilder()
+                    .setLenient()
+                    .create()
+            retrofit = Retrofit.Builder()
+                    .baseUrl(hardwareState.url)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build()
+            backendApi = retrofit?.create(HackDayLightsApi::class.java)
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -95,14 +107,16 @@ class HackdayLightsBackend : Service() {
     }
 
     private fun connectionCheck() {
-        val request = backendApi.connectionCheck()
-        try {
-            val response = request.execute()
-            DEBUG("Result: ${response.isSuccessful}")
-            broadcastConnectionCheckResult(response.isSuccessful)
-        } catch (e : Exception) {
-            ERROR("Failed to connection check: $e")
-            broadcastConnectionCheckResult(false)
+        backendApi?.apply {
+            val request = connectionCheck()
+            try {
+                val response = request.execute()
+                DEBUG("Result: ${response.isSuccessful}")
+                broadcastConnectionCheckResult(response.isSuccessful)
+            } catch (e : Exception) {
+                ERROR("Failed to connection check: $e")
+                broadcastConnectionCheckResult(false)
+            }
         }
         checkStopSelf()
     }
@@ -115,12 +129,14 @@ class HackdayLightsBackend : Service() {
     }
 
     private fun rainbowRequest(rpcFunction: String) {
-        val request = backendApi.triggerFunction(rpcFunction)
-        try {
-            val response = request.execute()
-            DEBUG("Result:${response.body()?.status.orEmpty()}")
-        } catch (e : Exception) {
-            ERROR("Failed to trigger rainbow: $e")
+        backendApi?.apply {
+            val request = triggerFunction(rpcFunction)
+            try {
+                val response = request.execute()
+                DEBUG("Result:${response.body()?.status.orEmpty()}")
+            } catch (e : Exception) {
+                ERROR("Failed to trigger rainbow: $e")
+            }
         }
         checkStopSelf()
     }
