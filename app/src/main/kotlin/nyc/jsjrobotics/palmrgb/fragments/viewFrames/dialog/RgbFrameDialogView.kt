@@ -12,6 +12,7 @@ import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DialogUtil
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultActivity
 import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray
+import nyc.jsjrobotics.palmrgb.dataStructures.RgbFrame
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import javax.inject.Inject
 
@@ -24,10 +25,10 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
     private lateinit var smallMatrix : ConstraintLayout
     private lateinit var largeMatrix : ConstraintLayout
 
-    private val displayFrame : PublishSubject<MutableRgbFrame> = PublishSubject.create()
-    private val deleteFrame : PublishSubject<MutableRgbFrame> = PublishSubject.create()
-    val onDisplayFrameClicked : Observable<MutableRgbFrame> = displayFrame
-    val onDeleteFrameClicked : Observable<MutableRgbFrame> = deleteFrame
+    private val displayFrame : PublishSubject<RgbFrame> = PublishSubject.create()
+    private val deleteFrame : PublishSubject<RgbFrame> = PublishSubject.create()
+    val onDisplayFrameClicked : Observable<RgbFrame> = displayFrame
+    val onDeleteFrameClicked : Observable<RgbFrame> = deleteFrame
 
     fun init(inflater: LayoutInflater, container: ViewGroup?) {
         rootXml = inflater.inflate(R.layout.rgb_frame_dialog, container, false)
@@ -43,8 +44,7 @@ class RgbFrameDialogView @Inject constructor(val diodeArray: XmlDiodeArray) {
         DialogUtil.dismissDialog(activity.getActivity(), tag)
     }
 
-    fun setData(frame: MutableRgbFrame) {
-        val frameId = frame.frameId!!
+    fun setData(frame: RgbFrame) {
         val view : ConstraintLayout
         if (frame.isLargeMatrix()) {
             view = largeMatrix

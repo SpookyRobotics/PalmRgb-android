@@ -6,6 +6,7 @@ import android.content.Context
 import android.support.v4.content.LocalBroadcastManager
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
+import nyc.jsjrobotics.palmrgb.dataStructures.RgbFrame
 import nyc.jsjrobotics.palmrgb.database.AppDatabase
 import nyc.jsjrobotics.palmrgb.database.MutableRgbFrame
 import nyc.jsjrobotics.palmrgb.executeInThread
@@ -30,7 +31,7 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
                 fragmentNeeded.onNext{ it.finish() }
                 return@executeInThread
             }
-            runOnMainThread { view.setData(frame) }
+            runOnMainThread { view.setData(frame.immutable()) }
         }
 
         val onDisplayDisposable = view.onDisplayFrameClicked.subscribe {
@@ -48,9 +49,9 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
         disposables.clear()
     }
 
-    private fun deleteFrame(frame: MutableRgbFrame) {
+    private fun deleteFrame(frame: RgbFrame) {
         executeInThread {
-            appDatabase.rgbFramesDao().delete(frame)
+            appDatabase.rgbFramesDao().delete(frame.mutable())
 
             fragmentNeeded.onNext{ fragment ->
                 sendBroadcast(fragment.fragment().activity!!)
