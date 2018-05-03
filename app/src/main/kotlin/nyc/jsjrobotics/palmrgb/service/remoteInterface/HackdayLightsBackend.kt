@@ -1,14 +1,14 @@
 package nyc.jsjrobotics.palmrgb.service.remoteInterface
 
-import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
-import com.google.gson.GsonBuilder
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.DEBUG
 import nyc.jsjrobotics.palmrgb.ERROR
+import nyc.jsjrobotics.palmrgb.dataStructures.RgbFrame
+import nyc.jsjrobotics.palmrgb.protocolBuffer.DisplayFrameProto
 import nyc.jsjrobotics.palmrgb.service.DefaultService
 import nyc.jsjrobotics.palmrgb.service.HardwareState
 import retrofit2.Retrofit
@@ -33,6 +33,7 @@ class HackdayLightsBackend : DefaultService() {
 
     companion object {
         private val RPC_TYPE = "RPC_TYPE"
+        private val RPC_DISPLAY_FRAME_DATA = "RPC_DISPLAY_FRAME_DATA"
         val CONNECTION_CHECK_RESPONSE = "CONNECTION_CHECK_RESPONSE"
 
         fun connectionCheckIntent() : Intent {
@@ -40,9 +41,23 @@ class HackdayLightsBackend : DefaultService() {
         }
 
         fun intent(requestType: RequestType) : Intent {
-            val intent = Intent()
-            intent.component = ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
-            intent.putExtra(RPC_TYPE, requestType.name)
+            val intent = Intent().apply {
+                component = serviceComponentName()
+                putExtra(RPC_TYPE, requestType.name)
+            }
+            return intent
+        }
+
+        private fun serviceComponentName(): ComponentName {
+            return ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
+        }
+
+        fun uploadIntent(frame: RgbFrame): Intent {
+            val intent = Intent().apply {
+                component = serviceComponentName()
+                putExtra(RPC_TYPE, RequestType.DISPLAY_FRAME.name)
+                putExtra(RPC_DISPLAY_FRAME_DATA, frame.colorList.toIntArray())
+            }
             return intent
         }
     }
@@ -79,27 +94,54 @@ class HackdayLightsBackend : DefaultService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
-            val requestType = intent.getStringExtra(RPC_TYPE)
-            startRequestThread(requestType)
+            startRequestThread(intent)
         }
         return START_NOT_STICKY
     }
 
-    private fun startRequestThread(request: String) {
+    private fun startRequestThread(intent: Intent) {
+
         downloadsInProgress.getAndIncrement()
-        val requestType : RequestType? = RequestType.values().firstOrNull() { it.name == request }
+        val requestType : RequestType? = RequestType.values().firstOrNull() { it.name == intent.getStringExtra(RPC_TYPE) }
         if (requestType == null) {
+            ERROR("Received HackLigtsBackend request for unknown request type")
             return
         }
         Thread {
             if (requestType == RequestType.CHECK_CONNECTION) {
                 connectionCheck()
+            } else if (requestType == RequestType.DISPLAY_FRAME) {
+                val frameData = intent.getIntArrayExtra(RPC_DISPLAY_FRAME_DATA)
+                if (frameData == null) {
+                    ERROR("Request to upload frame with no data")
+                    return@Thread
+                }
+                uploadFrame(frameData)
             } else {
                 val rpcFunction = requestType.rpcFunction
                 rainbowRequest(rpcFunction)
             }
         }.start()
 
+    }
+
+    private fun removeAlpha(color: Int): Int {
+        return color and 0xFFFFFF
+    }
+
+    private fun uploadFrame(frameData: IntArray) {
+        backendApi?.apply {
+            val noAlphaColors = frameData.map { removeAlpha(it) }
+                    .joinToString(",")
+            val request = displayFrame(noAlphaColors)
+            try {
+                val response = request.execute()
+                DEBUG("Result: ${response.isSuccessful}")
+            } catch (e : Exception) {
+                ERROR("Failed to connection check: $e")
+            }
+        }
+        checkStopSelf()
     }
 
     private fun connectionCheck() {

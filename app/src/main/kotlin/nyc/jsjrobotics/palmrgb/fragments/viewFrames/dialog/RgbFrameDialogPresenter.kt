@@ -35,7 +35,7 @@ class RgbFrameDialogPresenter @Inject constructor(val appDatabase: AppDatabase) 
         }
 
         val onDisplayDisposable = view.onDisplayFrameClicked.subscribe {
-                HackdayLightsInterface.startRequest(RequestType.CHECK_CONNECTION)
+                HackdayLightsInterface.upload(it)
         }
 
         val onDeleteDisposable = view.onDeleteFrameClicked.subscribe(this::deleteFrame)

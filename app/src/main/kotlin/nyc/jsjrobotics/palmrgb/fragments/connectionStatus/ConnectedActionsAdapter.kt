@@ -8,7 +8,7 @@ import nyc.jsjrobotics.palmrgb.service.remoteInterface.RequestType
 import javax.inject.Inject
 
 class ConnectedActionsAdapter @Inject constructor() : RecyclerView.Adapter<ConnectedActionViewHolder>() {
-    private val connectedActions : List<RequestType> = RequestType.values().filter { it != RequestType.CHECK_CONNECTION }
+    private val connectedActions : List<RequestType> = RequestType.values().filter { it.isSavedRemoteAction }
     private val connectedActionSelected : PublishSubject<RequestType> = PublishSubject.create()
     val onConnectedActionSelected : Observable<RequestType> = connectedActionSelected
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConnectedActionViewHolder {
