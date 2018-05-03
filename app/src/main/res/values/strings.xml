@@ -41,8 +41,10 @@
   <string name="selected_palette">Palette:\n%s</string>
   <string name="enter_palmrgb_ip_address">PalmRgb Ip Address</string>
   <string name="connect">Connect</string>
-    <string name="enter_palmrgb_port">Port</string>
-    <string name="checking_connection">Checking Connection</string>
-    <string name="disconnect">Disconnect</string>
+  <string name="enter_palmrgb_port">Port</string>
+  <string name="checking_connection">Checking Connection</string>
+  <string name="disconnect">Disconnect</string>
+  <string name="failed_to_insert_duplicate_title">Failed to create frame. Duplicate title: %s</string>
+    <string name="live_create_frame_updates">Live Updates from Create Frame</string>
 
 </resources>

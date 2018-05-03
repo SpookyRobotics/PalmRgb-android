@@ -107,9 +107,10 @@ class PalmRgbBackground : DefaultService() {
             if (title != null && rgbMatrix != null && largeMatrix != null) {
                 DEBUG("Saving RGB Frame $title")
                 val frame = MutableRgbFrame(frameName = title, colorList = rgbMatrix, matrixType = getMatrixType(largeMatrix))
-                val alreadyExistingTitles = appDatabase.savedColorsDao().getAll().map { it.title }
+                val alreadyExistingTitles = appDatabase.rgbFramesDao().getAll().map { it.frameName }
                 if (alreadyExistingTitles.contains(title)) {
-                    ERROR("Attempt to insert duplicate title $title")
+                    val notification = applicationContext.getString(R.string.failed_to_insert_duplicate_title, title)
+                    displayToast(notification)
                     return@runInBackground
                 }
                 appDatabase.rgbFramesDao().insert(frame)

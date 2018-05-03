@@ -44,9 +44,11 @@ class SavedFrameViewHolder(parent : ViewGroup) : RecyclerView.ViewHolder(createL
         val view : ConstraintLayout
         if (rgbFrame.isLargeMatrix()) {
             view = largeMatrix
+            largeMatrix.visibility = View.VISIBLE
             smallMatrix.visibility = View.GONE
         } else {
             view = smallMatrix
+            smallMatrix.visibility = View.VISIBLE
             largeMatrix.visibility = View.GONE
         }
         diodeArray.setView(view)

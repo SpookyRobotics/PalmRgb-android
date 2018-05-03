@@ -46,20 +46,30 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:layout_constraintTop_toBottomOf="@id/palmrgb_port"
-      app:layout_constraintBottom_toTopOf="@id/connect_button"
+      app:layout_constraintBottom_toTopOf="@id/live_updates"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>
 
+  <CheckBox
+      android:id="@+id/live_updates"
+      android:text="@string/live_create_frame_updates"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/connect_actions"
+      app:layout_constraintBottom_toTopOf="@id/connect_button"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
   <Button
       android:id="@+id/connect_button"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="@string/connect"
       app:layout_constraintWidth_percent="0.7"
-      app:layout_constraintTop_toBottomOf="@id/connect_actions"
+      app:layout_constraintTop_toBottomOf="@id/live_updates"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintVertical_bias="0.9"/>
 
 
 </android.support.constraint.ConstraintLayout>

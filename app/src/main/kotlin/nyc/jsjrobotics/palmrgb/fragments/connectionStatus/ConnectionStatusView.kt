@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import io.reactivex.Observable
@@ -23,11 +24,15 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
     private val disconnectClicked : PublishSubject<Boolean> = PublishSubject.create()
     val onDisconnectClicked : Observable<Boolean> = disconnectClicked
 
+    private val liveUpdatesClicked : PublishSubject<Boolean> = PublishSubject.create()
+    val onLiveUpdatesClicked : Observable<Boolean> = liveUpdatesClicked
+
     private lateinit var connectionStatus: TextView
     private lateinit var connectDisconnectButton : Button
     private lateinit var ipInput : EditText
     private lateinit var portInput : EditText
     private lateinit var connectedActions : RecyclerView
+    private lateinit var liveUpdatesButton : CheckBox
 
     fun initView(container: ViewGroup, savedInstanceState: Bundle?) {
         rootXml = container.inflate(R.layout.fragment_connection_status)
@@ -38,6 +43,8 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
         connectedActions.layoutManager = LinearLayoutManager(rootXml.context, LinearLayoutManager.HORIZONTAL, false)
         connectionStatus = rootXml.findViewById(R.id.connection_status)
         connectDisconnectButton = rootXml.findViewById(R.id.connect_button)
+        liveUpdatesButton = rootXml.findViewById(R.id.live_updates)
+        liveUpdatesButton.setOnCheckedChangeListener { _, isChecked -> liveUpdatesClicked.onNext(isChecked) }
         displayConnected(false)
     }
 
@@ -51,6 +58,12 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
                 disconnectClicked.onNext(true)
             }
             connectedActions.visibility = View.VISIBLE
+            liveUpdatesButton.visibility = View.VISIBLE
+            liveUpdatesButton.isChecked = false
+            ipInput.isFocusableInTouchMode = false
+            portInput.isFocusableInTouchMode = false
+            ipInput.isFocusable = false
+            portInput.isFocusable = false
         } else {
             status = rootXml.context.getString(R.string.disconnected)
             connectDisconnectButton.text = rootXml.context.getString(R.string.connect)
@@ -61,6 +74,9 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
                 connectClicked.onNext(ip)
             }
             connectedActions.visibility = View.GONE
+            liveUpdatesButton.visibility = View.GONE
+            ipInput.isFocusableInTouchMode = true
+            portInput.isFocusableInTouchMode = true
         }
         connectionStatus.text = status
 

@@ -23,6 +23,7 @@ class ConnectionStatusModel @Inject constructor(val application: Application,
     private val connectionStatusChanged: PublishSubject<Boolean> = PublishSubject.create()
     val onConnectionStatusChanged: Observable<Boolean> = connectionStatusChanged
     private val updateConnectionStatus: BroadcastReceiver = buildUpdateReceiver()
+    var liveCreateFrameUpdates: Boolean = false
 
 
     fun updateConnectionStatus() {
@@ -64,4 +65,6 @@ class ConnectionStatusModel @Inject constructor(val application: Application,
         hardwareState.isConnected = false
         connectionStatusChanged.onNext(false)
     }
+
+    fun isConnected() = hardwareState.isConnected
 }

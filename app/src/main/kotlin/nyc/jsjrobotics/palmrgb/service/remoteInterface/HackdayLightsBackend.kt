@@ -52,11 +52,11 @@ class HackdayLightsBackend : DefaultService() {
             return ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
         }
 
-        fun uploadIntent(frame: RgbFrame): Intent {
+        fun uploadIntent(rgbValues: List<Int>): Intent {
             val intent = Intent().apply {
                 component = serviceComponentName()
                 putExtra(RPC_TYPE, RequestType.DISPLAY_FRAME.name)
-                putExtra(RPC_DISPLAY_FRAME_DATA, frame.colorList.toIntArray())
+                putExtra(RPC_DISPLAY_FRAME_DATA, rgbValues.toIntArray())
             }
             return intent
         }

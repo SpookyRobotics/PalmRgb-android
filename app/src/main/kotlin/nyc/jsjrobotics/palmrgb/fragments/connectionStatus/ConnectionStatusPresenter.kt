@@ -20,11 +20,18 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
         subscribeConnectionActionSelected()
         subscribeDisconnectClicked()
         subscribeConnectionStatusChanged()
-
+        subscribeLiveUpdatesChanged()
         model.updateConnectionStatus()
         view.displayConnected(false)
 
 
+    }
+
+    private fun subscribeLiveUpdatesChanged() {
+        val liveUpdatesDisposable = view.onLiveUpdatesClicked.subscribe {liveUpdatesEnabled ->
+            model.liveCreateFrameUpdates = liveUpdatesEnabled
+        }
+        disposables.add(liveUpdatesDisposable)
     }
 
     private fun subscribeConnectionStatusChanged() {

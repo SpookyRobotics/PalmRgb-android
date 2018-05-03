@@ -30,7 +30,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     var indexInMatrix: Int = -1
     var colorStateList: MutableList<Int> = mutableListOf()
 
-    // Overridden setter to guarantee value stays between 0 and selectedPalette.size
+    /* Overridden setter to guarantee value stays between 0 and selectedPalette.size
     // Setting the current color index will trigger color changed
     private var currentColorIndex = 0 ; private set(value) {
         if (value < 0 || value >= colorStateList.size) {
@@ -41,6 +41,7 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val color = colorStateList[field]
         rgbPaint.color = color
     }
+    */
 
     private var midX: Float = 0f
     private var midH: Float = 0f
@@ -59,8 +60,13 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         colorStateList.addAll(listOfNotNull(initialColor, secondColor, thirdColor))
 
         if (colorStateList.isNotEmpty()) {
-            currentColorIndex = 0
+            displayColor(colorStateList[0])
         }
+    }
+
+    private fun displayColor(color: Int) {
+        rgbPaint.color = color
+        invalidate()
     }
 
     init {
@@ -84,9 +90,20 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         if (colorStateList.isEmpty()) {
             return
         }
-        currentColorIndex += 1
+        val currentIndex = currentColorIndex() ?: -1
+        val nextColorIndex : Int
+        if (currentIndex+1 >= colorStateList.size || currentIndex < 0) {
+            nextColorIndex = 0
+        } else {
+            nextColorIndex = currentIndex +1
+        }
+        val color = colorStateList[nextColorIndex]
+        displayColor(color)
         notifyColorChanged()
-        invalidate()
+    }
+
+    private fun currentColorIndex() : Int? {
+        return if (colorStateList.contains(currentColor())) colorStateList.indexOf(currentColor()) else null
     }
 
     private fun notifyColorChanged() {
@@ -96,7 +113,8 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
         bundle.putParcelable("parent", super.onSaveInstanceState())
-        bundle.putInt("colorIndex", currentColorIndex)
+        val colorIndex = currentColorIndex() ?: 0
+        bundle.putInt("colorIndex", colorIndex)
         return bundle
     }
 
@@ -104,7 +122,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val bundle = state as Bundle
         super.onRestoreInstanceState(bundle.getParcelable("parent"))
         if (colorStateList.isNotEmpty()) {
-            currentColorIndex = bundle.getInt("colorIndex")
+            val currentColorIndex = bundle.getInt("colorIndex")
+            val color = colorStateList[currentColorIndex]
+            displayColor(color)
         }
     }
 
@@ -150,14 +170,8 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
 
 
     fun setCurrentColor(nextColor: Int) {
-        val requestedColorIndex = colorStateList.indexOf(nextColor)
-        if (requestedColorIndex != -1) {
-            currentColorIndex = requestedColorIndex
-        } else {
-            rgbPaint.color = nextColor
-        }
+        displayColor(nextColor)
         notifyColorChanged()
-        invalidate()
     }
 
     fun subscribeOnColorChanged(callback: () -> Unit) {
@@ -174,9 +188,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val alpha = Color.alpha(currentColor)
         val red = Color.red(currentColor)
         val blue = Color.blue(currentColor)
-        rgbPaint.color = Color.argb(alpha, red, green, blue)
+        val nextColor = Color.argb(alpha, red, green, blue)
+        displayColor(nextColor)
         notifyColorChanged()
-        invalidate()
     }
 
     fun setRedComponent(nextRed: Int) {
@@ -185,9 +199,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val alpha = Color.alpha(currentColor)
         val green = Color.green(currentColor)
         val blue = Color.blue(currentColor)
-        rgbPaint.color = Color.argb(alpha, red, green, blue)
+        val nextColor = Color.argb(alpha, red, green, blue)
+        displayColor(nextColor)
         notifyColorChanged()
-        invalidate()
     }
 
     fun setBlueComponent(nextBlue: Int) {
@@ -196,9 +210,9 @@ class RgbDiode(context: Context, attrs: AttributeSet?, style: Int) : View(contex
         val alpha = Color.alpha(currentColor)
         val red = Color.red(currentColor)
         val green = Color.green(currentColor)
-        rgbPaint.color = Color.argb(alpha, red, green, blue)
+        val nextColor = Color.argb(alpha, red, green, blue)
+        displayColor(nextColor)
         notifyColorChanged()
-        invalidate()
     }
 
     private fun safeRgb(value: Int): Int {

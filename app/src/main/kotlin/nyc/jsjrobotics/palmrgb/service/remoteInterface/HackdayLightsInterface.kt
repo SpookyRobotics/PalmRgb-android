@@ -12,8 +12,12 @@ object HackdayLightsInterface {
     }
 
     fun upload(frame: RgbFrame) {
+        upload(frame.colorList)
+    }
+
+    fun upload(rgbValues: List<Int>) {
         val application = Application.instance()
-        val intent = HackdayLightsBackend.uploadIntent(frame)
+        val intent = HackdayLightsBackend.uploadIntent(rgbValues)
         application.startService(intent)
     }
 }
