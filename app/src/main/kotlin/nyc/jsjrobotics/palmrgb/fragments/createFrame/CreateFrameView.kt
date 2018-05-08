@@ -30,10 +30,12 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
     private val selectPaletteClicked : PublishSubject<Boolean> = PublishSubject.create()
     private val createFrameClicked : PublishSubject<Boolean> = PublishSubject.create()
     private val changeDisplayClicked : PublishSubject<Boolean> = PublishSubject.create()
+    private val resetClicked : PublishSubject<Boolean> = PublishSubject.create()
 
     val onCreateFrameClicked : Observable<Boolean> = createFrameClicked
     val onSelectPaletteClicked : Observable<Boolean> = selectPaletteClicked
     val onChangeDisplayClicked : Observable<Boolean> = changeDisplayClicked
+    val onResetClicked : Observable<Boolean> = resetClicked
 
 
     fun initView(container: ViewGroup, savedInstanceState:  Bundle?) {
@@ -52,12 +54,11 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
         refreshColors()
         createFrameButton.setOnClickListener { createFrameClicked.onNext(true) }
         selectPaletteButton.setOnClickListener { selectPaletteClicked.onNext(true) }
-        resetFrameButton.setOnClickListener { handleReset() }
+        resetFrameButton.setOnClickListener { resetClicked.onNext(true) }
         changeDisplayButton.setOnClickListener{ changeDisplayClicked.onNext(true) }
     }
 
-    private fun handleReset() {
-        createFrameModel.reset()
+    fun handleReset() {
         updateMatrixPaletteColors()
         largeDiodeArray.showColors(createFrameModel.displayedColors)
         smallDiodeArray.showColors(createFrameModel.displayedColors)
@@ -91,6 +92,7 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
      * When detached, other diodes must also save theirstate
      */
     fun writeStateToModel() {
+        createFrameModel.disableRemoteDisplay()
         createFrameModel.diodeRange()
                 .forEach { index ->
                     val diode = diodeArray().getDiode(index) as RgbDiode?
@@ -98,6 +100,7 @@ class CreateFrameView @Inject constructor(val createFrameModel: CreateFrameModel
                         createFrameModel.saveDiodeState(index, diode.currentColor())
                     }
         }
+        createFrameModel.enableRemoteDisplay()
     }
 
 

@@ -5,11 +5,15 @@ import android.arch.lifecycle.OnLifecycleEvent
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
+import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameModel
+import nyc.jsjrobotics.palmrgb.globalState.SharedPreferencesManager
 import nyc.jsjrobotics.palmrgb.runOnMainThread
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
 import javax.inject.Inject
 
-class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatusModel) : DefaultPresenter() {
+class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatusModel,
+                                                    val createFrameModel: CreateFrameModel,
+                                                    val sharedPreferencesManager: SharedPreferencesManager) : DefaultPresenter() {
     lateinit var view: ConnectionStatusView
 
     fun init(view: ConnectionStatusView, onHiddenChanged: Observable<Boolean>) {
@@ -29,7 +33,10 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
 
     private fun subscribeLiveUpdatesChanged() {
         val liveUpdatesDisposable = view.onLiveUpdatesClicked.subscribe {liveUpdatesEnabled ->
-            model.liveCreateFrameUpdates = liveUpdatesEnabled
+            sharedPreferencesManager.setSendLiveUpdatesToHardware(liveUpdatesEnabled)
+            if (liveUpdatesEnabled) {
+                createFrameModel.updateRemoteDisplay()
+            }
         }
         disposables.add(liveUpdatesDisposable)
     }

@@ -63,6 +63,7 @@ class ConnectionStatusModel @Inject constructor(val application: Application,
 
     fun disconnect() {
         hardwareState.isConnected = false
+        liveCreateFrameUpdates = false
         connectionStatusChanged.onNext(false)
     }
 

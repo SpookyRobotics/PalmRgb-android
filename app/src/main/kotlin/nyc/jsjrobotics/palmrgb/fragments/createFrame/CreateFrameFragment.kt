@@ -27,6 +27,11 @@ class CreateFrameFragment : FragmentWithPresenter() {
         setPresenter(presenter)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        view.writeStateToModel()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view.initView(container!!, savedInstanceState)
         lifecycle.addObserver(view)

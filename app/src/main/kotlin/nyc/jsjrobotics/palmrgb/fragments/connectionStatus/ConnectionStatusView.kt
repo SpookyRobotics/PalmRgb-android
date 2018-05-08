@@ -13,10 +13,12 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.dataStructures.IpAddressInput
+import nyc.jsjrobotics.palmrgb.globalState.SharedPreferencesManager
 import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
-class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: ConnectedActionsAdapter) {
+class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: ConnectedActionsAdapter,
+                                               val sharedPreferencesManager: SharedPreferencesManager) {
     lateinit var rootXml: View
     private val connectClicked : PublishSubject<IpAddressInput> = PublishSubject.create()
     val onConnectClicked : Observable<IpAddressInput> = connectClicked
@@ -51,28 +53,18 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
 
     fun displayConnected(connected: Boolean) {
         val status : String
+        setupConnectDisconnectButton(connected)
         if (connected) {
             status = rootXml.context.getString(R.string.connected)
-            connectDisconnectButton.text = rootXml.context.getString(R.string.disconnect)
-            connectDisconnectButton.setOnClickListener {
-                disconnectClicked.onNext(true)
-            }
             connectedActions.visibility = View.VISIBLE
             liveUpdatesButton.visibility = View.VISIBLE
-            liveUpdatesButton.isChecked = false
+            liveUpdatesButton.isChecked = sharedPreferencesManager.getSendLiveUpdatesToHardware()
             ipInput.isFocusableInTouchMode = false
             portInput.isFocusableInTouchMode = false
             ipInput.isFocusable = false
             portInput.isFocusable = false
         } else {
             status = rootXml.context.getString(R.string.disconnected)
-            connectDisconnectButton.text = rootXml.context.getString(R.string.connect)
-            connectDisconnectButton.setOnClickListener {
-                val input = ipInput.editableText.toString()
-                val port = portInput.editableText.toString()
-                val ip = IpAddressInput(input, port)
-                connectClicked.onNext(ip)
-            }
             connectedActions.visibility = View.GONE
             liveUpdatesButton.visibility = View.GONE
             ipInput.isFocusableInTouchMode = true
@@ -80,6 +72,23 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
         }
         connectionStatus.text = status
 
+    }
+
+    private fun setupConnectDisconnectButton(connected: Boolean) {
+        if (connected) {
+            connectDisconnectButton.text = rootXml.context.getString(R.string.disconnect)
+            connectDisconnectButton.setOnClickListener {
+                disconnectClicked.onNext(true)
+            }
+        } else {
+            connectDisconnectButton.text = rootXml.context.getString(R.string.connect)
+            connectDisconnectButton.setOnClickListener {
+                val input = ipInput.editableText.toString()
+                val port = portInput.editableText.toString()
+                val ip = IpAddressInput(input, port)
+                connectClicked.onNext(ip)
+            }
+        }
     }
 
     fun displayCheckingConnection() {

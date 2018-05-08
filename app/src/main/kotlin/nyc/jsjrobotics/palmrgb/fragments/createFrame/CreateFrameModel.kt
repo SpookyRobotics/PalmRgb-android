@@ -8,6 +8,7 @@ import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusModel
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteModel
 import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
+import nyc.jsjrobotics.palmrgb.globalState.SharedPreferencesManager
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
 import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
 import javax.inject.Inject
@@ -17,7 +18,9 @@ import javax.inject.Singleton
 class CreateFrameModel @Inject constructor(private val application: Application,
                                            private val savedPalettesModel: SavedPaletteModel,
                                            private val selectPaletteModel: SelectPaletteModel,
-                                           private val connectionStatusModel: ConnectionStatusModel){
+                                           private val connectionStatusModel: ConnectionStatusModel,
+                                           private val sharedPreferencesManager: SharedPreferencesManager){
+    private var remoteDisplayEnabled = true
     var selectedPalette: Palette = savedPalettesModel.getStandardPalette()
     var displayedColors : MutableList<Int> = initialValues() ; private set
     var usingLargeArray : Boolean = true ; set (value) {
@@ -31,7 +34,13 @@ class CreateFrameModel @Inject constructor(private val application: Application,
 
     fun saveDiodeState(index: Int, color: Int) {
         displayedColors[index] =  color
-        if (connectionStatusModel.liveCreateFrameUpdates && connectionStatusModel.isConnected()) {
+        if (remoteDisplayEnabled ){
+            updateRemoteDisplay()
+        }
+    }
+
+    fun updateRemoteDisplay() {
+        if (sharedPreferencesManager.getSendLiveUpdatesToHardware() && connectionStatusModel.isConnected()) {
             HackdayLightsInterface.upload(displayedColors)
         }
     }
@@ -51,14 +60,29 @@ class CreateFrameModel @Inject constructor(private val application: Application,
         application.startService(intent)
     }
 
-    fun reset() {
+    fun beginReset() {
+        disableRemoteDisplay()
         displayedColors = initialValues()
+    }
+
+    fun disableRemoteDisplay() {
+        remoteDisplayEnabled = false
+    }
+
+    fun endReset() {
+        enableRemoteDisplay()
+        updateRemoteDisplay()
+    }
+
+    fun enableRemoteDisplay() {
+        remoteDisplayEnabled = true
     }
 
     private fun initialValues(): MutableList<Int>  = largeArrayRange().map { selectedPalette.colors.first() }.toMutableList()
 
     fun setDisplayingColors(displayingColors: List<Int>) {
-        reset()
+        beginReset()
         displayingColors.forEachIndexed { index, color -> displayedColors[index] = color }
+        endReset()
     }
 }

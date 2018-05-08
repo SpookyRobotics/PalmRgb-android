@@ -35,7 +35,17 @@ class CreateFramePresenter @Inject constructor(val saveRgbModel : SaveRgbFrameDi
         subscribeToSelectChangePalette(fragmentManager)
         subscribeToChangeDisplay(fragmentManager)
         subscribeToPaletteChanged()
+        subscribeToReset()
         setCurrentPaletteName()
+    }
+
+    private fun subscribeToReset() {
+        val resetClicked = view.onResetClicked.subscribe {
+            createFrameModel.beginReset()
+            view.handleReset()
+            createFrameModel.endReset()
+        }
+        disposables.add(resetClicked)
     }
 
     private fun setCurrentPaletteName() {
