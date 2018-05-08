@@ -7,39 +7,47 @@ import nyc.jsjrobotics.palmrgb.BuildConfig
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusFragment
 import nyc.jsjrobotics.palmrgb.fragments.createColor.CreateColorFragment
 import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameFragment
+import nyc.jsjrobotics.palmrgb.fragments.createMessage.CreateMessageFragment
 import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragment
 
+/**
+ * All fragments in the app should be instantiated by calling a FragmentId.supplier
+ */
 enum class FragmentId(
         val tag: String,
         val supplier: (fragmentArguments: Bundle?) -> Fragment
 ) {
     CREATE_FRAME_FRAGMENT(
             CreateFrameFragment.TAG,
-            { addArgments(CreateFrameFragment(), it) }
+            { addArguments(CreateFrameFragment(), it) }
     ),
 
     RGB_FRAME_DIALOG_FRAGMENT(
             RgbFrameDialogFragment.TAG,
-            { addArgments(RgbFrameDialogFragment(), it)}
+            { addArguments(RgbFrameDialogFragment(), it)}
     ),
 
     VIEW_FRAMES_FRAGMENT(
             ViewFramesFragment.TAG,
-            { addArgments(ViewFramesFragment(), it) }
+            { addArguments(ViewFramesFragment(), it) }
     ),
     CONNECTION_STATUS(
             ConnectionStatusFragment.TAG,
-            { addArgments(ConnectionStatusFragment(), it) }
+            { addArguments(ConnectionStatusFragment(), it) }
     ),
     CREATE_COLOR(
             CreateColorFragment.TAG,
-            { addArgments(CreateColorFragment(), it)}
+            { addArguments(CreateColorFragment(), it)}
     ),
     CREATE_PALETTE(
             CreatePaletteFragment.TAG,
-            { addArgments(CreatePaletteFragment(), it)}
+            { addArguments(CreatePaletteFragment(), it)}
+    ),
+    CREATE_MESSAGE(
+            CreateMessageFragment.TAG,
+            { addArguments(CreateMessageFragment(), it)}
     );
 
     companion object {
@@ -56,7 +64,7 @@ enum class FragmentId(
             }
         }
 
-        private fun addArgments(fragment: Fragment, bundle: Bundle?): Fragment {
+        private fun addArguments(fragment: Fragment, bundle: Bundle?): Fragment {
             fragment.arguments = bundle
             return fragment
         }

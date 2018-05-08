@@ -7,6 +7,7 @@ import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import nyc.jsjrobotics.palmrgb.fragments.connectionStatus.ConnectionStatusModel
 import nyc.jsjrobotics.palmrgb.fragments.dialogs.selectPalette.SelectPaletteModel
+import nyc.jsjrobotics.palmrgb.globalState.DeviceConstants
 import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
 import nyc.jsjrobotics.palmrgb.globalState.SharedPreferencesManager
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
@@ -28,9 +29,8 @@ class CreateFrameModel @Inject constructor(private val application: Application,
         matrixChangedDisposable.onNext(field)
     }
 
-    fun largeArrayRange() = IntRange(0, 63)
-    fun smallArrayRange() = IntRange(0, 31)
-    fun diodeRange() : IntRange = if (usingLargeArray) largeArrayRange() else smallArrayRange()
+
+    fun diodeRange() : IntRange = if (usingLargeArray) DeviceConstants.largeArrayRange else DeviceConstants.smallArrayRange
 
     fun saveDiodeState(index: Int, color: Int) {
         displayedColors[index] =  color
@@ -78,7 +78,7 @@ class CreateFrameModel @Inject constructor(private val application: Application,
         remoteDisplayEnabled = true
     }
 
-    private fun initialValues(): MutableList<Int>  = largeArrayRange().map { selectedPalette.colors.first() }.toMutableList()
+    private fun initialValues(): MutableList<Int>  = DeviceConstants.largeArrayRange.map { selectedPalette.colors.first() }.toMutableList()
 
     fun setDisplayingColors(displayingColors: List<Int>) {
         beginReset()

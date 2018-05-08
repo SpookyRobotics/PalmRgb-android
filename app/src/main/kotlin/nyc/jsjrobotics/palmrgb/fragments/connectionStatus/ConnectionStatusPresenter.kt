@@ -27,8 +27,6 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
         subscribeLiveUpdatesChanged()
         model.updateConnectionStatus()
         view.displayConnected(false)
-
-
     }
 
     private fun subscribeLiveUpdatesChanged() {

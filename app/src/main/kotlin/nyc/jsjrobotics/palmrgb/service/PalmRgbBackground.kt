@@ -22,6 +22,15 @@ class PalmRgbBackground : DefaultService() {
     lateinit var appDatabase : AppDatabase
 
     companion object {
+
+        fun saveMessage(messageTitle: String, data: ArrayList<Int>): Intent {
+            val intent = Intent(Application.instance(), PalmRgbBackground::class.java)
+            intent.putExtra(PalmRgbBackground.EXTRA_FUNCTION, PalmRgbBackground.FUNCTION_SAVE_MESSAGE)
+            intent.putIntegerArrayListExtra(PalmRgbBackground.EXTRA_RGB_MATRIX, data)
+            intent.putExtra(PalmRgbBackground.EXTRA_TITLE, messageTitle)
+            return intent
+        }
+
         fun saveRgbFrame(frameTitle: String, usingLargeArray: Boolean, data: ArrayList<Int>): Intent {
             val intent = Intent(Application.instance(), PalmRgbBackground::class.java)
             intent.putExtra(PalmRgbBackground.EXTRA_FUNCTION, PalmRgbBackground.FUNCTION_SAVE_RGB_FRAME)
@@ -31,6 +40,7 @@ class PalmRgbBackground : DefaultService() {
             return intent
         }
 
+        val FUNCTION_SAVE_MESSAGE = "save_message_function"
         val EXTRA_RGB_MATRIX = "extra_rgb_matrix"
         val EXTRA_TITLE = "extra_title"
         val FUNCTION_SAVE_COLOR = "save_color_function"
