@@ -4,8 +4,7 @@ import nyc.jsjrobotics.palmrgb.database.MutableMessage
 import nyc.jsjrobotics.palmrgb.firebase.constants.FirebaseDatabaseReference
 import javax.inject.Inject
 
-class MessageDataManager
-@Inject constructor() {
+class MessageDataManager @Inject constructor() {
 
     fun uploadMessage(message: MutableMessage) {
         message.messageId = generatePushKey()

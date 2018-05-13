@@ -22,7 +22,7 @@ class MessageEventListener @Inject constructor() {
 
     private val query: Query = FirebaseDatabaseReference
             .messageReference
-            .limitToLast(ONE)
+            .limitToLast(1)
 
     private val childEventListener: ChildEventListener =
             query.addChildEventListener(object : ChildEventListener {
@@ -65,10 +65,6 @@ class MessageEventListener @Inject constructor() {
     fun removeListener() {
         DEBUG("Removing childEventListener...")
         FirebaseDatabaseReference.messageReference.removeEventListener(childEventListener)
-    }
-
-    companion object {
-        private const val ONE = 1
     }
 
 }

@@ -5,7 +5,9 @@ import com.google.firebase.database.FirebaseDatabase
 
 object FirebaseDatabaseReference {
 
+    private val MESSAGES = "messages"
+
     val database = FirebaseDatabase.getInstance()
-    val messageReference = database.getReference(FirebasePath.MESSAGES)
+    val messageReference = database.getReference(MESSAGES)
 
 }
