@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "628174184036",
+    "firebase_url": "https://palmrgb-android.firebaseio.com",
+    "project_id": "palmrgb-android",
+    "storage_bucket": "palmrgb-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628174184036:android:2c361d7ad9cc9eb1",
+        "android_client_info": {
+          "package_name": "nyc.jsjrobotics.palmrgb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628174184036-tm9mpck57flgjsouk8qfp36g0fmgaeem.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nyc.jsjrobotics.palmrgb",
+            "certificate_hash": "03ef5e722cd1177200378dbd98d72b25f941f99a"
+          }
+        },
+        {
+          "client_id": "628174184036-04fo57pg6m8jhta6idlkgm6ntpjgs8ne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASHcxmE5SHKkITu7BUTRzbc_kn-Za4FXE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628174184036-04fo57pg6m8jhta6idlkgm6ntpjgs8ne.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
