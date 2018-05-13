@@ -16,8 +16,12 @@ import nyc.jsjrobotics.palmrgb.firebase.eventlisteners.MessageEventListener
 import nyc.jsjrobotics.palmrgb.fragments.NavigationBarSettings
 import nyc.jsjrobotics.palmrgb.toast
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
-
+/**
+ * Default Activity subscribes to abtest changes for recreate and
+ * manages connection state for PalmRgbBackground
+ */
 abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
@@ -35,10 +39,22 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
 
     override fun applicationContext(): Context = applicationContext
 
+    var activityInBackground : Boolean by Delegates.notNull()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Application.inject(this)
         super.onCreate(savedInstanceState)
         subscribeToIncomingMessages()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityInBackground = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activityInBackground = true
     }
 
     override fun onDestroy() {
@@ -53,7 +69,7 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
                 messageEventListener
                         .onMessageReceived()
                         .subscribe {
-                            if (it.senderId != simpleAuth.currentUserId)
+                            if (it.senderId != simpleAuth.currentUserId && !activityInBackground)
                                 this.toast(it.text)
                         }
         )
