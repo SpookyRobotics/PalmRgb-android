@@ -51,7 +51,6 @@ class CreateMessagePresenter @Inject constructor(val model: CreateMessageModel) 
         DEBUG("Send button clicked...")
         val sendClickedDisposable = view.onSendClicked.subscribe { messageTitle ->
             model.uploadMessageToFirebase(messageTitle)
-            view.showToast("Sent")
         }
         disposables.add(sendClickedDisposable)
     }
