@@ -3,7 +3,7 @@ package nyc.jsjrobotics.palmrgb.dataStructures
 import nyc.jsjrobotics.palmrgb.database.MutableMessage
 
 
-data class Message constructor(
+data class Message(
         val text: String = EMPTY_MESSAGE,
         val senderId: String = UNKNOWN_ID,
         val messageId: String = UNKNOWN_ID,

@@ -10,12 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.XmlDiodeArray
 import nyc.jsjrobotics.palmrgb.inflate
+import nyc.jsjrobotics.palmrgb.toast
 import javax.inject.Inject
 
 class CreateMessageView @Inject constructor(val model: CreateMessageModel,
@@ -25,8 +27,9 @@ class CreateMessageView @Inject constructor(val model: CreateMessageModel,
     private lateinit var largeMatrix: ConstraintLayout
     private lateinit var smallMatrix: ConstraintLayout
     private lateinit var input: EditText
-    private lateinit var sendButton: Button
+    private lateinit var sendButton: ImageView
     private var displayChangedDisposable: Disposable? = null
+    private var messageSentDisposable: Disposable? = null
 
     private val sendClicked: PublishSubject<String> = PublishSubject.create()
     val onSendClicked: Observable<String> = sendClicked
@@ -43,16 +46,18 @@ class CreateMessageView @Inject constructor(val model: CreateMessageModel,
         displayChangedDisposable = model.onDisplayChanged.subscribe {
             largeDiodeArray.showColors(model.displayedColors)
         }
-
+        messageSentDisposable = model.onMessageSent.subscribe {
+            showToast("sent")
+            input.text.clear()
+        }
         setUpSendButton()
     }
 
     private fun setUpSendButton() {
+        disableSendButton()
         sendButton.setOnClickListener {
             val message = input.editableText.toString()
-            if (message.isNotEmpty()) {
-                sendClicked.onNext(message)
-            }
+            sendClicked.onNext(message)
         }
 
     }
@@ -60,10 +65,25 @@ class CreateMessageView @Inject constructor(val model: CreateMessageModel,
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
         displayChangedDisposable?.dispose()
+        messageSentDisposable?.dispose()
     }
 
     fun setInputListener(textWatcher: TextWatcher) {
         input.addTextChangedListener(textWatcher)
+    }
+
+    fun enableSendButton() {
+        sendButton.alpha = 1f
+        sendButton.isEnabled = true
+    }
+
+    fun disableSendButton() {
+        sendButton.alpha = .2f
+        sendButton.isEnabled = false
+    }
+
+    fun showToast(message: String) {
+        rootXml.context.toast(message)
     }
 
 }

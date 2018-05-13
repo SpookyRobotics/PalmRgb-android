@@ -23,14 +23,15 @@ class CreateMessageModel @Inject constructor(private val application: Applicatio
     var displayedColors: MutableList<Int> = initialValues(); private set
     val displayChanged: PublishSubject<Boolean> = PublishSubject.create()
     val onDisplayChanged: Observable<Boolean> = displayChanged
+    val messageSent: PublishSubject<Boolean> = PublishSubject.create()
+    val onMessageSent: Observable<Boolean> = messageSent
 
     fun diodeRange(): IntRange = DeviceConstants.largeArrayRange
 
     fun uploadMessageToFirebase(messageTitle: String) {
-        messageTitle.isNotEmpty().let {
-            val message = Message(messageTitle, simpleAuth.currentUserId)
-            messageDataManager.uploadMessage(message.mutable())
-        }
+        val message = Message(messageTitle, simpleAuth.currentUserId)
+        messageDataManager.uploadMessage(message.mutable())
+        messageSent.onNext(true)
     }
 
     fun writeMessageToDatabase(messageTitle: String) {
