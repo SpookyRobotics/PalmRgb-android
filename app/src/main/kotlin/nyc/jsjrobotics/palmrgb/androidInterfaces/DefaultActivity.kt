@@ -1,5 +1,6 @@
 package nyc.jsjrobotics.palmrgb.androidInterfaces
 
+import android.arch.lifecycle.Lifecycle.State.RESUMED
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
@@ -16,7 +17,6 @@ import nyc.jsjrobotics.palmrgb.firebase.eventlisteners.MessageEventListener
 import nyc.jsjrobotics.palmrgb.fragments.NavigationBarSettings
 import nyc.jsjrobotics.palmrgb.toast
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 /**
  * Default Activity subscribes to abtest changes for recreate and
@@ -39,22 +39,10 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
 
     override fun applicationContext(): Context = applicationContext
 
-    var activityInBackground : Boolean by Delegates.notNull()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Application.inject(this)
         super.onCreate(savedInstanceState)
         subscribeToIncomingMessages()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activityInBackground = false
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activityInBackground = true
     }
 
     override fun onDestroy() {
@@ -69,8 +57,10 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
                 messageEventListener
                         .onMessageReceived()
                         .subscribe {
-                            if (it.senderId != simpleAuth.currentUserId && !activityInBackground)
+                            if (it.senderId != simpleAuth.currentUserId
+                                    && this.lifecycle.currentState == RESUMED) {
                                 this.toast(it.text)
+                            }
                         }
         )
     }
