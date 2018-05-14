@@ -1,6 +1,5 @@
 package nyc.jsjrobotics.palmrgb.androidInterfaces
 
-import android.arch.lifecycle.Lifecycle.State.RESUMED
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
@@ -9,6 +8,7 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
 import android.view.View
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.customViews.SubActivityToolbar
@@ -35,6 +35,8 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
     @Inject
     lateinit var simpleAuth: SimpleAuth
 
+    var messageReceivedDisposable: Disposable? = null
+
     override fun getActivity(): FragmentActivity = this
 
     override fun applicationContext(): Context = applicationContext
@@ -42,7 +44,20 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         Application.inject(this)
         super.onCreate(savedInstanceState)
-        subscribeToIncomingMessages()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        messageReceivedDisposable = messageEventListener.onMessageReceived().subscribe {
+            if (it.senderId != simpleAuth.currentUserId) {
+                this.toast(it.text)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        messageReceivedDisposable?.dispose()
     }
 
     override fun onDestroy() {
@@ -50,19 +65,6 @@ abstract class DefaultActivity : FragmentActivity(), IDefaultActivity {
         messageEventListener.removeListener()
         super.onDestroy()
 
-    }
-
-    private fun subscribeToIncomingMessages() {
-        disposables.add(
-                messageEventListener
-                        .onMessageReceived()
-                        .subscribe {
-                            if (it.senderId != simpleAuth.currentUserId
-                                    && this.lifecycle.currentState == RESUMED) {
-                                this.toast(it.text)
-                            }
-                        }
-        )
     }
 
     override fun showFragment(fragmentToShow: FragmentId, fragmentArguments: Bundle?, addToBackStack: String?) {
