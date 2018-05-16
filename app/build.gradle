@@ -13,6 +13,7 @@ ext {
     dagger_version = "2.11"
     espresso_version = "3.0.1"
     room_version = "1.0.0"
+    firebase_version = "11.4.2"
 }
 
 android {
@@ -57,7 +58,7 @@ protobuf {
                 remove java
             }
             task.plugins {
-                javalite { }
+                javalite {}
             }
         }
     }
@@ -81,6 +82,7 @@ dependencies {
     // Android lifecycle
     implementation "android.arch.lifecycle:runtime:$android_lifecycle_version"
     implementation "android.arch.lifecycle:extensions:$android_lifecycle_version"
+    implementation "com.google.firebase:firebase-database:$firebase_version"
     kapt "android.arch.lifecycle:compiler:$android_lifecycle_version"
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -139,3 +141,5 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
 
 }
+
+apply plugin: 'com.google.gms.google-services'
