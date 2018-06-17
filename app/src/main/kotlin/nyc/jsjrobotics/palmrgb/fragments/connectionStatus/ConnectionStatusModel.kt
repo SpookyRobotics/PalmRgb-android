@@ -11,9 +11,9 @@ import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.androidInterfaces.IDefaultActivity
 import nyc.jsjrobotics.palmrgb.dataStructures.IpAddressInput
 import nyc.jsjrobotics.palmrgb.service.HardwareState
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.RequestType
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.HackdayLightsBackend
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.HackdayLightsInterface
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.RequestType
 import javax.inject.Inject
 import javax.inject.Singleton
 

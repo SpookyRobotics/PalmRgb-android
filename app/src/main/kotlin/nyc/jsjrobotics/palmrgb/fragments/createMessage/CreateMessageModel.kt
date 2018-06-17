@@ -1,14 +1,12 @@
 package nyc.jsjrobotics.palmrgb.fragments.createMessage
 
 import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import nyc.jsjrobotics.palmrgb.Application
 import nyc.jsjrobotics.palmrgb.dataStructures.Palette
 import nyc.jsjrobotics.palmrgb.globalState.DeviceConstants
 import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 

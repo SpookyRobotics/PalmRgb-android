@@ -6,12 +6,15 @@ import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ServiceKey
 import dagger.multibindings.IntoMap
+import nyc.jsjrobotics.palmrgb.injection.androidSubcomponents.WheeledPlatformBackgroundSubcomponent
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.HackdayLightsBackend
+import nyc.jsjrobotics.palmrgb.service.wheeledPlatformRemoteInterface.WheeledPlatformBackend
 
 @Module(subcomponents = arrayOf(
         PalmRgbBackgroundSubcomponent::class,
-        HackdayLightsBackendSubcomponent::class
+        HackdayLightsBackendSubcomponent::class,
+        WheeledPlatformBackgroundSubcomponent::class
 
 ))
 abstract class ServiceModule {
@@ -24,5 +27,10 @@ abstract class ServiceModule {
     @IntoMap
     @ServiceKey(HackdayLightsBackend::class)
     internal abstract fun bindHackdayLightsBackendInjectorFactory(builder: HackdayLightsBackendSubcomponent.Builder): AndroidInjector.Factory<out Service>
+
+    @Binds
+    @IntoMap
+    @ServiceKey(WheeledPlatformBackend::class)
+    internal abstract fun bindWheeledPlatformBackendInjectorFactory(builder: WheeledPlatformBackgroundSubcomponent.Builder): AndroidInjector.Factory<out Service>
 
 }

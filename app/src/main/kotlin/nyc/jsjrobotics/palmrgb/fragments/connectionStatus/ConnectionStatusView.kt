@@ -18,6 +18,7 @@ import nyc.jsjrobotics.palmrgb.inflate
 import javax.inject.Inject
 
 class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: ConnectedActionsAdapter,
+                                               val wheeledPlatformActionsAdapter: WheeledPlatformActionsAdapter,
                                                val sharedPreferencesManager: SharedPreferencesManager) {
     lateinit var rootXml: View
     private val connectClicked : PublishSubject<IpAddressInput> = PublishSubject.create()
@@ -34,6 +35,7 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
     private lateinit var ipInput : EditText
     private lateinit var portInput : EditText
     private lateinit var connectedActions : RecyclerView
+    private lateinit var wheeledPlatformActions : RecyclerView
     private lateinit var liveUpdatesButton : CheckBox
 
     fun initView(container: ViewGroup, savedInstanceState: Bundle?) {
@@ -43,6 +45,11 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
         connectedActions = rootXml.findViewById(R.id.connect_actions)
         connectedActions.adapter = connectedActionsAdapter
         connectedActions.layoutManager = LinearLayoutManager(rootXml.context, LinearLayoutManager.HORIZONTAL, false)
+
+        wheeledPlatformActions = rootXml.findViewById(R.id.wheeled_platform_actions)
+        wheeledPlatformActions.adapter = wheeledPlatformActionsAdapter
+        wheeledPlatformActions.layoutManager = LinearLayoutManager(rootXml.context, LinearLayoutManager.HORIZONTAL, false)
+
         connectionStatus = rootXml.findViewById(R.id.connection_status)
         connectDisconnectButton = rootXml.findViewById(R.id.connect_button)
         liveUpdatesButton = rootXml.findViewById(R.id.live_updates)
@@ -96,4 +103,7 @@ class ConnectionStatusView @Inject constructor(val connectedActionsAdapter: Conn
     }
 
     fun onConnectedActionSelected() = connectedActionsAdapter.onConnectedActionSelected
+
+    fun onWheeledPlatformActionSelected() = wheeledPlatformActionsAdapter.onActionSelected
+
 }

@@ -8,7 +8,8 @@ import nyc.jsjrobotics.palmrgb.androidInterfaces.DefaultPresenter
 import nyc.jsjrobotics.palmrgb.fragments.createFrame.CreateFrameModel
 import nyc.jsjrobotics.palmrgb.globalState.SharedPreferencesManager
 import nyc.jsjrobotics.palmrgb.runOnMainThread
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.HackdayLightsInterface
+import nyc.jsjrobotics.palmrgb.service.wheeledPlatformRemoteInterface.WheeledPlatformInterface
 import javax.inject.Inject
 
 class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatusModel,
@@ -22,6 +23,7 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
         subscribeFragmentVisible(onHiddenChanged)
         subscribeConnectClicked()
         subscribeConnectionActionSelected()
+        subscribeWheeledPlatformActionSelected()
         subscribeDisconnectClicked()
         subscribeConnectionStatusChanged()
         subscribeLiveUpdatesChanged()
@@ -54,6 +56,13 @@ class ConnectionStatusPresenter @Inject constructor(val model : ConnectionStatus
     private fun subscribeConnectionActionSelected() {
         val requestSelectedDisposable = view.onConnectedActionSelected().subscribe {
             HackdayLightsInterface.startRequest(it)
+        }
+        disposables.add(requestSelectedDisposable)
+    }
+
+    private fun subscribeWheeledPlatformActionSelected() {
+        val requestSelectedDisposable = view.onWheeledPlatformActionSelected().subscribe {
+            WheeledPlatformInterface.startRequest(it)
         }
         disposables.add(requestSelectedDisposable)
     }

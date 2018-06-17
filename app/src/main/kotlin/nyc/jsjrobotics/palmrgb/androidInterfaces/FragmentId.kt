@@ -11,6 +11,7 @@ import nyc.jsjrobotics.palmrgb.fragments.createMessage.CreateMessageFragment
 import nyc.jsjrobotics.palmrgb.fragments.createPalette.CreatePaletteFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.ViewFramesFragment
 import nyc.jsjrobotics.palmrgb.fragments.viewFrames.dialog.RgbFrameDialogFragment
+import nyc.jsjrobotics.palmrgb.fragments.wheeledPlatform.WheeledPlatformFragment
 
 /**
  * All fragments in the app should be instantiated by calling a FragmentId.supplier
@@ -48,6 +49,10 @@ enum class FragmentId(
     CREATE_MESSAGE(
             CreateMessageFragment.TAG,
             { addArguments(CreateMessageFragment(), it)}
+    ),
+    WHEELED_PLATFORM(
+            WheeledPlatformFragment.TAG,
+            { addArguments(WheeledPlatformFragment(), it)}
     );
 
     companion object {

@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.service.remoteInterface
+package nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface
 
 enum class RequestType(val rpcFunction: String, val isSavedRemoteAction: Boolean ) {
     LEFT_IDLE("SHOW_IDLE_LEFT", true),

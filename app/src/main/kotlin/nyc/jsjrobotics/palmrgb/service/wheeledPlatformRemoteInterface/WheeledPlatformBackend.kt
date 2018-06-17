@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.service.remoteInterface
+package nyc.jsjrobotics.palmrgb.service.wheeledPlatformRemoteInterface
 
 import android.content.ComponentName
 import android.content.Intent
@@ -7,8 +7,6 @@ import android.support.v4.content.LocalBroadcastManager
 import io.reactivex.disposables.CompositeDisposable
 import nyc.jsjrobotics.palmrgb.DEBUG
 import nyc.jsjrobotics.palmrgb.ERROR
-import nyc.jsjrobotics.palmrgb.dataStructures.RgbFrame
-import nyc.jsjrobotics.palmrgb.protocolBuffer.DisplayFrameProto
 import nyc.jsjrobotics.palmrgb.service.DefaultService
 import nyc.jsjrobotics.palmrgb.service.HardwareState
 import retrofit2.Retrofit
@@ -21,25 +19,26 @@ import javax.inject.Inject
  * Service to download values from HackdayLightsBackend.
  * Always stop self after completing tasks, and do not allow binding
  */
-class HackdayLightsBackend : DefaultService() {
+class WheeledPlatformBackend : DefaultService() {
 
     private var retrofit: Retrofit? = null
-    private var backendApi : HackDayLightsApi? = null
-    private val disposables : CompositeDisposable = CompositeDisposable()
     private val downloadsInProgress : AtomicInteger = AtomicInteger(0)
+    private var backendApi : WheeledPlatformApi? = null
+    private val disposables : CompositeDisposable = CompositeDisposable()
+    private val requestMap : Map<RequestType, () -> Unit > = mapOf(
+            Pair(RequestType.MOTOR_BACKWARD, { motorRequest(false)}),
+            Pair(RequestType.MOTOR_FORWARD, { motorRequest(true)}),
+            Pair(RequestType.MOTOR_STOP, { motorStop()}),
+            Pair(RequestType.TOWER_SPIN_A, { towerRequest(true)}),
+            Pair(RequestType.TOWER_SPIN_B, {towerRequest(false)}),
+            Pair(RequestType.TOWER_STOP, { towerStop()})
+    )
 
     @Inject
     lateinit var hardwareState: HardwareState
 
     companion object {
         private val RPC_TYPE = "RPC_TYPE"
-        private val RPC_DISPLAY_FRAME_DATA = "RPC_DISPLAY_FRAME_DATA"
-        val CONNECTION_CHECK_RESPONSE = "CONNECTION_CHECK_RESPONSE"
-
-        fun connectionCheckIntent() : Intent {
-            return Intent(CONNECTION_CHECK_RESPONSE)
-        }
-
         fun intent(requestType: RequestType) : Intent {
             val intent = Intent().apply {
                 component = serviceComponentName()
@@ -49,21 +48,12 @@ class HackdayLightsBackend : DefaultService() {
         }
 
         private fun serviceComponentName(): ComponentName {
-            return ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend")
-        }
-
-        fun uploadIntent(rgbValues: List<Int>): Intent {
-            val intent = Intent().apply {
-                component = serviceComponentName()
-                putExtra(RPC_TYPE, RequestType.DISPLAY_FRAME.name)
-                putExtra(RPC_DISPLAY_FRAME_DATA, rgbValues.toIntArray())
-            }
-            return intent
+            return ComponentName("nyc.jsjrobotics.palmrgb", "nyc.jsjrobotics.palmrgb.service.wheeledPlatformRemoteInterface.WheeledPlatformBackend")
         }
     }
     override fun onCreate() {
         super.onCreate()
-        DEBUG("Starting HackdayLightsBackend")
+        DEBUG("Starting WheeledPlatformBackend")
 
         createRetrofit()
         val onUrlChanged = hardwareState.onUrlChanged.subscribe { createRetrofit() }
@@ -78,7 +68,7 @@ class HackdayLightsBackend : DefaultService() {
                     .baseUrl(url)
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
-            backendApi = retrofit?.create(HackDayLightsApi::class.java)
+            backendApi = retrofit?.create(WheeledPlatformApi::class.java)
         }
     }
 
@@ -101,26 +91,14 @@ class HackdayLightsBackend : DefaultService() {
 
     private fun startRequestThread(intent: Intent) {
 
-        downloadsInProgress.getAndIncrement()
         val requestType : RequestType? = RequestType.values().firstOrNull() { it.name == intent.getStringExtra(RPC_TYPE) }
         if (requestType == null) {
-            ERROR("Received HackLigtsBackend request for unknown request type")
+            ERROR("Received WheeledPlatform request for unknown request type")
             return
         }
         Thread {
-            if (requestType == RequestType.CHECK_CONNECTION) {
-                connectionCheck()
-            } else if (requestType == RequestType.DISPLAY_FRAME) {
-                val frameData = intent.getIntArrayExtra(RPC_DISPLAY_FRAME_DATA)
-                if (frameData == null) {
-                    ERROR("Request to upload frame with no data")
-                    return@Thread
-                }
-                uploadFrame(frameData)
-            } else {
-                val rpcFunction = requestType.rpcFunction
-                rainbowRequest(rpcFunction)
-            }
+            downloadsInProgress.getAndIncrement()
+            requestMap.get(requestType)?.invoke()
         }.start()
 
     }
@@ -129,47 +107,11 @@ class HackdayLightsBackend : DefaultService() {
         return color and 0xFFFFFF
     }
 
-    private fun uploadFrame(frameData: IntArray) {
+
+    private fun motorRequest(isForward: Boolean) {
         backendApi?.apply {
-            val noAlphaColors = frameData.map { removeAlpha(it) }
-                    .joinToString(",")
-            val request = displayFrame(noAlphaColors)
-            try {
-                val response = request.execute()
-                DEBUG("Result: ${response.isSuccessful}")
-            } catch (e : Exception) {
-                ERROR("Failed to connection check: $e")
-            }
-        }
-        checkStopSelf()
-    }
-
-    private fun connectionCheck() {
-        backendApi?.apply {
-            val request = connectionCheck()
-            try {
-                val response = request.execute()
-                DEBUG("Result: ${response.isSuccessful}")
-                broadcastConnectionCheckResult(response.isSuccessful)
-            } catch (e : Exception) {
-                ERROR("Failed to connection check: $e")
-                broadcastConnectionCheckResult(false)
-            }
-        } ?: broadcastConnectionCheckResult(false)
-
-        checkStopSelf()
-    }
-
-    private fun broadcastConnectionCheckResult(successful: Boolean) {
-        val intent = connectionCheckIntent()
-        intent.putExtra(CONNECTION_CHECK_RESPONSE, successful)
-        LocalBroadcastManager.getInstance(applicationContext)
-                .sendBroadcastSync(intent)
-    }
-
-    private fun rainbowRequest(rpcFunction: String) {
-        backendApi?.apply {
-            val request = triggerFunction(rpcFunction)
+            val function = if (isForward) "FORWARD" else "BACKWARD"
+            val request = motors(function, "2")
             try {
                 val response = request.execute()
                 DEBUG("Result:${response.body()}")
@@ -180,6 +122,45 @@ class HackdayLightsBackend : DefaultService() {
         checkStopSelf()
     }
 
+    private fun motorStop() {
+        backendApi?.apply {
+            val request = motors("STOP", "2")
+            try {
+                val response = request.execute()
+                DEBUG("Result:${response.body()}")
+            } catch (e : Exception) {
+                ERROR("Failed to trigger rainbow: $e")
+            }
+        }
+        checkStopSelf()
+    }
+
+    private fun towerStop() {
+        backendApi?.apply {
+            val request = tower("STOP", "2")
+            try {
+                val response = request.execute()
+                DEBUG("Result:${response.body()}")
+            } catch (e : Exception) {
+                ERROR("Failed to trigger rainbow: $e")
+            }
+        }
+        checkStopSelf()
+    }
+
+    private fun towerRequest(isSpinA: Boolean) {
+        backendApi?.apply {
+            val function = if (isSpinA) "SPIN_A" else "SPIN_B"
+            val request = tower(function, "2")
+            try {
+                val response = request.execute()
+                DEBUG("Result:${response.body()}")
+            } catch (e : Exception) {
+                ERROR("Failed to trigger rainbow: $e")
+            }
+        }
+        checkStopSelf()
+    }
 
     private fun checkStopSelf() {
         if (downloadsInProgress.decrementAndGet() == 0) {

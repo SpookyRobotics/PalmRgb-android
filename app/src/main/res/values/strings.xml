@@ -47,5 +47,6 @@
   <string name="failed_to_insert_duplicate_title">Failed to create frame. Duplicate title: %s</string>
     <string name="live_create_frame_updates">Live Updates from Create Frame</string>
     <string name="enter_a_message">Enter a message</string>
+    <string name="wheeled_platform">Wheeled Platform</string>
 
 </resources>

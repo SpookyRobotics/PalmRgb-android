@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import nyc.jsjrobotics.palmrgb.R
 import nyc.jsjrobotics.palmrgb.inflate
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.RequestType
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.RequestType
 
 class ConnectedActionViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(createView(parent)){
     private val action : Button = itemView.findViewById(R.id.connected_action)
 
-    fun bind(requestType: RequestType, onClicked : () -> Unit) {
-        action.text = requestType.name
+    fun bind(name: String, onClicked : () -> Unit) {
+        action.text = name
         action.setOnClickListener { onClicked.invoke() }
     }
 

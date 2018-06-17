@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.service.remoteInterface
+package nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface
 
 
 object Paths {

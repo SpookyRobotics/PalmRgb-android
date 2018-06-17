@@ -1,4 +1,4 @@
-package nyc.jsjrobotics.palmrgb.service.remoteInterface
+package nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface
 
 import com.google.gson.annotations.SerializedName
 

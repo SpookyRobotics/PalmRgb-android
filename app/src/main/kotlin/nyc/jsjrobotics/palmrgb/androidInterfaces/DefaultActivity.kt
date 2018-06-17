@@ -70,12 +70,13 @@ abstract class DefaultActivity : FragmentActivity() , IDefaultActivity {
     }
 
     protected fun selectBottonNavigationItemId(itemId: Int): Boolean {
-        val navigationOptions = listOf<Pair<Int, Runnable>>(
+        val navigationOptions = listOf(
                 Pair(R.id.tab_create_frame, Runnable { showFragment(FragmentId.CREATE_FRAME_FRAGMENT) }),
                 Pair(R.id.tab_connection_status, Runnable { showFragment(FragmentId.CONNECTION_STATUS) }),
                 Pair(R.id.tab_view_frames, Runnable { showFragment(FragmentId.VIEW_FRAMES_FRAGMENT) }),
                 Pair(R.id.tab_create_color, Runnable { showFragment(FragmentId.CREATE_COLOR) }),
-                Pair(R.id.tab_create_palette, Runnable { showFragment(FragmentId.CREATE_PALETTE) })
+                Pair(R.id.tab_create_palette, Runnable { showFragment(FragmentId.WHEELED_PLATFORM) })
+                //Pair(R.id.tab_wheeled_platform, Runnable { showFragment(FragmentId.WHEELED_PLATFORM) })
 
         )
 

@@ -11,7 +11,7 @@ import nyc.jsjrobotics.palmrgb.globalState.DeviceConstants
 import nyc.jsjrobotics.palmrgb.globalState.SavedPaletteModel
 import nyc.jsjrobotics.palmrgb.globalState.SharedPreferencesManager
 import nyc.jsjrobotics.palmrgb.service.PalmRgbBackground
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsInterface
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.HackdayLightsInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 

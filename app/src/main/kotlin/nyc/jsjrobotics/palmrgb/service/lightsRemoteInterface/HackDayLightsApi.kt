@@ -1,9 +1,8 @@
-package nyc.jsjrobotics.palmrgb.service.remoteInterface
+package nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface
 
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.PUT
 
 interface HackDayLightsApi {
     @GET(Paths.RAINBOW_RPC_PATH)

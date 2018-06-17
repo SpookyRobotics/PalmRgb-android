@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.RequestType
+import nyc.jsjrobotics.palmrgb.service.wheeledPlatformRemoteInterface.RequestType
 import javax.inject.Inject
 
-class ConnectedActionsAdapter @Inject constructor() : RecyclerView.Adapter<ConnectedActionViewHolder>() {
-    private val connectedActions : List<RequestType> = RequestType.values().filter { it.isSavedRemoteAction }
+class WheeledPlatformActionsAdapter @Inject constructor() : RecyclerView.Adapter<ConnectedActionViewHolder>() {
+    private val connectedActions : List<RequestType> = RequestType.values().toList()
     private val connectedActionSelected : PublishSubject<RequestType> = PublishSubject.create()
-    val onConnectedActionSelected : Observable<RequestType> = connectedActionSelected
+    val onActionSelected : Observable<RequestType> = connectedActionSelected
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConnectedActionViewHolder {
         return ConnectedActionViewHolder(parent)
     }

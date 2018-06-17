@@ -2,7 +2,7 @@ package nyc.jsjrobotics.palmrgb.injection
 
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
-import nyc.jsjrobotics.palmrgb.service.remoteInterface.HackdayLightsBackend
+import nyc.jsjrobotics.palmrgb.service.lightsRemoteInterface.HackdayLightsBackend
 
 @Subcomponent
 interface HackdayLightsBackendSubcomponent : AndroidInjector<HackdayLightsBackend> {

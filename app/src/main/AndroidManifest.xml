@@ -21,6 +21,7 @@
       </intent-filter>
     </activity>
     <service android:name=".service.PalmRgbBackground" />
-    <service android:name=".service.remoteInterface.HackdayLightsBackend" />
+    <service android:name=".service.lightsRemoteInterface.HackdayLightsBackend" />
+    <service android:name=".service.wheeledPlatformRemoteInterface.WheeledPlatformBackend" />
   </application>
 </manifest>
